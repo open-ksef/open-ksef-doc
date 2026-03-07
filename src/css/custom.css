@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --ifm-color-primary: #6366f1;
+  --ifm-color-primary-dark: #4f46e5;
+  --ifm-color-primary-darker: #4338ca;
+  --ifm-color-primary-darkest: #3730a3;
+  --ifm-color-primary-light: #818cf8;
+  --ifm-color-primary-lighter: #a5b4fc;
+  --ifm-color-primary-lightest: #c7d2fe;
+
+  --ifm-font-family-base: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --ifm-font-family-monospace: ui-monospace, 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+  --ifm-code-font-size: 95%;
+  --ifm-border-radius: 10px;
+  --ifm-global-radius: 10px;
+
+  --ifm-background-color: #f4f6f9;
+  --ifm-background-surface-color: #ffffff;
+  --ifm-font-color-base: #111827;
+  --ifm-color-emphasis-600: #6b7280;
+
+  --ifm-color-success: #059669;
+  --ifm-color-warning: #d97706;
+  --ifm-color-danger: #dc2626;
+
+  --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.1);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #818cf8;
+  --ifm-color-primary-dark: #6366f1;
+  --ifm-color-primary-darker: #4f46e5;
+  --ifm-color-primary-darkest: #4338ca;
+  --ifm-color-primary-light: #a5b4fc;
+  --ifm-color-primary-lighter: #c7d2fe;
+  --ifm-color-primary-lightest: #e0e7ff;
+
+  --ifm-background-color: #1e1b4b;
+  --ifm-background-surface-color: #312e81;
+
+  --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.3);
+}
+
+/* Navbar */
+.navbar {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.navbar__title {
+  font-weight: 700;
+}
+
+/* Footer dark bg matching portal sidebar */
+.footer--dark {
+  --ifm-footer-background-color: #1e1b4b;
+}
+
+/* Sidebar */
+.menu__link--active:not(.menu__link--sublist) {
+  background: rgba(99, 102, 241, 0.12);
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+/* Tables */
+table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+table thead tr {
+  background: var(--ifm-color-primary-lightest);
+}
+
+[data-theme='dark'] table thead tr {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+/* Code blocks */
+.prism-code {
+  border-radius: 10px !important;
+}
+
+/* Admonitions */
+.alert {
+  border-radius: 10px;
+}
+
+/* Buttons */
+.button--primary {
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  border: none;
+}
+
+.button--primary:hover {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+/* Docs page */
+.docMainContainer_node_modules-\@docusaurus-theme-classic-lib-theme-DocPage-Layout-Main-styles-module {
+  background: var(--ifm-background-color);
+}

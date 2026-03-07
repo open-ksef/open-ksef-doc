@@ -1,0 +1,50 @@
+.section {
+  padding: 4rem 0;
+  background: var(--ifm-background-color);
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.techItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 2rem;
+  background: var(--ifm-background-surface-color);
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s;
+  min-width: 120px;
+}
+
+.techItem:hover {
+  transform: translateY(-2px);
+}
+
+.techIcon {
+  font-size: 2rem;
+}
+
+.techName {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ifm-font-color-base);
+}
+
+.techRole {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+}
