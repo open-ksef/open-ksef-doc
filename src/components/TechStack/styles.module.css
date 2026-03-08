@@ -48,3 +48,8 @@
   font-size: 0.8rem;
   color: var(--ifm-color-emphasis-600);
 }
+
+:global([data-theme='dark']) .techItem {
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}

@@ -3,9 +3,8 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import UseCases from '@site/src/components/UseCases';
 import HowToStart from '@site/src/components/HowToStart';
-import TechStack from '@site/src/components/TechStack';
 
 import styles from './index.module.css';
 
@@ -32,13 +31,12 @@ function HomepageHeader() {
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Otwartoźródłowy system do KSeF"
-      description="OpenKSeF -- otwartoźródłowy system do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF). Self-hosted, Docker, React portal, MAUI mobile.">
+      title="Miej kontrolę nad fakturami z KSeF"
+      description="OpenKSeF -- darmowy, otwartoźródłowy system do powiadomień o fakturach z KSeF, szybkiego przeglądu i płatności. Self-hosted, bez opłat.">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
+        <UseCases />
         <HowToStart />
-        <TechStack />
       </main>
     </Layout>
   );

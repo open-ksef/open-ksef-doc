@@ -1,0 +1,14 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Instalacja": {
+    "message": "Installation",
+    "description": "The label for category 'Instalacja' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Informacje": {
+    "message": "Information",
+    "description": "The label for category 'Informacje' in sidebar 'docsSidebar'"
+  }
+}

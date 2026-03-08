@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'OpenKSeF',
-  tagline: 'Otwartoźródłowy system do synchronizacji i przeglądania faktur z KSeF — beta',
+  tagline: 'Miej kontrolę nad fakturami z KSeF — powiadomienia, przegląd i szybkie płatności',
   favicon: 'img/favicon.svg',
 
   future: {
@@ -21,7 +21,11 @@ const config: Config = {
 
   i18n: {
     defaultLocale: 'pl',
-    locales: ['pl'],
+    locales: ['pl', 'en'],
+    localeConfigs: {
+      pl: { label: 'Polski' },
+      en: { label: 'English' },
+    },
   },
 
   presets: [
@@ -64,6 +68,10 @@ const config: Config = {
           sidebarId: 'docsSidebar',
           position: 'left',
           label: 'Dokumentacja',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
         {
           href: 'https://github.com/open-ksef',
