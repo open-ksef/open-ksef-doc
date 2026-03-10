@@ -22,7 +22,7 @@ Go to [Quick Start](instalacja/szybki-start) -- getting it up takes less than 5 
 
 ![Step 1 - Keycloak login](/img/screenshots/portal/admin-setup-step1.png)
 
-Enter the Keycloak admin credentials (default: `admin` / `admin` from `docker-compose.yml`). The wizard authenticates against the master realm and obtains a temporary session token (valid for 10 minutes).
+Enter the Keycloak admin credentials (default: `admin` / `admin` from `docker-compose.yml`). The wizard authenticates against the `master` realm and stores the credentials in a temporary session token (valid for 10 minutes), which is used to configure Keycloak in subsequent steps.
 
 ### Step 2: Basic configuration
 
@@ -94,15 +94,17 @@ SignalR always works regardless of the selected mode. The mode only affects remo
 
 Review all settings and click "Apply". The wizard:
 
-1. Generates the encryption key
-2. Fetches the API client secret from Keycloak
-3. Enables token-exchange for the service account
-4. Updates redirect URIs with the external URL
-5. Configures the Keycloak realm (login policy, password policy, SMTP)
-6. Creates the admin account in Keycloak
-7. Configures the Google IdP (if provided)
-8. Saves the entire configuration to the database
-9. Redirects to the login page
+1. Creates the `openksef` realm in Keycloak (if it doesn't exist)
+2. Creates OAuth clients: `openksef-api`, `openksef-mobile`, `openksef-portal-web`
+3. Generates the encryption key
+4. Fetches the API client secret from Keycloak
+5. Enables token-exchange for the service account
+6. Updates redirect URIs with the external URL
+7. Configures the Keycloak realm (login policy, password policy, SMTP)
+8. Creates the admin account in Keycloak
+9. Configures the Google IdP (if provided)
+10. Saves the entire configuration to the database
+11. Redirects to the login page
 
 ## Architecture
 
@@ -134,7 +136,7 @@ The portal checks `/api/system/setup-status` on every protected page load. If `i
 |---------|----------|
 | Wizard doesn't appear | Check if the `system_config` table is empty. Delete rows and restart the API. |
 | Keycloak login doesn't work | Check if Keycloak is running (`docker compose logs keycloak`). Default credentials: admin/admin. |
-| Apply returns 500 | Check API logs (`docker compose logs api`). Common cause: Keycloak realm hasn't been imported yet. |
+| Apply returns 500 | Check API logs (`docker compose logs api`). Common cause: Keycloak is not ready yet. |
 | SMTP email test fails | Verify SMTP credentials. Gmail requires an App Password. |
 | Redirect loop after setup | Clear browser cache/cookies. The portal caches setup status for 60 seconds. |
 | Want to run the wizard again | Delete all rows from the `system_config` table and restart the API container. |
