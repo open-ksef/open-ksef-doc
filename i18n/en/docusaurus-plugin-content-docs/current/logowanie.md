@@ -33,19 +33,6 @@ Examples:
 
 4. Enter the credentials in the [setup wizard](admin-setup) (Step 5: Integrations > Google OAuth)
 
-   Or set them manually in `.env`:
-
-```bash
-GOOGLE_CLIENT_ID=123456789-abcdef.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxxxxxxxxxx
-```
-
-5. If setting manually, restart Keycloak:
-
-```bash
-docker compose restart keycloak
-```
-
 ## User registration
 
 The registration endpoint requires a Keycloak service account with `manage-users` permission.
