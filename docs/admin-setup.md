@@ -22,7 +22,7 @@ Przejdź do [Szybki start](instalacja/szybki-start) -- uruchomienie zajmuje mnie
 
 ![Krok 1 - logowanie Keycloak](/img/screenshots/portal/admin-setup-step1.png)
 
-Wprowadź dane logowania admina Keycloak (domyślnie: `admin` / `admin` z `docker-compose.yml`). Wizard uwierzytelnia się w realm master i otrzymuje tymczasowy token sesji (ważny 10 minut).
+Wprowadź dane logowania admina Keycloak (domyślnie: `admin` / `admin` z `docker-compose.yml`). Wizard uwierzytelnia się w realm `master` i zapisuje dane logowania w tymczasowym tokenie sesji (ważnym 10 minut), który jest używany do konfiguracji Keycloak w kolejnych krokach.
 
 ### Krok 2: Konfiguracja podstawowa
 
@@ -94,15 +94,17 @@ SignalR działa zawsze, niezależnie od wybranego trybu. Tryb wpływa tylko na z
 
 Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 
-1. Generuje klucz szyfrowania
-2. Pobiera secret klienta API z Keycloak
-3. Włącza token-exchange dla service account
-4. Aktualizuje URI przekierowań z zewnętrznym URL
-5. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP)
-6. Tworzy konto admina w Keycloak
-7. Konfiguruje Google IdP (jeśli podano)
-8. Zapisuje całą konfigurację w bazie danych
-9. Przekierowuje na stronę logowania
+1. Tworzy realm `openksef` w Keycloak (jeśli nie istnieje)
+2. Tworzy klienty OAuth: `openksef-api`, `openksef-mobile`, `openksef-portal-web`
+3. Generuje klucz szyfrowania
+4. Pobiera secret klienta API z Keycloak
+5. Włącza token-exchange dla service account
+6. Aktualizuje URI przekierowań z zewnętrznym URL
+7. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP)
+8. Tworzy konto admina w Keycloak
+9. Konfiguruje Google IdP (jeśli podano)
+10. Zapisuje całą konfigurację w bazie danych
+11. Przekierowuje na stronę logowania
 
 ## Architektura
 
@@ -134,7 +136,7 @@ Portal sprawdza `/api/system/setup-status` przy każdym ładowaniu chronionej st
 |---------|-------------|
 | Wizard się nie pojawia | Sprawdź, czy tabela `system_config` jest pusta. Usuń wiersze i zrestartuj API. |
 | Logowanie Keycloak nie działa | Sprawdź, czy Keycloak działa (`docker compose logs keycloak`). Domyślne dane: admin/admin. |
-| Apply zwraca 500 | Sprawdź logi API (`docker compose logs api`). Częsta przyczyna: realm Keycloak jeszcze nie został zaimportowany. |
+| Apply zwraca 500 | Sprawdź logi API (`docker compose logs api`). Częsta przyczyna: Keycloak nie jest jeszcze gotowy. |
 | Test email SMTP nie działa | Zweryfikuj dane SMTP. Gmail wymaga Hasła aplikacji. |
 | Pętla przekierowań po setup | Wyczyść cache/cookies przeglądarki. Portal cachuje status setup na 60 sekund. |
 | Chcę uruchomić wizard ponownie | Usuń wszystkie wiersze z tabeli `system_config` i zrestartuj kontener API. |

@@ -17,17 +17,17 @@ Dla standardowej instalacji **nie musisz tworzyć pliku `.env`** -- wystarczy ur
 
 ## Architektura kontenerów
 
-Wszystkie obrazy Docker są publikowane na GitHub Container Registry (`ghcr.io/open-ksef/*`) i nie wymagają autentykacji.
+Obrazy aplikacji są publikowane na GitHub Container Registry (`ghcr.io/open-ksef/*`) i nie wymagają autentykacji. Keycloak korzysta z oficjalnego obrazu (`quay.io/keycloak/keycloak:26.0`).
 
 | Obraz | Opis |
 |-------|------|
-| `openksef-keycloak` | Keycloak 26 z wbudowanym realmem OpenKSeF (3 klienty OAuth: API, mobile, portal-web) |
+| `keycloak/keycloak:26.0` | Keycloak 26 (oficjalny obraz). Realm `openksef` i klienty OAuth tworzone przez [kreator konfiguracji](../admin-setup) |
 | `openksef-gateway` | Nginx z wbudowaną konfiguracją reverse proxy (portal `/`, API `/api/*`, Keycloak `/auth/*`) |
 | `openksef-api` | Backend .NET 8 |
 | `openksef-worker` | Worker .NET 8 (synchronizacja faktur w tle) |
 | `openksef-portal-web` | Portal React (SPA) |
 
-Keycloak i gateway mają konfigurację **wbudowaną w obraz** -- nie trzeba montować plików konfiguracyjnych ani wolumenów (poza wolumenem danych PostgreSQL).
+Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfiguracyjnych ani wolumenów (poza wolumenem danych PostgreSQL).
 
 ## Wymagane zmienne (API / Worker)
 
@@ -66,8 +66,6 @@ Dla wdrożeń produkcyjnych **zmień domyślne hasła** w pliku `.env`. Domyśln
 | Zmienna | Opis |
 |---------|------|
 | `APP_EXTERNAL_BASE_URL` | Publiczny URL instancji (np. `http://192.168.1.50:8080`) |
-| `GOOGLE_CLIENT_ID` | Google OAuth Client ID (dla logowania przez Google) |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth Client Secret |
 | `API_CLIENT_SECRET` | Secret klienta `openksef-api` w Keycloak *(generowany przez kreator)* |
 | `FIREBASE_CREDENTIALS_JSON` | Firebase service account JSON (dla direct push) |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` | Konfiguracja poczty (email fallback) |

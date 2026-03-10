@@ -36,9 +36,9 @@ services:
       retries: 20
 
   keycloak:
-    image: ghcr.io/open-ksef/openksef-keycloak:latest
+    image: quay.io/keycloak/keycloak:26.0
     container_name: openksef-keycloak
-    command: start-dev --import-realm
+    command: start-dev --features=token-exchange,admin-fine-grained-authz
     depends_on:
       postgres:
         condition: service_healthy
@@ -138,7 +138,7 @@ Docker pobierze obrazy z GitHub Container Registry i uruchomi 6 kontenerów:
 | Kontener | Opis |
 |----------|------|
 | **postgres** | Baza danych PostgreSQL 16 |
-| **keycloak** | Uwierzytelnianie OIDC (realm OpenKSeF wbudowany w obraz) |
+| **keycloak** | Uwierzytelnianie OIDC (realm tworzony przez kreator konfiguracji) |
 | **api** | Backend .NET 8 |
 | **worker** | Synchronizacja faktur w tle |
 | **portal-web** | Interfejs React |
