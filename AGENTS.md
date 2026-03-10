@@ -90,3 +90,5 @@ npm run serve   # podgląd buildu lokalnie
 3. Design musi **nawiązywać** do portalu (paleta indigo, Inter font, karty z shadow)
 4. Sekcja "O projekcie" zawiera **disclaimer**: projekt stworzony z pomocą AI, self-hosting = odpowiedzialność użytkownika
 5. Licencja **Elastic License 2.0 (ELv2)** -- darmowy self-hosting, zakaz SaaS bez zgody autora
+6. Przy zmianach **modyfikuj istniejące pliki** -- nie twórz równoległych wersji. Jeśli strona/komponent już istnieje, refaktoryzuj go zamiast dodawać nowy obok.
+7. Usuwaj nieużywany kod po refaktoryzacji.
