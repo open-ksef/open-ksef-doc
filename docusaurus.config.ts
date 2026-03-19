@@ -97,6 +97,7 @@ const config: Config = {
             {label: 'GitHub', href: 'https://github.com/open-ksef'},
             {label: 'O projekcie', to: '/docs/o-projekcie'},
             {label: 'Licencja ELv2', to: '/docs/licencja'},
+            {label: 'Polityka prywatności', to: '/docs/polityka-prywatnosci'},
           ],
         },
       ],
