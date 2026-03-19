@@ -22,6 +22,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'o-projekcie',
         'licencja',
+        'polityka-prywatnosci',
       ],
     },
   ],
