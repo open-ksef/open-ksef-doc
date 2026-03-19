@@ -39,9 +39,19 @@ Most installations need only **SignalR + Relay**. No Firebase setup required.
 
 In the [setup wizard](admin-setup) (Step 5 -- Integrations):
 
-- **OpenKSeF Relay** (default) -- URL `https://push.open-ksef.pl` is pre-filled. Done.
+- **OpenKSeF Relay** (default) -- URL `https://push.open-ksef.pl` is pre-filled. Your instance registers automatically and receives a unique API key. Done.
 - **Own Firebase** -- paste the service account JSON. Details at [Firebase Console](https://console.firebase.google.com/) > Project Settings > Service Accounts > Generate new private key.
 - **Local only** -- no remote push, SignalR only when the app is active.
+
+## Security
+
+Communication with the relay is secured by three layers:
+
+1. **Cloudflare** -- HTTPS, rate limiting, bot protection
+2. **Instance registration** -- each instance has a unique HMAC key (auto-generated during setup)
+3. **Request validation** -- HMAC signature, timestamp freshness check (5 min), per-instance rate limits
+
+No keys are stored in source code -- they are generated at registration time and stored in the instance database.
 
 ## Testing
 
@@ -54,5 +64,7 @@ In the [setup wizard](admin-setup) (Step 5 -- Integrations):
 |---------|----------|
 | No notifications | Enable relay in the wizard |
 | SignalR won't connect | Log in again in the app |
-| Relay returns 401 | Check the relay API key |
-| Relay returns 502 | Check relay logs / Firebase credentials |
+| Relay returns 401 | Instance not registered -- go to Settings > Push notifications > Re-register |
+| Relay returns 403 | Instance disabled by relay admin |
+| Relay returns 429 | Rate limit exceeded |
+| Relay returns 502 | Firebase/APNs issue on the relay side |
