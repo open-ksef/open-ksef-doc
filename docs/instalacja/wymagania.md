@@ -27,7 +27,7 @@ Gateway nasłuchuje na porcie **8080** i udostępnia wszystkie usługi pod jedny
 | Port | Usługa | Wymagany? | Zmienna `.env` |
 |------|--------|-----------|----------------|
 | 8080 | Gateway (portal + API + Keycloak) | **tak** | `APP_HOST_PORT` |
-| 8081 | API (bezpośredni dostęp / Swagger) | nie | `API_HOST_PORT` |
+| 8081 | API (bezpośredni dostęp, health check `/health`) | nie | `API_HOST_PORT` |
 | 8082 | Keycloak (konsola admina) | nie | `KEYCLOAK_HOST_PORT` |
 | 8083 | Portal Web (bezpośredni dostęp) | nie | `PORTAL_WEB_HOST_PORT` |
 | 5432 | PostgreSQL | nie | `POSTGRES_HOST_PORT` |
