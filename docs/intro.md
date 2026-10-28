@@ -6,7 +6,7 @@ title: Wprowadzenie
 
 # Czym jest OpenKSeF?
 
-:::caution Beta
+:::caution[Beta]
 OpenKSeF jest w fazie **beta**. Projekt jest aktywnie rozwijany -- mogą wystąpić zmiany w API, strukturze bazy danych i konfiguracji. Używaj w środowiskach testowych lub z pełną świadomością aktualnego stanu projektu.
 :::
 

@@ -5,7 +5,7 @@ title: About the project
 
 # About the project
 
-:::caution Status: Beta
+:::caution[Status: Beta]
 OpenKSeF is in **beta**. We are actively developing the project -- new features appear regularly, but there may be changes in the API, data structure, and configuration between versions. We recommend following the [release notes on GitHub](https://github.com/open-ksef).
 :::
 
@@ -42,7 +42,7 @@ OpenKSeF is designed for **self-hosting** -- you run it on your own infrastructu
 - **You control access** -- Keycloak runs on your instance
 - **You are responsible for security** -- HTTPS configuration, backups, updates, firewall
 
-:::info Important
+:::info[Important]
 OpenKSeF is a tool. Self-hosting = you are responsible for your data. You decide how to configure and secure your instance. Project authors have no access to your data and bear no responsibility for its security.
 :::
 

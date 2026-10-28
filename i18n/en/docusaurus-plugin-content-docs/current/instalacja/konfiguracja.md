@@ -57,7 +57,7 @@ The gateway has its configuration built into the image. No need to mount config 
 | `KC_DB_USERNAME` | Keycloak database user (if different from Postgres) | value of `POSTGRES_USER` |
 | `KC_DB_PASSWORD` | Keycloak database password (if different from Postgres) | value of `POSTGRES_PASSWORD` |
 
-:::warning Production
+:::warning[Production]
 For production deployments, **change the default passwords** in the `.env` file. Default values (`openksef_dev_password`, `admin`) are intended for development purposes only.
 :::
 
@@ -77,7 +77,7 @@ For production deployments, **change the default passwords** in the `.env` file.
 | **Test** | `https://ksef-test.mf.gov.pl/api` | Development and testing |
 | **Production** | `https://ksef.mf.gov.pl/api` | Real invoices |
 
-:::warning Warning
+:::warning[Warning]
 The production KSeF environment operates on real tax data. Make sure your instance is properly secured before switching to production.
 :::
 

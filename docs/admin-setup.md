@@ -7,7 +7,7 @@ title: Kreator konfiguracji
 
 Kreator konfiguracji automatyzuje pierwszą konfigurację systemu. Zamiast ręcznie edytować pliki `.env`, kopiować sekrety z Keycloak i restartować kontenery -- wystarczy uruchomić `docker compose up` i przejść przez webowy wizard pod adresem `http://localhost:8080/admin-setup`.
 
-:::tip Nie masz jeszcze uruchomionego stacku?
+:::tip[Nie masz jeszcze uruchomionego stacku?]
 Przejdź do [Szybki start](instalacja/szybki-start) -- uruchomienie zajmuje mniej niż 5 minut.
 :::
 
@@ -60,7 +60,7 @@ Jeśli włączysz weryfikację email lub reset hasła, potrzebujesz SMTP:
 | Outlook/O365 | smtp.office365.com | 587 | StartTLS |
 | Własny | (ręcznie) | (ręcznie) | (ręcznie) |
 
-:::tip Gmail
+:::tip[Gmail]
 Gmail wymaga **Hasła aplikacji** (nie zwykłego hasła). Wygeneruj je w ustawieniach konta Google: Bezpieczeństwo > Weryfikacja dwuetapowa > Hasła aplikacji.
 :::
 
