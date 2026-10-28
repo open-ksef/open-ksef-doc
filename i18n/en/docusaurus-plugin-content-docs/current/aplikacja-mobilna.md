@@ -26,7 +26,7 @@ OpenKSeF Mobile is a .NET MAUI app for Android and iOS. It allows browsing invoi
 2. On the login screen, enter the server address (e.g. `https://your-server.com`)
 3. Log in with your Keycloak credentials
 
-:::tip Quick connect
+:::tip[Quick connect]
 In the web portal, go to the **Mobile App** page -- you'll find a QR code that you can scan in the mobile app to automatically set the server address.
 :::
 

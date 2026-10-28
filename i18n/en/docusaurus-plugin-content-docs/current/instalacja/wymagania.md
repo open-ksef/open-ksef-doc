@@ -16,7 +16,7 @@ title: System requirements
 | **Disk** | minimum 2 GB free space |
 | **Port** | 8080 (gateway) -- the only required port |
 
-:::info You don't need git, curl, or any additional tools
+:::info[You don't need git, curl, or any additional tools]
 Docker and a browser are enough. You can copy the `docker-compose.yml` from [Quick Start](szybki-start).
 :::
 
@@ -42,7 +42,7 @@ If you want to expose OpenKSeF on a local network or the internet:
 2. Make sure port 8080 (or the chosen one) is accessible from outside
 3. For HTTPS -- use a reverse proxy (nginx, Traefik, Caddy) in front of the gateway
 
-:::tip Mobile app
+:::tip[Mobile app]
 The Android mobile app requires HTTPS for login (OIDC). For local testing, use [ngrok](https://ngrok.com/) -- the `dev-env-up.ps1` script configures this automatically.
 :::
 

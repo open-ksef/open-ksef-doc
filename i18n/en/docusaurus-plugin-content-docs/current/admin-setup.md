@@ -7,7 +7,7 @@ title: Setup Wizard
 
 The setup wizard automates the initial system configuration. Instead of manually editing `.env` files, copying secrets from Keycloak, and restarting containers -- just run `docker compose up` and go through the web wizard at `http://localhost:8080/admin-setup`.
 
-:::tip Don't have the stack running yet?
+:::tip[Don't have the stack running yet?]
 Go to [Quick Start](instalacja/szybki-start) -- getting it up takes less than 5 minutes.
 :::
 
@@ -60,7 +60,7 @@ If you enable email verification or password reset, you need SMTP:
 | Outlook/O365 | smtp.office365.com | 587 | StartTLS |
 | Custom | (manual) | (manual) | (manual) |
 
-:::tip Gmail
+:::tip[Gmail]
 Gmail requires an **App Password** (not a regular password). Generate one in Google account settings: Security > 2-Step Verification > App Passwords.
 :::
 

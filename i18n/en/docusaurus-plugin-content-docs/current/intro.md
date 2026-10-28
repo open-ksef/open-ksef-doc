@@ -6,7 +6,7 @@ title: Introduction
 
 # What is OpenKSeF?
 
-:::caution Beta
+:::caution[Beta]
 OpenKSeF is in **beta**. The project is actively developed -- there may be changes in the API, database structure, and configuration. Use in test environments or with full awareness of the current state of the project.
 :::
 
