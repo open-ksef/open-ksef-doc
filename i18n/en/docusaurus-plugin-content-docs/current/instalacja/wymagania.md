@@ -27,7 +27,7 @@ The gateway listens on port **8080** and exposes all services at a single addres
 | Port | Service | Required? | `.env` variable |
 |------|---------|-----------|-----------------|
 | 8080 | Gateway (portal + API + Keycloak) | **yes** | `APP_HOST_PORT` |
-| 8081 | API (direct access / Swagger) | no | `API_HOST_PORT` |
+| 8081 | API (direct access, health check `/health`) | no | `API_HOST_PORT` |
 | 8082 | Keycloak (admin console) | no | `KEYCLOAK_HOST_PORT` |
 | 8083 | Web Portal (direct access) | no | `PORTAL_WEB_HOST_PORT` |
 | 5432 | PostgreSQL | no | `POSTGRES_HOST_PORT` |
