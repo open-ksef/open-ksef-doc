@@ -135,7 +135,7 @@ Portal sprawdza `/api/system/setup-status` przy każdym ładowaniu chronionej st
 | Problem | Rozwiązanie |
 |---------|-------------|
 | Wizard się nie pojawia | Sprawdź, czy tabela `system_config` jest pusta. Usuń wiersze i zrestartuj API. |
-| Logowanie Keycloak nie działa | Sprawdź, czy Keycloak działa (`docker compose logs keycloak`). Domyślne dane: admin/admin. |
+| Logowanie Keycloak nie działa | Sprawdź, czy Keycloak działa (`docker compose logs keycloak`). Dane logowania: `KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`. |
 | Apply zwraca 500 | Sprawdź logi API (`docker compose logs api`). Częsta przyczyna: Keycloak nie jest jeszcze gotowy. |
 | Test email SMTP nie działa | Zweryfikuj dane SMTP. Gmail wymaga Hasła aplikacji. |
 | Pętla przekierowań po setup | Wyczyść cache/cookies przeglądarki. Portal cachuje status setup na 60 sekund. |

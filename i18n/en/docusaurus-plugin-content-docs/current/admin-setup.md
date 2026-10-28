@@ -135,7 +135,7 @@ The portal checks `/api/system/setup-status` on every protected page load. If `i
 | Problem | Solution |
 |---------|----------|
 | Wizard doesn't appear | Check if the `system_config` table is empty. Delete rows and restart the API. |
-| Keycloak login doesn't work | Check if Keycloak is running (`docker compose logs keycloak`). Default credentials: admin/admin. |
+| Keycloak login doesn't work | Check if Keycloak is running (`docker compose logs keycloak`). Credentials: `KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` from `.env`. |
 | Apply returns 500 | Check API logs (`docker compose logs api`). Common cause: Keycloak is not ready yet. |
 | SMTP email test fails | Verify SMTP credentials. Gmail requires an App Password. |
 | Redirect loop after setup | Clear browser cache/cookies. The portal caches setup status for 60 seconds. |
