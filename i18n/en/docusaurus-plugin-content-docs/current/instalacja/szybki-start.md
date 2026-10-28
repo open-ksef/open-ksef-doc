@@ -17,8 +17,8 @@ services:
     image: postgres:16-alpine
     container_name: openksef-postgres
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-openksef}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-openksef_dev_password}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     entrypoint:
       - sh
       - -c
@@ -30,7 +30,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-openksef}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -38,18 +38,18 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.0
     container_name: openksef-keycloak
-    command: start-dev --features=token-exchange,admin-fine-grained-authz
+    command: start --features=token-exchange,admin-fine-grained-authz
     depends_on:
       postgres:
         condition: service_healthy
     environment:
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
-      KC_DB_USERNAME: ${KC_DB_USERNAME:-${POSTGRES_USER:-openksef}}
-      KC_DB_PASSWORD: ${KC_DB_PASSWORD:-${POSTGRES_PASSWORD:-openksef_dev_password}}
+      KC_DB_USERNAME: ${KC_DB_USERNAME:-${POSTGRES_USER}}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD:-${POSTGRES_PASSWORD}}
 
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:?KEYCLOAK_ADMIN is required}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?KEYCLOAK_ADMIN_PASSWORD is required}
 
       KC_HTTP_ENABLED: "true"
       KC_HTTP_RELATIVE_PATH: /auth
@@ -68,9 +68,9 @@ services:
       keycloak:
         condition: service_started
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://0.0.0.0:8081
-      ConnectionStrings__Db: Host=postgres;Port=5432;Database=openksef;Username=${POSTGRES_USER:-openksef};Password=${POSTGRES_PASSWORD:-openksef_dev_password}
+      ConnectionStrings__Db: Host=postgres;Port=5432;Database=openksef;Username=${POSTGRES_USER:?POSTGRES_USER is required};Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       Auth__Authority: http://keycloak:8080/auth/realms/openksef
       Auth__PublicAuthority: ${APP_EXTERNAL_BASE_URL:-http://localhost:8080}/auth/realms/openksef
       ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
@@ -90,7 +90,7 @@ services:
       keycloak:
         condition: service_started
     environment:
-      ConnectionStrings__Db: Host=postgres;Port=5432;Database=openksef;Username=${POSTGRES_USER:-openksef};Password=${POSTGRES_PASSWORD:-openksef_dev_password}
+      ConnectionStrings__Db: Host=postgres;Port=5432;Database=openksef;Username=${POSTGRES_USER:?POSTGRES_USER is required};Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       Auth__Authority: http://keycloak:8080/auth/realms/openksef
       ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
       KSeF__BaseUrl: ${KSEF_BASE_URL:-https://ksef-test.mf.gov.pl/api}
@@ -128,6 +128,19 @@ volumes:
 Click the copy icon in the top-right corner of the code block to copy the entire content. Paste it into a new `docker-compose.yml` file.
 :::
 
+In the same directory, create an `.env` file with passwords. Without it, `docker compose up` fails (e.g. `POSTGRES_USER is required`):
+
+```bash
+POSTGRES_USER=openksef
+POSTGRES_PASSWORD=change_me
+KEYCLOAK_ADMIN=admin
+KEYCLOAK_ADMIN_PASSWORD=change_me_too
+```
+
+:::warning Passwords
+Use your own strong passwords. The file has no default passwords on purpose.
+:::
+
 ## Step 2: Start
 
 ```bash
@@ -155,7 +168,7 @@ Open **http://localhost:8080** in your browser.
 
 The system will detect that it's not yet configured and automatically redirect you to the **setup wizard** (`/admin-setup`). The wizard will guide you through:
 
-1. Logging in with Keycloak admin credentials (`admin` / `admin`)
+1. Logging in with Keycloak admin credentials (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` from `.env`)
 2. Setting basic data (URL, KSeF environment, admin account)
 3. Login policy and optionally SMTP
 4. Automatic generation of encryption key and API secret
@@ -187,9 +200,9 @@ docker compose down -v
 
 ## Advanced configuration
 
-The quick start above works without any `.env` file -- all variables have sensible defaults, and the setup wizard automatically generates missing secrets.
+The `.env` file from step 1 only needs the passwords. Other variables have defaults, and the setup wizard automatically generates missing secrets.
 
-If you want to change the default settings **before** launching (e.g. passwords, ports, URL), create an `.env` file in the same directory as `docker-compose.yml`:
+If you want to change other settings **before** launching (e.g. ports, URL), add them to the `.env` file:
 
 ```bash
 # Postgres
