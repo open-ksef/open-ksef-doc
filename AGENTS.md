@@ -47,6 +47,7 @@ docs/
     konfiguracja.md           # Zmienne środowiskowe, KSeF test/prod
   admin-setup.md              # Kreator konfiguracji (wizard krok po kroku)
   logowanie.md                # Strona logowania, Google OAuth, rejestracja
+  faktury.md                  # Lista, szczegóły, pozycje, status płatności, przelew/QR, resynchronizacja
   powiadomienia-push.md       # Push notifications (SignalR, relay, Firebase, email)
   aplikacja-mobilna.md        # MAUI Android/iOS, ngrok, build
   o-projekcie.md              # AI disclaimer, self-hosting, odpowiedzialność

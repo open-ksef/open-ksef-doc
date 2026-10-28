@@ -10,6 +10,7 @@ OpenKSeF Mobile is a .NET MAUI app for Android and iOS. It allows browsing invoi
 ## Features
 
 - Browse invoices from KSeF (list, details, filtering)
+- Seller invoice number and line items in invoice details (see [Invoices](faktury#mobile-app))
 - Manage companies (tenants)
 - Push notifications (SignalR + relay/Firebase)
 - Login via Keycloak (OIDC)
@@ -49,7 +50,7 @@ Android requires **HTTPS** for OIDC authentication (WebAuthenticator). For local
 
 ### Requirements
 
-- .NET 8 SDK
+- .NET 10 SDK
 - Android SDK (API 34+)
 - Visual Studio 2022 or VS Code with MAUI workload
 
@@ -57,10 +58,10 @@ Android requires **HTTPS** for OIDC authentication (WebAuthenticator). For local
 
 ```bash
 # Android
-dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net8.0-android
+dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net10.0-android
 
 # iOS (requires macOS)
-dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net8.0-ios
+dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net10.0-ios
 ```
 
 ### Firebase configuration (optional)

@@ -162,7 +162,7 @@ Docker will pull images from GitHub Container Registry and start 6 containers:
 |-----------|-------------|
 | **postgres** | PostgreSQL 16 database |
 | **keycloak** | OIDC authentication (realm created by the setup wizard) |
-| **api** | .NET 8 backend |
+| **api** | .NET 10 backend |
 | **worker** | Background invoice synchronization |
 | **portal-web** | React interface |
 | **gateway** | Nginx reverse proxy (configuration built into the image) |

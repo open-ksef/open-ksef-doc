@@ -24,7 +24,8 @@ OpenKSeF is designed for:
 
 | Feature | Description |
 |---------|-------------|
-| **Invoice synchronization** | Automatic background downloading of invoices from KSeF |
+| **Invoice synchronization** | Automatic background downloading of invoices from KSeF, manual and full resync |
+| **Invoices** | Details with line items, payment status, transfer details and QR code -- see [Invoices](faktury) |
 | **Web portal** | React SPA with dashboard, invoice list, company management |
 | **Mobile app** | .NET MAUI for Android and iOS with push notifications |
 | **Multi-tenant** | Multiple companies on a single instance, per-user data isolation |
@@ -40,7 +41,7 @@ OpenKSeF is designed for:
 │                                                  │
 │  ┌──────────┐  ┌──────────┐  ┌───────────────┐ │
 │  │   API    │  │  Worker  │  │ Portal (React)│ │
-│  │ (.NET 8) │  │ (.NET 8) │  │               │ │
+│  │(.NET 10) │  │(.NET 10) │  │               │ │
 │  └────┬─────┘  └────┬─────┘  └───────────────┘ │
 │       │              │                           │
 │  ┌────┴──────────────┴────┐  ┌───────────────┐ │
@@ -82,3 +83,4 @@ OpenKSeF is designed for:
 - [System requirements](instalacja/wymagania) -- what you need before installation
 - [Quick start](instalacja/szybki-start) -- up and running in 5 minutes
 - [Setup wizard](admin-setup) -- step-by-step configuration
+- [Invoices](faktury) -- list, details, payment status, synchronization

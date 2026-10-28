@@ -35,6 +35,17 @@ graph LR
 
 Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konfiguracji Firebase.
 
+## Kto dostaje powiadomienie
+
+- Powiadomienie o nowej fakturze trafia na urządzenia użytkownika, do którego należy firma. Inni użytkownicy instancji go nie dostają.
+- Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika.
+- Pierwsza synchronizacja nowej firmy i [pełna resynchronizacja](faktury#pełna-resynchronizacja) nie wysyłają powiadomień, nawet jeśli pobiorą wiele faktur.
+
+## Niezawodność
+
+- Chwilowa niedostępność relay, Firebase lub APNs nie usuwa rejestracji urządzenia. Urządzenie jest usuwane z listy tylko wtedy, gdy FCM/APNs jednoznacznie odrzuci jego token (np. po odinstalowaniu aplikacji).
+- Aplikacja mobilna (od wersji 1.0.4) sprawdza po zalogowaniu, czy jej urządzenie jest nadal zarejestrowane na serwerze, i w razie potrzeby rejestruje je ponownie.
+
 ## Konfiguracja
 
 W [kreatorze konfiguracji](admin-setup) (Krok 5 -- Integracje):
@@ -63,6 +74,8 @@ Komunikacja z relay jest zabezpieczona trzema warstwami:
 | Objaw | Rozwiązanie |
 |-------|-------------|
 | Brak powiadomień | Włącz relay w kreatorze |
+| Brak powiadomień, urządzenie nie widnieje w **Urządzenia** | W aplikacji mobilnej: **Konto** > wyłącz i włącz **Powiadomienia push**. Aplikacja zarejestruje urządzenie ponownie |
+| Brak powiadomień po pełnej resynchronizacji | Zamierzone -- pełna resynchronizacja nie wysyła powiadomień |
 | SignalR nie łączy | Zaloguj się ponownie w aplikacji |
 | Relay zwraca 401 | Instancja niezarejestrowana -- przejdź do Ustawienia > Powiadomienia push > Zarejestruj ponownie |
 | Relay zwraca 403 | Instancja wyłączona przez administratora relay |

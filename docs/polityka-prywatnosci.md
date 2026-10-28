@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 19 marca 2026 r.*
+*Ostatnia aktualizacja: 28 października 2026 r.*
 
 OpenKSeF to oprogramowanie open-source do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF). Niniejsza polityka prywatności opisuje, jakie dane przetwarzamy i w jaki sposób je chronimy.
 
@@ -37,7 +37,8 @@ Kontakt: [krystian@mikrut.dev](mailto:krystian@mikrut.dev)
 
 ### Dane faktur
 
-- Nagłówki faktur pobrane z KSeF (numer, kwoty, daty, dane kontrahentów)
+- Dane faktur pobrane z KSeF: nagłówek (numer, kwoty, daty, dane kontrahentów, numer rachunku sprzedawcy) i pozycje faktury (nazwa towaru lub usługi, ilość, ceny, stawka VAT)
+- Status płatności faktury ustawiony przez użytkownika
 - Faktury są przechowywane w bazie danych instancji
 
 ### Dane techniczne
@@ -53,7 +54,7 @@ Kontakt: [krystian@mikrut.dev](mailto:krystian@mikrut.dev)
 |------|-----|-----------------|
 | E-mail, identyfikator OIDC | Uwierzytelnianie i obsługa konta | Umowa (art. 6 ust. 1 lit. b RODO) |
 | NIP, nazwa firmy, token KSeF | Synchronizacja faktur z KSeF | Umowa (art. 6 ust. 1 lit. b RODO) |
-| Nagłówki faktur | Wyświetlanie i przeszukiwanie faktur | Umowa (art. 6 ust. 1 lit. b RODO) |
+| Dane faktur, status płatności | Wyświetlanie i przeszukiwanie faktur, dane do przelewu | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Token urządzenia (FCM/APNs) | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
 
 ---

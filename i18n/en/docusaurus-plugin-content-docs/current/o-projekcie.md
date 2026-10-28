@@ -61,8 +61,8 @@ If you're running OpenKSeF with internet access:
 
 | Component | Technology |
 |-----------|------------|
-| Backend API | .NET 8, ASP.NET Core |
-| Worker | .NET 8, Background Service |
+| Backend API | .NET 10, ASP.NET Core |
+| Worker | .NET 10, Background Service |
 | Web portal | React 19, TypeScript, Vite |
 | Mobile app | .NET MAUI (Android, iOS) |
 | Database | PostgreSQL |

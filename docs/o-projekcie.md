@@ -61,8 +61,8 @@ Jeśli uruchamiasz OpenKSeF z dostępem z internetu:
 
 | Komponent | Technologia |
 |-----------|-------------|
-| Backend API | .NET 8, ASP.NET Core |
-| Worker | .NET 8, Background Service |
+| Backend API | .NET 10, ASP.NET Core |
+| Worker | .NET 10, Background Service |
 | Portal webowy | React 19, TypeScript, Vite |
 | Aplikacja mobilna | .NET MAUI (Android, iOS) |
 | Baza danych | PostgreSQL |

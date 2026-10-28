@@ -35,6 +35,17 @@ graph LR
 
 Most installations need only **SignalR + Relay**. No Firebase setup required.
 
+## Who gets a notification
+
+- A new-invoice notification goes to the devices of the user who owns the company. Other users of the instance do not get it.
+- A device registered in the mobile app receives notifications for all companies of its user.
+- The first synchronization of a new company and a [full resync](faktury#full-resync) send no notifications, even if they download many invoices.
+
+## Reliability
+
+- A temporary outage of the relay, Firebase or APNs does not remove the device registration. A device is removed from the list only when FCM/APNs explicitly rejects its token (e.g. after the app is uninstalled).
+- The mobile app (version 1.0.4 and later) checks after login whether its device is still registered on the server and registers it again if needed.
+
 ## Configuration
 
 In the [setup wizard](admin-setup) (Step 5 -- Integrations):
@@ -63,6 +74,8 @@ No keys are stored in source code -- they are generated at registration time and
 | Symptom | Solution |
 |---------|----------|
 | No notifications | Enable relay in the wizard |
+| No notifications, device missing from **Devices** | In the mobile app: **Konto** (Account) > turn **Powiadomienia push** off and on. The app registers the device again |
+| No notifications after a full resync | Intended -- a full resync sends no notifications |
 | SignalR won't connect | Log in again in the app |
 | Relay returns 401 | Instance not registered -- go to Settings > Push notifications > Re-register |
 | Relay returns 403 | Instance disabled by relay admin |

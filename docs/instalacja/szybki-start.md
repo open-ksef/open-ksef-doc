@@ -162,7 +162,7 @@ Docker pobierze obrazy z GitHub Container Registry i uruchomi 6 kontenerów:
 |----------|------|
 | **postgres** | Baza danych PostgreSQL 16 |
 | **keycloak** | Uwierzytelnianie OIDC (realm tworzony przez kreator konfiguracji) |
-| **api** | Backend .NET 8 |
+| **api** | Backend .NET 10 |
 | **worker** | Synchronizacja faktur w tle |
 | **portal-web** | Interfejs React |
 | **gateway** | Nginx reverse proxy (konfiguracja wbudowana w obraz) |

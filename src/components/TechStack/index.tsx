@@ -9,7 +9,7 @@ type TechItem = {
 };
 
 const techList: TechItem[] = [
-  {icon: '🟣', name: '.NET 8', role: 'Backend'},
+  {icon: '🟣', name: '.NET 10', role: 'Backend'},
   {icon: '⚛️', name: 'React 19', role: 'Portal'},
   {icon: '📱', name: '.NET MAUI', role: 'Mobile'},
   {icon: '🐘', name: 'PostgreSQL', role: 'Baza danych'},

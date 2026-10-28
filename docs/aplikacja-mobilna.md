@@ -10,6 +10,7 @@ OpenKSeF Mobile to aplikacja .NET MAUI na Android i iOS. Umożliwia przeglądani
 ## Funkcje
 
 - Przeglądanie faktur z KSeF (lista, szczegóły, filtrowanie)
+- Numer faktury sprzedawcy i pozycje faktury w szczegółach (zobacz [Faktury](faktury#aplikacja-mobilna))
 - Zarządzanie firmami (tenantami)
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie przez Keycloak (OIDC)
@@ -49,7 +50,7 @@ Android wymaga **HTTPS** do uwierzytelniania OIDC (WebAuthenticator). Dla testó
 
 ### Wymagania
 
-- .NET 8 SDK
+- .NET 10 SDK
 - Android SDK (API 34+)
 - Visual Studio 2022 lub VS Code z MAUI workload
 
@@ -57,10 +58,10 @@ Android wymaga **HTTPS** do uwierzytelniania OIDC (WebAuthenticator). Dla testó
 
 ```bash
 # Android
-dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net8.0-android
+dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net10.0-android
 
 # iOS (wymaga macOS)
-dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net8.0-ios
+dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net10.0-ios
 ```
 
 ### Konfiguracja Firebase (opcjonalnie)
