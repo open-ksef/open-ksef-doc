@@ -41,7 +41,7 @@ Jeśli użyłeś [kreatora konfiguracji](admin-setup), jest to skonfigurowane au
 
 ### Konfiguracja ręczna
 
-1. Otwórz konsolę Keycloak: http://localhost:8082/auth/admin (admin / admin)
+1. Otwórz konsolę Keycloak: http://localhost:8082/auth/admin (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`)
 2. Przejdź do **Clients > openksef-api > Credentials**
 3. Skopiuj **Client Secret**
 4. Ustaw w `.env`:
