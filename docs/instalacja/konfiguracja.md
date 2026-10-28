@@ -57,7 +57,7 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 | `KC_DB_USERNAME` | Użytkownik bazy Keycloak (jeśli inny niż Postgres) | wartość `POSTGRES_USER` |
 | `KC_DB_PASSWORD` | Hasło bazy Keycloak (jeśli inne niż Postgres) | wartość `POSTGRES_PASSWORD` |
 
-:::warning Produkcja
+:::warning[Produkcja]
 Dla wdrożeń produkcyjnych **zmień domyślne hasła** w pliku `.env`. Domyślne wartości (`openksef_dev_password`, `admin`) są przeznaczone wyłącznie do celów deweloperskich.
 :::
 
@@ -77,7 +77,7 @@ Dla wdrożeń produkcyjnych **zmień domyślne hasła** w pliku `.env`. Domyśln
 | **Test** | `https://ksef-test.mf.gov.pl/api` | Rozwój i testowanie |
 | **Produkcja** | `https://ksef.mf.gov.pl/api` | Prawdziwe faktury |
 
-:::warning Uwaga
+:::warning[Uwaga]
 Środowisko produkcyjne KSeF operuje na rzeczywistych danych podatkowych. Upewnij się, że instancja jest odpowiednio zabezpieczona przed przełączeniem na produkcję.
 :::
 

@@ -124,7 +124,7 @@ volumes:
   postgres_data:
 ```
 
-:::tip Kopiowanie
+:::tip[Kopiowanie]
 Kliknij ikonę kopiowania w prawym górnym rogu bloku kodu, żeby skopiować całą zawartość. Wklej ją do nowego pliku `docker-compose.yml`.
 :::
 
@@ -145,7 +145,7 @@ Docker pobierze obrazy z GitHub Container Registry i uruchomi 6 kontenerów:
 | **portal-web** | Interfejs React |
 | **gateway** | Nginx reverse proxy (konfiguracja wbudowana w obraz) |
 
-:::info Pierwsze uruchomienie
+:::info[Pierwsze uruchomienie]
 Pierwsze uruchomienie może potrwać kilka minut -- Docker pobiera ~2 GB obrazów. Kolejne starty trwają sekundy.
 :::
 
@@ -217,7 +217,7 @@ KEYCLOAK_ADMIN_PASSWORD=change_me
 # FIREBASE_CREDENTIALS_JSON={"type":"service_account",...}
 ```
 
-:::info Priorytet konfiguracji
+:::info[Priorytet konfiguracji]
 Kreator konfiguracji (baza danych) > plik `.env` > wartości domyślne w `docker-compose.yml`
 
 Oznacza to, że po przejściu kreatora jego ustawienia mają najwyższy priorytet. Plik `.env` nadpisuje tylko te wartości, których kreator nie ustawił.

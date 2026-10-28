@@ -124,7 +124,7 @@ volumes:
   postgres_data:
 ```
 
-:::tip Copying
+:::tip[Copying]
 Click the copy icon in the top-right corner of the code block to copy the entire content. Paste it into a new `docker-compose.yml` file.
 :::
 
@@ -145,7 +145,7 @@ Docker will pull images from GitHub Container Registry and start 6 containers:
 | **portal-web** | React interface |
 | **gateway** | Nginx reverse proxy (configuration built into the image) |
 
-:::info First launch
+:::info[First launch]
 The first launch may take a few minutes -- Docker pulls ~2 GB of images. Subsequent starts take seconds.
 :::
 
@@ -217,7 +217,7 @@ KEYCLOAK_ADMIN_PASSWORD=change_me
 # FIREBASE_CREDENTIALS_JSON={"type":"service_account",...}
 ```
 
-:::info Configuration priority
+:::info[Configuration priority]
 Setup wizard (database) > `.env` file > defaults in `docker-compose.yml`
 
 This means that after completing the wizard, its settings take the highest priority. The `.env` file only overrides values that the wizard didn't set.

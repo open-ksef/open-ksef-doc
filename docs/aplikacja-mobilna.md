@@ -26,7 +26,7 @@ OpenKSeF Mobile to aplikacja .NET MAUI na Android i iOS. Umożliwia przeglądani
 2. Na ekranie logowania wprowadź adres serwera (np. `https://twoj-serwer.pl`)
 3. Zaloguj się danymi z Keycloak
 
-:::tip Szybkie połączenie
+:::tip[Szybkie połączenie]
 W portalu webowym przejdź do strony **Aplikacja mobilna** -- znajdziesz tam kod QR, który możesz zeskanować w aplikacji mobilnej, żeby automatycznie ustawić adres serwera.
 :::
 
