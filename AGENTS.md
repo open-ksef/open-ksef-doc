@@ -51,6 +51,7 @@ docs/
   aplikacja-mobilna.md        # MAUI Android/iOS, ngrok, build
   o-projekcie.md              # AI disclaimer, self-hosting, odpowiedzialność
   licencja.md                 # Elastic License 2.0 + formalny disclaimer bezpieczeństwa
+  polityka-prywatnosci.md     # Polityka prywatności (wymóg Google Play)
 ```
 
 ### Landing page
@@ -61,12 +62,12 @@ docs/
 - Jak zacząć (3 kroki)
 - Technologie (ikony stacku)
 
-Komponenty w `src/components/`: `HomepageFeatures`, `HowToStart`, `TechStack`.
+Komponenty w `src/components/`: `HomepageFeatures`, `HowToStart`, `TechStack`, `UseCases`.
 
 ### Screenshoty
 
 `static/img/screenshots/portal/` -- screeny portalu webowego (login, admin-setup)
-`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (placeholder)
+`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (login, faktury, szczegóły, QR, firmy, konto)
 
 Screeny robione z działającego środowiska dev za pomocą Playwright/Cursor Browser.
 
