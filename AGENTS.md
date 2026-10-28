@@ -67,8 +67,10 @@ Komponenty w `src/components/`: `HomepageFeatures`, `HowToStart`, `TechStack`, `
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego (login, admin-setup)
-`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (login, faktury, szczegóły, QR, firmy, konto)
+`static/img/screenshots/portal/` -- screeny portalu webowego (login, admin-setup, faktury, dane logowania)
+`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (obecnie brak)
+
+Screeny zawierają wyłącznie dane fikcyjne (np. NIP 1111111111, nazwy "Przykład"). Żadnych prawdziwych NIP-ów, numerów KSeF, nazw firm ani adresów serwerów.
 
 Screeny robione z działającego środowiska dev za pomocą Playwright/Cursor Browser.
 

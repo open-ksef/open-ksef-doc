@@ -51,7 +51,7 @@ Sekcja **Dane do przelewu** zawiera odbiorcę, NIP, numer rachunku sprzedawcy (z
 
 ![Dane do przelewu i kod QR](/img/screenshots/portal/invoice-qr.png)
 
-Tytuł przelewu to sam numer faktury sprzedawcy, np. `FV/2026/10/0042`. Jeśli faktura nie ma numeru sprzedawcy, tytułem jest numer KSeF. Gdy faktura nie zawiera numeru rachunku, pole **Nr rachunku** pokazuje `brak`.
+Tytuł przelewu to sam numer faktury sprzedawcy, np. `FV/2026/10/0042`; w kodzie QR jest skrócony do 32 znaków. Jeśli faktura nie ma numeru sprzedawcy, tytułem jest numer KSeF. Gdy faktura nie zawiera numeru rachunku, pole **Nr rachunku** pokazuje `brak`.
 
 ## Synchronizacja z KSeF
 
@@ -72,16 +72,17 @@ Przed uruchomieniem portal prosi o potwierdzenie.
 
 - Obejmuje całą historię firmy: od najstarszej faktury zapisanej w OpenKSeF, a nie tylko z okresu synchronizacji początkowej.
 - Trwa dłużej niż zwykła synchronizacja, bo każda faktura jest pobierana z KSeF od nowa.
-- Jeśli się nie powiedzie, dotychczasowe dane zostają bez zmian. Możesz ją bezpiecznie powtórzyć.
-- Nie wysyła powiadomień push o fakturach, które się pojawią. Tak samo działa pierwsza synchronizacja nowej firmy.
+- Faktury są zapisywane partiami. Jeśli resynchronizacja przerwie się w trakcie, część faktur może być już zaktualizowana, a część nie. Uruchom ją ponownie, żeby dokończyć.
+- Jeśli OpenKSeF nie odczyta pliku XML którejś faktury, jej pozycje mogą zniknąć. Kolejna pełna resynchronizacja je przywróci, gdy plik da się odczytać.
+- Nie wysyła powiadomień. Nowe faktury znalezione przez pełną resynchronizację nie wygenerują powiadomienia ani teraz, ani później. Tak samo działa pierwsza synchronizacja nowej firmy.
 - Status płatności faktur zostaje zachowany.
 
 ## Aplikacja mobilna
 
-W aplikacji mobilnej (od wersji 1.0.4):
+W aplikacji mobilnej (Android, od wersji 1.0.4):
 
 - lista faktur pokazuje numer faktury sprzedawcy, a gdy go brak -- numer KSeF,
 - szczegóły faktury zawierają **Numer faktury**, **Numer KSeF** i kartę **Pozycje faktury** (nazwa, ilość × jednostka, cena netto, kwoty netto / VAT / brutto),
-- tytuł przelewu przy kopiowaniu danych i w kodzie QR to sam numer faktury.
+- tytuł przelewu przy kopiowaniu danych i w kodzie QR to sam numer faktury (w kodzie QR skrócony do 32 znaków).
 
 Więcej o aplikacji: [Aplikacja mobilna](aplikacja-mobilna).

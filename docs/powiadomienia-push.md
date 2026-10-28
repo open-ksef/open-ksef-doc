@@ -29,22 +29,25 @@ graph LR
 
 | Warstwa | Kiedy działa | Konfiguracja |
 |---------|--------------|--------------|
-| **SignalR** | Aplikacja jest połączona z serwerem | Brak -- zawsze włączone |
+| **SignalR** | Aplikacja jest połączona z serwerem; tylko ręczna synchronizacja | Brak -- zawsze włączone |
 | **Relay** | Aplikacja w tle | Wybierz w kreatorze (domyślnie) |
-| **Email** | Zawsze | Skonfiguruj SMTP |
+| **Email** | Tylko ręczna synchronizacja | Skonfiguruj SMTP i adres e-mail do powiadomień w firmie |
 
 Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konfiguracji Firebase.
 
 ## Kto dostaje powiadomienie
 
-- Powiadomienie o nowej fakturze trafia na urządzenia użytkownika, do którego należy firma. Inni użytkownicy instancji go nie dostają.
-- Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika.
+- **Automatyczna synchronizacja** (Worker, domyślnie co 4 godziny) wysyła tylko powiadomienia zdalne: relay albo własny Firebase/APNs.
+- **Ręczna synchronizacja** (przycisk w portalu lub w aplikacji mobilnej) wysyła dodatkowo powiadomienie SignalR i e-mail.
+- Powiadomienie push trafia na urządzenia użytkownika, do którego należy firma. Inni użytkownicy instancji go nie dostają.
+- E-mail trafia na adres do powiadomień ustawiony w danych firmy. Może to być dowolny adres, także osoby spoza instancji.
+- Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika, chyba że w portalu (**Urządzenia**) przypisano je do jednej firmy.
 - Pierwsza synchronizacja nowej firmy i [pełna resynchronizacja](faktury#pełna-resynchronizacja) nie wysyłają powiadomień, nawet jeśli pobiorą wiele faktur.
 
 ## Niezawodność
 
 - Chwilowa niedostępność relay, Firebase lub APNs nie usuwa rejestracji urządzenia. Urządzenie jest usuwane z listy tylko wtedy, gdy FCM/APNs jednoznacznie odrzuci jego token (np. po odinstalowaniu aplikacji).
-- Aplikacja mobilna (od wersji 1.0.4) sprawdza po zalogowaniu, czy jej urządzenie jest nadal zarejestrowane na serwerze, i w razie potrzeby rejestruje je ponownie.
+- Aplikacja mobilna (Android, od wersji 1.0.4) sprawdza po zalogowaniu, czy jej urządzenie jest nadal zarejestrowane na serwerze, i w razie potrzeby rejestruje je ponownie.
 
 ## Konfiguracja
 

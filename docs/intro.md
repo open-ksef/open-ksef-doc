@@ -74,9 +74,7 @@ OpenKSeF jest przeznaczony dla:
 
 ## Aplikacja mobilna
 
-| Lista faktur | Szczegóły faktury | Kod QR przelewu |
-|:---:|:---:|:---:|
-| ![Lista faktur](/img/screenshots/mobile/invoices.png) | ![Szczegóły faktury](/img/screenshots/mobile/invoice-detail.png) | ![QR przelewu](/img/screenshots/mobile/invoice-qr.png) |
+Lista faktur, szczegóły z pozycjami, kod QR przelewu i powiadomienia push na telefonie -- zobacz [Aplikacja mobilna](aplikacja-mobilna).
 
 ## Następne kroki
 

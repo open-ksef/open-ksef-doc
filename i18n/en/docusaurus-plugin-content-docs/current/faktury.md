@@ -51,7 +51,7 @@ The **Dane do przelewu** (Transfer details) section shows the recipient, NIP, th
 
 ![Transfer details and QR code](/img/screenshots/portal/invoice-qr.png)
 
-The transfer title is just the seller's invoice number, e.g. `FV/2026/10/0042`. If the invoice has no seller number, the KSeF number is used. If the invoice has no bank account, **Nr rachunku** shows `brak` (none).
+The transfer title is just the seller's invoice number, e.g. `FV/2026/10/0042`; in the QR code it is cut to 32 characters. If the invoice has no seller number, the KSeF number is used. If the invoice has no bank account, **Nr rachunku** shows `brak` (none).
 
 ## Synchronization with KSeF
 
@@ -72,16 +72,17 @@ The portal asks for confirmation before it starts.
 
 - Covers the whole company history: from the oldest invoice stored in OpenKSeF, not only the initial sync window.
 - Takes longer than a regular sync, because every invoice is downloaded from KSeF again.
-- If it fails, existing data stays unchanged. It is safe to retry.
-- Sends no push notifications for invoices it finds. The first synchronization of a new company behaves the same way.
+- Invoices are saved in batches. If the resync stops midway, some invoices may already be updated and others not. Run it again to finish.
+- If OpenKSeF cannot read an invoice's XML file, that invoice's line items may disappear. A later full resync restores them once the file can be read.
+- Sends no notifications. New invoices found by a full resync will never trigger a notification, now or later. The first synchronization of a new company behaves the same way.
 - Invoice payment status is kept.
 
 ## Mobile app
 
-In the mobile app (version 1.0.4 and later):
+In the mobile app (Android, version 1.0.4 and later):
 
 - the invoice list shows the seller's invoice number, or the KSeF number when there is none,
 - invoice details show **Numer faktury**, **Numer KSeF** and a **Pozycje faktury** card (name, quantity × unit, net unit price, net / VAT / gross amounts),
-- the transfer title in copied transfer details and in the QR code is just the invoice number.
+- the transfer title in copied transfer details and in the QR code is just the invoice number (cut to 32 characters in the QR code).
 
 More about the app: [Mobile app](aplikacja-mobilna).

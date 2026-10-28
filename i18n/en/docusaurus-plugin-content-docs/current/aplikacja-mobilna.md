@@ -17,9 +17,6 @@ OpenKSeF Mobile is a .NET MAUI app for Android and iOS. It allows browsing invoi
 - Payment QR code for banking apps
 - QR scanning for quick server connection
 
-| Login | Invoice list | Invoice detail | Payment QR code |
-|:---:|:---:|:---:|:---:|
-| ![Login](/img/screenshots/mobile/login.png) | ![Invoices](/img/screenshots/mobile/invoices.png) | ![Details](/img/screenshots/mobile/invoice-detail.png) | ![QR](/img/screenshots/mobile/invoice-qr.png) |
 
 ## Connecting to a self-hosted server
 
@@ -51,8 +48,9 @@ Android requires **HTTPS** for OIDC authentication (WebAuthenticator). For local
 ### Requirements
 
 - .NET 10 SDK
-- Android SDK (API 34+)
-- Visual Studio 2022 or VS Code with MAUI workload
+- .NET MAUI workload (`dotnet workload install maui-android`)
+- Android SDK with the API 36 platform (`net10.0-android`); the app runs on Android 7.0 (API 24) and later
+- Visual Studio 2026 or VS Code with the .NET MAUI extension
 
 ### Build
 

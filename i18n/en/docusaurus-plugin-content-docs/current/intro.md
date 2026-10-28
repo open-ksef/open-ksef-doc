@@ -74,9 +74,7 @@ OpenKSeF is designed for:
 
 ## Mobile app
 
-| Invoice list | Invoice details | Payment QR code |
-|:---:|:---:|:---:|
-| ![Invoice list](/img/screenshots/mobile/invoices.png) | ![Invoice details](/img/screenshots/mobile/invoice-detail.png) | ![Payment QR](/img/screenshots/mobile/invoice-qr.png) |
+Invoice list, details with line items, payment QR code and push notifications on your phone -- see [Mobile app](aplikacja-mobilna).
 
 ## Next steps
 

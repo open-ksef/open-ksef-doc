@@ -29,22 +29,25 @@ graph LR
 
 | Layer | When it works | Configuration |
 |-------|---------------|---------------|
-| **SignalR** | App is connected to the server | None -- always enabled |
+| **SignalR** | App is connected to the server; manual sync only | None -- always enabled |
 | **Relay** | App in background | Select in wizard (default) |
-| **Email** | Always | Configure SMTP |
+| **Email** | Manual sync only | Configure SMTP and the company's notification e-mail |
 
 Most installations need only **SignalR + Relay**. No Firebase setup required.
 
 ## Who gets a notification
 
-- A new-invoice notification goes to the devices of the user who owns the company. Other users of the instance do not get it.
-- A device registered in the mobile app receives notifications for all companies of its user.
+- **Automatic sync** (Worker, every 4 hours by default) sends remote notifications only: relay or your own Firebase/APNs.
+- **Manual sync** (button in the portal or in the mobile app) also sends a SignalR notification and an e-mail.
+- A push notification goes to the devices of the user who owns the company. Other users of the instance do not get it.
+- The e-mail goes to the notification address set on the company. It can be any address, including someone outside the instance.
+- A device registered in the mobile app receives notifications for all companies of its user, unless it was bound to one company in the portal (**Devices**).
 - The first synchronization of a new company and a [full resync](faktury#full-resync) send no notifications, even if they download many invoices.
 
 ## Reliability
 
 - A temporary outage of the relay, Firebase or APNs does not remove the device registration. A device is removed from the list only when FCM/APNs explicitly rejects its token (e.g. after the app is uninstalled).
-- The mobile app (version 1.0.4 and later) checks after login whether its device is still registered on the server and registers it again if needed.
+- The mobile app (Android, version 1.0.4 and later) checks after login whether its device is still registered on the server and registers it again if needed.
 
 ## Configuration
 
