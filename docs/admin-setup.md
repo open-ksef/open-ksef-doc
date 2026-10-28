@@ -110,7 +110,7 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 
 ### Przechowywanie konfiguracji
 
-Konfiguracja jest przechowywana w tabeli `system_config` (klucz-wartość). Serwis `ISystemConfigService` czyta z tej tabeli z cache'em w pamięci, z fallbackiem na zmienne środowiskowe.
+Konfiguracja jest przechowywana w tabeli `SystemConfigs` (klucz-wartość). Serwis `ISystemConfigService` czyta z tej tabeli z cache'em w pamięci, z fallbackiem na zmienne środowiskowe.
 
 **Priorytet:** Kreator (baza danych) > plik `.env` > wartości domyślne w `docker-compose.yml`
 
@@ -134,9 +134,9 @@ Portal sprawdza `/api/system/setup-status` przy każdym ładowaniu chronionej st
 
 | Problem | Rozwiązanie |
 |---------|-------------|
-| Wizard się nie pojawia | Sprawdź, czy tabela `system_config` jest pusta. Usuń wiersze i zrestartuj API. |
+| Wizard się nie pojawia | Sprawdź, czy tabela `SystemConfigs` jest pusta. Usuń wiersze i zrestartuj API. |
 | Logowanie Keycloak nie działa | Sprawdź, czy Keycloak działa (`docker compose logs keycloak`). Dane logowania: `KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`. |
 | Apply zwraca 500 | Sprawdź logi API (`docker compose logs api`). Częsta przyczyna: Keycloak nie jest jeszcze gotowy. |
 | Test email SMTP nie działa | Zweryfikuj dane SMTP. Gmail wymaga Hasła aplikacji. |
 | Pętla przekierowań po setup | Wyczyść cache/cookies przeglądarki. Portal cachuje status setup na 60 sekund. |
-| Chcę uruchomić wizard ponownie | Usuń wszystkie wiersze z tabeli `system_config` i zrestartuj kontener API. |
+| Chcę uruchomić wizard ponownie | Usuń wszystkie wiersze z tabeli `SystemConfigs` i zrestartuj kontener API. |

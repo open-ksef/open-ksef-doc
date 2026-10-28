@@ -173,12 +173,16 @@ The first launch may take a few minutes -- Docker pulls ~2 GB of images. Subsequ
 
 ## Step 3: Configure
 
+:::tip[Wait for Keycloak]
+After `docker compose up -d`, wait 30-60 seconds until Keycloak is up (`docker compose logs -f keycloak`, look for the `Listening on` line). Before that, the first wizard step reports a credentials error even when they are correct.
+:::
+
 Open **http://localhost:8080** in your browser.
 
 The system will detect that it's not yet configured and automatically redirect you to the **setup wizard** (`/admin-setup`). The wizard will guide you through:
 
 1. Logging in with Keycloak admin credentials (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` from `.env`)
-2. Setting basic data (URL, KSeF environment, admin account)
+2. **Pierwsze konto i firma** (first account and company): external URL, KSeF environment, e-mail and password of the first user, and the company NIP
 3. Login policy and optionally SMTP
 4. Automatic generation of encryption key and API secret
 5. Optionally: Google OAuth, push notifications
@@ -187,7 +191,7 @@ The system will detect that it's not yet configured and automatically redirect y
 Detailed description of each step can be found in the [Setup Wizard](../admin-setup).
 
 :::info[Encryption key]
-The wizard stores the encryption key in the database (`system_config`), and the database value takes precedence over the `ENCRYPTION_KEY` variable. You do not need to add the key to `.env` or restart containers. Because the key lives in the database, a backup of the `postgres_data` volume contains it together with the encrypted KSeF tokens -- protect it like a password.
+The wizard stores the encryption key in the database (table `SystemConfigs`, key `encryption_key`), and the database value takes precedence over the `ENCRYPTION_KEY` variable. You do not need to add the key to `.env` or restart containers. Because the key lives in the database, a backup of the `postgres_data` volume contains it together with the encrypted KSeF tokens -- protect it like a password.
 :::
 
 ## Service URLs

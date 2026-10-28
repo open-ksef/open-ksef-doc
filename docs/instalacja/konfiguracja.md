@@ -7,7 +7,7 @@ title: Konfiguracja
 
 OpenKSeF konfiguruje się na trzy sposoby (w kolejności priorytetu):
 
-1. **Kreator konfiguracji** (zalecany) -- webowy wizard pod `/admin-setup`, zapisuje ustawienia w bazie danych (`system_config`)
+1. **Kreator konfiguracji** (zalecany) -- webowy wizard pod `/admin-setup`, zapisuje ustawienia w bazie danych (`SystemConfigs`)
 2. **Plik `.env`** -- zmienne środowiskowe obok `docker-compose.yml`
 3. **Wartości domyślne** -- wbudowane w `docker-compose.yml`
 

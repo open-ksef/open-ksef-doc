@@ -110,7 +110,7 @@ Review all settings and click "Apply". The wizard:
 
 ### Configuration storage
 
-Configuration is stored in the `system_config` table (key-value). The `ISystemConfigService` reads from this table with an in-memory cache, falling back to environment variables.
+Configuration is stored in the `SystemConfigs` table (key-value). The `ISystemConfigService` reads from this table with an in-memory cache, falling back to environment variables.
 
 **Priority:** Setup wizard (database) > `.env` file > defaults in `docker-compose.yml`
 
@@ -134,9 +134,9 @@ The portal checks `/api/system/setup-status` on every protected page load. If `i
 
 | Problem | Solution |
 |---------|----------|
-| Wizard doesn't appear | Check if the `system_config` table is empty. Delete rows and restart the API. |
+| Wizard doesn't appear | Check if the `SystemConfigs` table is empty. Delete rows and restart the API. |
 | Keycloak login doesn't work | Check if Keycloak is running (`docker compose logs keycloak`). Credentials: `KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` from `.env`. |
 | Apply returns 500 | Check API logs (`docker compose logs api`). Common cause: Keycloak is not ready yet. |
 | SMTP email test fails | Verify SMTP credentials. Gmail requires an App Password. |
 | Redirect loop after setup | Clear browser cache/cookies. The portal caches setup status for 60 seconds. |
-| Want to run the wizard again | Delete all rows from the `system_config` table and restart the API container. |
+| Want to run the wizard again | Delete all rows from the `SystemConfigs` table and restart the API container. |

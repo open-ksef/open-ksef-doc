@@ -173,12 +173,16 @@ Pierwsze uruchomienie może potrwać kilka minut -- Docker pobiera ~2 GB obrazó
 
 ## Krok 3: Skonfiguruj
 
+:::tip[Zaczekaj na Keycloak]
+Po `docker compose up -d` odczekaj 30-60 sekund, aż Keycloak się uruchomi (`docker compose logs -f keycloak`, szukaj linii `Listening on`). Wcześniej pierwszy krok kreatora zgłasza błąd danych logowania, nawet jeśli są poprawne.
+:::
+
 Otwórz **http://localhost:8080** w przeglądarce.
 
 System wykryje, że nie jest jeszcze skonfigurowany i automatycznie przekieruje Cię do **kreatora konfiguracji** (`/admin-setup`). Kreator przeprowadzi Cię przez:
 
 1. Logowanie danymi admina Keycloak (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`)
-2. Ustawienie podstawowych danych (URL, środowisko KSeF, konto admina)
+2. **Pierwsze konto i firma**: zewnętrzny URL, środowisko KSeF, e-mail i hasło pierwszego użytkownika oraz NIP firmy
 3. Politykę logowania i opcjonalnie SMTP
 4. Automatyczne wygenerowanie klucza szyfrowania i secretu API
 5. Opcjonalnie: Google OAuth, powiadomienia push
@@ -187,7 +191,7 @@ System wykryje, że nie jest jeszcze skonfigurowany i automatycznie przekieruje 
 Szczegółowy opis każdego kroku znajdziesz w [Kreatorze konfiguracji](../admin-setup).
 
 :::info[Klucz szyfrowania]
-Kreator zapisuje klucz szyfrowania w bazie danych (`system_config`), a wartość z bazy ma pierwszeństwo przed zmienną `ENCRYPTION_KEY`. Nie musisz dopisywać klucza do `.env` ani restartować kontenerów. Klucz znajduje się w bazie, więc kopia zapasowa wolumenu `postgres_data` zawiera go razem z zaszyfrowanymi tokenami KSeF -- chroń ją jak hasło.
+Kreator zapisuje klucz szyfrowania w bazie danych (tabela `SystemConfigs`, klucz `encryption_key`), a wartość z bazy ma pierwszeństwo przed zmienną `ENCRYPTION_KEY`. Nie musisz dopisywać klucza do `.env` ani restartować kontenerów. Klucz znajduje się w bazie, więc kopia zapasowa wolumenu `postgres_data` zawiera go razem z zaszyfrowanymi tokenami KSeF -- chroń ją jak hasło.
 :::
 
 ## Adresy usług

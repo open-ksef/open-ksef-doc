@@ -7,7 +7,7 @@ title: Configuration
 
 OpenKSeF can be configured in three ways (in order of priority):
 
-1. **Setup wizard** (recommended) -- web wizard at `/admin-setup`, saves settings in the database (`system_config`)
+1. **Setup wizard** (recommended) -- web wizard at `/admin-setup`, saves settings in the database (`SystemConfigs`)
 2. **`.env` file** -- environment variables next to `docker-compose.yml`
 3. **Default values** -- built into `docker-compose.yml`
 
