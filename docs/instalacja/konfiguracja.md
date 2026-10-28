@@ -7,13 +7,13 @@ title: Konfiguracja
 
 OpenKSeF konfiguruje się na trzy sposoby (w kolejności priorytetu):
 
-1. **Kreator konfiguracji** (zalecany) -- webowy wizard pod `/admin-setup`, zapisuje ustawienia w bazie danych (`system_config`)
+1. **Kreator konfiguracji** (zalecany) -- webowy wizard pod `/admin-setup`, zapisuje ustawienia w bazie danych (`SystemConfigs`)
 2. **Plik `.env`** -- zmienne środowiskowe obok `docker-compose.yml`
 3. **Wartości domyślne** -- wbudowane w `docker-compose.yml`
 
 **Priorytet:** Kreator (baza danych) > plik `.env` > wartości domyślne
 
-Dla standardowej instalacji **nie musisz tworzyć pliku `.env`** -- wystarczy uruchomić stack i przejść przez [kreator konfiguracji](../admin-setup). Plik `.env` jest przydatny gdy chcesz zmienić porty, hasła do bazy lub publiczny URL przed pierwszym uruchomieniem.
+Plik `.env` jest **wymagany**: musi zawierać dane logowania do PostgreSQL i Keycloak (patrz [Zmienne infrastruktury](#zmienne-infrastruktury)). Resztę ustawisz w [kreatorze konfiguracji](../admin-setup). W `.env` możesz też zmienić porty lub publiczny URL przed pierwszym uruchomieniem.
 
 ## Architektura kontenerów
 
@@ -35,7 +35,9 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 |---------|------|-----------|
 | `ConnectionStrings__Db` | Connection string PostgreSQL | `Host=postgres;Database=openksef;...` |
 | `Auth__Authority` | URL Keycloak realm | `http://keycloak:8080/auth/realms/openksef` |
-| `ENCRYPTION_KEY` | Klucz AES-256 do szyfrowania tokenów KSeF | *(generowany przez kreator)* |
+| `ENCRYPTION_KEY` | Klucz AES-256 do szyfrowania tokenów KSeF. Kreator zapisuje go w bazie i wartość z bazy ma pierwszeństwo; zmienna potrzebna tylko bez kreatora | *(generowany przez kreator)* |
+| `ASPNETCORE_ENVIRONMENT` | Środowisko API. `Production` wyłącza Swaggera | `Production` |
+| `Auth__RequireHttpsMetadata` | Czy API wymaga HTTPS przy pobieraniu metadanych OIDC z `Auth__Authority`. Compose ustawia `"false"`, bo API łączy się z Keycloak w sieci Docker po HTTP (`http://keycloak:8080`). Domyślnie (bez zmiennej) `true` -- wtedy API odrzuca adres `http://` | `"false"` |
 | `KSeF__BaseUrl` | Adres API KSeF | `https://ksef-test.mf.gov.pl/api` |
 
 ## Wymagane zmienne (Portal Web)
@@ -50,15 +52,15 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 
 | Zmienna | Opis | Domyślnie |
 |---------|------|-----------|
-| `POSTGRES_USER` | Użytkownik PostgreSQL | `openksef` |
-| `POSTGRES_PASSWORD` | Hasło PostgreSQL | `openksef_dev_password` |
-| `KEYCLOAK_ADMIN` | Login admina Keycloak | `admin` |
-| `KEYCLOAK_ADMIN_PASSWORD` | Hasło admina Keycloak | `admin` |
+| `POSTGRES_USER` | Użytkownik PostgreSQL | *(wymagane)* |
+| `POSTGRES_PASSWORD` | Hasło PostgreSQL | *(wymagane)* |
+| `KEYCLOAK_ADMIN` | Login admina Keycloak | *(wymagane)* |
+| `KEYCLOAK_ADMIN_PASSWORD` | Hasło admina Keycloak | *(wymagane)* |
 | `KC_DB_USERNAME` | Użytkownik bazy Keycloak (jeśli inny niż Postgres) | wartość `POSTGRES_USER` |
 | `KC_DB_PASSWORD` | Hasło bazy Keycloak (jeśli inne niż Postgres) | wartość `POSTGRES_PASSWORD` |
 
-:::warning[Produkcja]
-Dla wdrożeń produkcyjnych **zmień domyślne hasła** w pliku `.env`. Domyślne wartości (`openksef_dev_password`, `admin`) są przeznaczone wyłącznie do celów deweloperskich.
+:::warning[Dane logowania]
+`docker-compose.yml` nie ma wartości domyślnych dla tych czterech zmiennych -- bez nich `docker compose up` kończy się błędem. Użyj silnych haseł. PostgreSQL i Keycloak czytają je tylko przy pierwszym starcie; jak zmienić hasła w istniejącej instalacji, opisuje [Szybki start](szybki-start).
 :::
 
 ## Opcjonalne zmienne

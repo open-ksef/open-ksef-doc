@@ -53,7 +53,7 @@ If you're running OpenKSeF with internet access:
 1. **Always use HTTPS** (e.g. via Traefik, Caddy, nginx + certbot)
 2. **Regularly update** Docker containers
 3. **Back up** the PostgreSQL database
-4. **Change default passwords** for Keycloak (admin/admin)
+4. **Use strong passwords** in `.env` (PostgreSQL, Keycloak admin)
 5. **Restrict access** to ports 8081, 8082, 5432 (only gateway 8080 should be public)
 6. **Monitor logs** for unauthorized access attempts
 
