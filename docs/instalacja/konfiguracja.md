@@ -23,8 +23,8 @@ Obrazy aplikacji są publikowane na GitHub Container Registry (`ghcr.io/open-kse
 |-------|------|
 | `keycloak/keycloak:26.0` | Keycloak 26 (oficjalny obraz). Realm `openksef` i klienty OAuth tworzone przez [kreator konfiguracji](../admin-setup) |
 | `openksef-gateway` | Nginx z wbudowaną konfiguracją reverse proxy (portal `/`, API `/api/*`, Keycloak `/auth/*`) |
-| `openksef-api` | Backend .NET 8 |
-| `openksef-worker` | Worker .NET 8 (synchronizacja faktur w tle) |
+| `openksef-api` | Backend .NET 10 |
+| `openksef-worker` | Worker .NET 10 (synchronizacja faktur w tle) |
 | `openksef-portal-web` | Portal React (SPA) |
 
 Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfiguracyjnych ani wolumenów (poza wolumenem danych PostgreSQL).

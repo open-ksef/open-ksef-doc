@@ -47,6 +47,7 @@ docs/
     konfiguracja.md           # Zmienne środowiskowe, KSeF test/prod
   admin-setup.md              # Kreator konfiguracji (wizard krok po kroku)
   logowanie.md                # Strona logowania, Google OAuth, rejestracja
+  faktury.md                  # Lista, szczegóły, pozycje, status płatności, przelew/QR, resynchronizacja
   powiadomienia-push.md       # Push notifications (SignalR, relay, Firebase, email)
   aplikacja-mobilna.md        # MAUI Android/iOS, ngrok, build
   o-projekcie.md              # AI disclaimer, self-hosting, odpowiedzialność
@@ -66,8 +67,10 @@ Komponenty w `src/components/`: `HomepageFeatures`, `HowToStart`, `TechStack`, `
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego (login, admin-setup)
-`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (login, faktury, szczegóły, QR, firmy, konto)
+`static/img/screenshots/portal/` -- screeny portalu webowego (login, admin-setup, faktury, dane logowania)
+`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (obecnie brak)
+
+Screeny zawierają wyłącznie dane fikcyjne (np. NIP 1111111111, nazwy "Przykład"). Żadnych prawdziwych NIP-ów, numerów KSeF, nazw firm ani adresów serwerów.
 
 Screeny robione z działającego środowiska dev za pomocą Playwright/Cursor Browser.
 

@@ -10,15 +10,13 @@ OpenKSeF Mobile is a .NET MAUI app for Android and iOS. It allows browsing invoi
 ## Features
 
 - Browse invoices from KSeF (list, details, filtering)
+- Seller invoice number and line items in invoice details (see [Invoices](faktury#mobile-app))
 - Manage companies (tenants)
 - Push notifications (SignalR + relay/Firebase)
 - Login via Keycloak (OIDC)
 - Payment QR code for banking apps
 - QR scanning for quick server connection
 
-| Login | Invoice list | Invoice detail | Payment QR code |
-|:---:|:---:|:---:|:---:|
-| ![Login](/img/screenshots/mobile/login.png) | ![Invoices](/img/screenshots/mobile/invoices.png) | ![Details](/img/screenshots/mobile/invoice-detail.png) | ![QR](/img/screenshots/mobile/invoice-qr.png) |
 
 ## Connecting to a self-hosted server
 
@@ -49,18 +47,19 @@ Android requires **HTTPS** for OIDC authentication (WebAuthenticator). For local
 
 ### Requirements
 
-- .NET 8 SDK
-- Android SDK (API 34+)
-- Visual Studio 2022 or VS Code with MAUI workload
+- .NET 10 SDK
+- .NET MAUI workload (`dotnet workload install maui-android`)
+- Android SDK with the API 36 platform (`net10.0-android`); the app runs on Android 7.0 (API 24) and later
+- Visual Studio 2026 or VS Code with the .NET MAUI extension
 
 ### Build
 
 ```bash
 # Android
-dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net8.0-android
+dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net10.0-android
 
 # iOS (requires macOS)
-dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net8.0-ios
+dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net10.0-ios
 ```
 
 ### Firebase configuration (optional)

@@ -10,15 +10,13 @@ OpenKSeF Mobile to aplikacja .NET MAUI na Android i iOS. Umożliwia przeglądani
 ## Funkcje
 
 - Przeglądanie faktur z KSeF (lista, szczegóły, filtrowanie)
+- Numer faktury sprzedawcy i pozycje faktury w szczegółach (zobacz [Faktury](faktury#aplikacja-mobilna))
 - Zarządzanie firmami (tenantami)
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie przez Keycloak (OIDC)
 - Kod QR do przelewu z aplikacji bankowej
 - Skanowanie QR do szybkiego połączenia z serwerem
 
-| Logowanie | Lista faktur | Podgląd faktury | Kod QR przelewu |
-|:---:|:---:|:---:|:---:|
-| ![Logowanie](/img/screenshots/mobile/login.png) | ![Faktury](/img/screenshots/mobile/invoices.png) | ![Szczegóły](/img/screenshots/mobile/invoice-detail.png) | ![QR](/img/screenshots/mobile/invoice-qr.png) |
 
 ## Podłączenie do self-hosted serwera
 
@@ -49,18 +47,19 @@ Android wymaga **HTTPS** do uwierzytelniania OIDC (WebAuthenticator). Dla testó
 
 ### Wymagania
 
-- .NET 8 SDK
-- Android SDK (API 34+)
-- Visual Studio 2022 lub VS Code z MAUI workload
+- .NET 10 SDK
+- Workload .NET MAUI (`dotnet workload install maui-android`)
+- Android SDK z platformą API 36 (`net10.0-android`); aplikacja działa od Androida 7.0 (API 24)
+- Visual Studio 2026 lub VS Code z rozszerzeniem .NET MAUI
 
 ### Build
 
 ```bash
 # Android
-dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net8.0-android
+dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net10.0-android
 
 # iOS (wymaga macOS)
-dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net8.0-ios
+dotnet build src/OpenKSeF.Mobile/OpenKSeF.Mobile.csproj -f net10.0-ios
 ```
 
 ### Konfiguracja Firebase (opcjonalnie)

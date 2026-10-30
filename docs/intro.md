@@ -24,7 +24,8 @@ OpenKSeF jest przeznaczony dla:
 
 | Funkcja | Opis |
 |---------|------|
-| **Synchronizacja faktur** | Automatyczne pobieranie faktur z KSeF w tle |
+| **Synchronizacja faktur** | Automatyczne pobieranie faktur z KSeF w tle, ręczna i pełna resynchronizacja |
+| **Faktury** | Szczegóły z pozycjami, status płatności, dane do przelewu i kod QR -- zobacz [Faktury](faktury) |
 | **Portal webowy** | React SPA z dashboardem, listą faktur, zarządzaniem firmami |
 | **Aplikacja mobilna** | .NET MAUI na Android i iOS z powiadomieniami push |
 | **Multi-tenant** | Wiele firm na jednej instancji, izolacja danych per użytkownik |
@@ -40,7 +41,7 @@ OpenKSeF jest przeznaczony dla:
 │                                                  │
 │  ┌──────────┐  ┌──────────┐  ┌───────────────┐ │
 │  │   API    │  │  Worker  │  │ Portal (React)│ │
-│  │ (.NET 8) │  │ (.NET 8) │  │               │ │
+│  │(.NET 10) │  │(.NET 10) │  │               │ │
 │  └────┬─────┘  └────┬─────┘  └───────────────┘ │
 │       │              │                           │
 │  ┌────┴──────────────┴────┐  ┌───────────────┐ │
@@ -73,12 +74,11 @@ OpenKSeF jest przeznaczony dla:
 
 ## Aplikacja mobilna
 
-| Lista faktur | Szczegóły faktury | Kod QR przelewu |
-|:---:|:---:|:---:|
-| ![Lista faktur](/img/screenshots/mobile/invoices.png) | ![Szczegóły faktury](/img/screenshots/mobile/invoice-detail.png) | ![QR przelewu](/img/screenshots/mobile/invoice-qr.png) |
+Lista faktur, szczegóły z pozycjami, kod QR przelewu i powiadomienia push na telefonie -- zobacz [Aplikacja mobilna](aplikacja-mobilna).
 
 ## Następne kroki
 
 - [Wymagania systemowe](instalacja/wymagania) -- co potrzebujesz przed instalacją
 - [Szybki start](instalacja/szybki-start) -- uruchomienie w 5 minut
 - [Kreator konfiguracji](admin-setup) -- krok po kroku przez wizard
+- [Faktury](faktury) -- lista, szczegóły, status płatności, synchronizacja
