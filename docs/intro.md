@@ -26,6 +26,7 @@ OpenKSeF jest przeznaczony dla:
 |---------|------|
 | **Synchronizacja faktur** | Automatyczne pobieranie faktur z KSeF w tle, ręczna i pełna resynchronizacja |
 | **Faktury** | Szczegóły z pozycjami, status płatności, dane do przelewu i kod QR -- zobacz [Faktury](faktury) |
+| **Wystawianie faktur** | Faktury VAT wysyłane do KSeF z portalu, XML, UPO i PDF z kodem KOD I. Aplikacja mobilna tego nie obsługuje. Zobacz [Wystawianie faktur](wystawianie-faktur) |
 | **Portal webowy** | React SPA z dashboardem, listą faktur, zarządzaniem firmami |
 | **Aplikacja mobilna** | .NET MAUI na Android i iOS z powiadomieniami push |
 | **Multi-tenant** | Wiele firm na jednej instancji, izolacja danych per użytkownik |

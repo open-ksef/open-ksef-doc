@@ -190,6 +190,10 @@ System wykryje, że nie jest jeszcze skonfigurowany i automatycznie przekieruje 
 
 Szczegółowy opis każdego kroku znajdziesz w [Kreatorze konfiguracji](../admin-setup).
 
+:::info[Token KSeF]
+Po konfiguracji dodaj do firmy token KSeF. Token musi mieć uprawnienia do **odczytu faktur** i **wystawiania faktur** (zapis). Sam odczyt nie wystarczy do [wystawiania faktur](../wystawianie-faktur#token-ksef).
+:::
+
 :::info[Klucz szyfrowania]
 Kreator zapisuje klucz szyfrowania w bazie danych (tabela `SystemConfigs`, klucz `encryption_key`), a wartość z bazy ma pierwszeństwo przed zmienną `ENCRYPTION_KEY`. Nie musisz dopisywać klucza do `.env` ani restartować kontenerów. Klucz znajduje się w bazie, więc kopia zapasowa wolumenu `postgres_data` zawiera go razem z zaszyfrowanymi tokenami KSeF -- chroń ją jak hasło.
 :::

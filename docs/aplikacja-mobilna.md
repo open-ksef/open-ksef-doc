@@ -17,6 +17,10 @@ OpenKSeF Mobile to aplikacja .NET MAUI na Android i iOS. Umożliwia przeglądani
 - Kod QR do przelewu z aplikacji bankowej
 - Skanowanie QR do szybkiego połączenia z serwerem
 
+:::note[Wystawianie faktur]
+[Wystawianie faktur](wystawianie-faktur) działa w portalu. Aplikacja mobilna go nie obsługuje.
+:::
+
 
 ## Podłączenie do self-hosted serwera
 

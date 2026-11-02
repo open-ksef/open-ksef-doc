@@ -7,6 +7,8 @@ title: Faktury
 
 OpenKSeF pobiera z KSeF faktury, w których Twoja firma jest nabywcą (faktury kosztowe). W portalu znajdziesz je w menu **Faktury**, a w aplikacji mobilnej na ekranie **Faktury**.
 
+Faktury sprzedażowe opisuje strona [Wystawianie faktur](wystawianie-faktur).
+
 ## Lista faktur
 
 ![Lista faktur](/img/screenshots/portal/invoices.png)
