@@ -74,7 +74,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 Aplikacja mobilna OpenKSeF obsługuje powiadomienia push w modelu warstwowym:
 
 1. **SignalR (lokalne)** — bezpośrednie połączenie WebSocket z Twoją instancją. Żadne dane nie opuszczają serwera.
-2. **Relay OpenKSeF** — Twoja instancja wysyła powiadomienie do serwera relay (`push.open-ksef.pl`), który przekazuje je do urządzenia przez Firebase Cloud Messaging (Android) lub Apple Push Notification service (iOS). Relay przetwarza wyłącznie: identyfikator i adres instancji, token urządzenia i treść powiadomienia, czyli nazwę sprzedawcy, kwotę i walutę faktury oraz identyfikatory firmy i faktury w OpenKSeF.
+2. **Relay OpenKSeF** — Twoja instancja wysyła powiadomienie do serwera relay (`push.open-ksef.pl`), który przekazuje je do urządzenia przez Firebase Cloud Messaging (Android) lub Apple Push Notification service (iOS). Relay przetwarza wyłącznie: identyfikator i adres instancji, token urządzenia i treść powiadomienia. Przy nowej fakturze treść to nazwa sprzedawcy, kwota i waluta faktury oraz identyfikatory firmy i faktury w OpenKSeF. Gdy wystawiona faktura czeka na wyjaśnienie w KSeF, treść zawiera jej numer oraz identyfikatory firmy i faktury.
 3. **Bezpośrednie FCM/APNs** — jeśli właściciel instancji skonfigurował własny projekt Firebase, powiadomienia są wysyłane bezpośrednio, bez udziału relay.
 
 Relay `push.open-ksef.pl` prowadzą autorzy OpenKSeF. Administratorem danych w powiadomieniu jest właściciel instancji, z której ono pochodzi.
@@ -89,7 +89,7 @@ Możesz wyłączyć powiadomienia push w ustawieniach aplikacji mobilnej.
 - Dane mogą być przekazywane do:
   - **Ministerstwo Finansów, KSeF** — wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF.
   - **Ministerstwo Finansów, wykaz podatników VAT (biała lista)** — NIP wpisany przy użyciu przycisku **Pobierz z NIP**.
-  - **Firebase Cloud Messaging (Google)** — wyłącznie token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury), w celu dostarczenia powiadomień push na Androida.
+  - **Firebase Cloud Messaging (Google)** — wyłącznie token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory), w celu dostarczenia powiadomień push na Androida.
   - **Apple Push Notification service (Apple)** — te same dane, w celu dostarczenia powiadomień push na iOS.
   - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze, jeśli właściciel skonfigurował SMTP.
   - **Relay OpenKSeF** (`push.open-ksef.pl`) — jeśli włączona jest warstwa relay (domyślnie).
@@ -99,7 +99,7 @@ Możesz wyłączyć powiadomienia push w ustawieniach aplikacji mobilnej.
 ## 6. Przechowywanie danych
 
 - Dane są przechowywane na serwerze właściciela instancji.
-- OpenKSeF nie usuwa danych automatycznie. Dane zostają do czasu, gdy użytkownik usunie firmę albo właściciel instancji usunie je na żądanie lub z własnej decyzji.
+- OpenKSeF nie usuwa automatycznie danych firm ani faktur. Dane te zostają do czasu, gdy użytkownik usunie firmę albo właściciel instancji usunie je na żądanie lub z własnej decyzji.
 - Firmę można usunąć razem z jej wystawionymi fakturami, chyba że ma fakturę w statusie **Wysyłanie** albo fakturę przyjętą na środowisku PRODUKCJA. O usunięcie danych takiej firmy poproś właściciela instancji.
 - Faktura przyjęta na środowisku PRODUKCJA jest przechowywana w KSeF przez 10 lat, licząc od końca roku, w którym ją wystawiono ([art. 112aa ust. 1 ustawy o VAT, Dz.U. 2026 poz. 1263](https://api.sejm.gov.pl/eli/acts/DU/2026/1263/text.pdf)). Usunięcie firmy w OpenKSeF nie usuwa niczego z KSeF.
 - Usunięcie firmy nie obejmuje kopii zapasowych właściciela instancji ani lokalnej kopii faktur w aplikacji mobilnej.

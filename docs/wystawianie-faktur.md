@@ -5,7 +5,7 @@ title: Wystawianie faktur
 
 # Wystawianie faktur
 
-OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Dane do faktur**. W aplikacji mobilnej wystawianie faktur pojawi się w jednej z kolejnych wersji.
+OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Dane do faktur**. Aplikacja mobilna tego nie obsługuje.
 
 Faktury, które otrzymujesz od dostawców, opisuje strona [Faktury](faktury).
 
@@ -32,7 +32,7 @@ Sam odczyt wystarczy do przeglądania faktur, ale nie do ich wystawiania. Wysył
 Jeśli firma ma token tylko do odczytu, wygeneruj nowy w Aplikacji Podatnika KSeF i podmień go w ustawieniach firmy.
 
 :::note[Ważność tokenu]
-Token nie jest wieczny: obecnie obowiązują przepisy przejściowe, a od 2027 r. planowany jest limit ważności. Sprawdź aktualny stan w [materiałach Ministerstwa Finansów](https://ksef.podatki.gov.pl/).
+Token nie jest wieczny. Logowanie tokenem jest dopuszczone do 31 grudnia 2026 r. (Dz.U. 2025 poz. 1815, § 13), chyba że przepisy zostaną zmienione. Sprawdź aktualny stan w [materiałach Ministerstwa Finansów](https://ksef.podatki.gov.pl/).
 :::
 
 ## Dane do faktur
@@ -64,12 +64,12 @@ Formularz pokazuje numer, który dostanie następna faktura.
 1. W menu **Wystawione** utwórz nową fakturę.
 2. Wybierz nabywcę:
    - **Firma**: wymagany jest poprawny NIP. **Pobierz z NIP** uzupełni nazwę i adres.
-   - **Osoba prywatna**: bez NIP, z nazwą i adresem. Nabywca dostaje PDF z kodem KOD I.
+   - **Osoba prywatna**: bez NIP, z nazwą i adresem. Po przyjęciu faktury przekaż nabywcy PDF z kodem KOD I.
 3. Sprawdź daty. Data wystawienia nie może być późniejsza niż dzisiejsza, a termin płatności nie może być wcześniejszy niż data wystawienia.
 4. Dodaj pozycje: nazwa, jednostka, ilość, cena netto, stawka VAT. Dostępne stawki to 23, 8, 5, 0 KR i zw. Przy stawce zw podaj podstawę zwolnienia.
 5. Wybierz płatność: **Przelew**, **Gotówka** albo **Karta**. W razie potrzeby zaznacz mechanizm podzielonej płatności. Program przypomni o nim, ale nie rozstrzygnie, czy faktura go wymaga.
 6. Kliknij **Zapisz szkic**, jeśli chcesz wrócić do faktury później. Szkic można edytować i usunąć.
-7. Kliknij **Wystaw i wyślij do KSeF** i potwierdź w oknie z numerem, nabywcą, datą i kwotą.
+7. Kliknij **Wystaw i wyślij do KSeF**. Na środowiskach TEST i DEMO faktura wysyła się od razu. W pozostałych przypadkach potwierdź w oknie z numerem, nabywcą, datą i kwotą.
 
 VAT jest liczony od sumy netto dla każdej stawki. VAT widoczny przy pozycji jest poglądowy.
 
@@ -77,7 +77,7 @@ VAT jest liczony od sumy netto dla każdej stawki. VAT widoczny przy pozycji jes
 
 | Status | Co oznacza | Co możesz zrobić |
 |--------|------------|------------------|
-| **Szkic** | Faktura bez numeru, nie została wysłana | Edytować, usunąć, wystawić, skopiować |
+| **Szkic** | Faktura bez numeru, nie została wysłana | Edytować, usunąć, wystawić |
 | **Wysyłanie** | Numer nadany, trwa wysyłka lub czekamy na odpowiedź KSeF | Poczekać. Możesz zamknąć stronę |
 | **Przyjęta w KSeF** | KSeF nadał numer KSeF | Pobrać XML, UPO i PDF, skopiować |
 | **Odrzucona** | KSeF nie przyjął faktury albo wysyłka nie mogła się rozpocząć | Zobacz [Odrzucona faktura](#odrzucona-faktura) |
@@ -106,7 +106,7 @@ Numer zawiera okres, więc datę wystawienia możesz zmienić tylko w jego obrę
 
 ### Kopiuj jako nową
 
-**Kopiuj jako nową** tworzy szkic z tym samym nabywcą i pozycjami, z dzisiejszymi datami i bez numeru. Numer dostanie przy wystawieniu.
+**Kopiuj jako nową** tworzy szkic z tym samym nabywcą i pozycjami, z dzisiejszą datą wystawienia i sprzedaży, terminem płatności za 14 dni i bez numeru. Numer dostanie przy wystawieniu.
 
 Skopiowanie odrzuconej faktury nie usuwa jej ani nie zwalnia jej numeru. Odrzucona faktura zostaje na liście i pokazuje, dlaczego ten numer nie został wykorzystany. Nie można jej usunąć.
 
@@ -127,7 +127,7 @@ Dokument sprawdzisz na przykład w Aplikacji Podatnika KSeF:
 
 ## Aplikacja mobilna
 
-Wystawianie faktur działa w portalu. W aplikacji mobilnej pojawi się w jednej z kolejnych wersji.
+Wystawianie faktur działa w portalu. Aplikacja mobilna go nie obsługuje.
 
 ## Ograniczenia
 

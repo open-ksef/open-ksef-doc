@@ -18,7 +18,7 @@ OpenKSeF Mobile to aplikacja .NET MAUI na Android i iOS. Umożliwia przeglądani
 - Skanowanie QR do szybkiego połączenia z serwerem
 
 :::note[Wystawianie faktur]
-[Wystawianie faktur](wystawianie-faktur) działa w portalu. W aplikacji mobilnej pojawi się w jednej z kolejnych wersji.
+[Wystawianie faktur](wystawianie-faktur) działa w portalu. Aplikacja mobilna go nie obsługuje.
 :::
 
 
