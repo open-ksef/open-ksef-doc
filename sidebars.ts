@@ -15,6 +15,7 @@ const sidebars: SidebarsConfig = {
     'admin-setup',
     'logowanie',
     'faktury',
+    'wystawianie-faktur',
     'powiadomienia-push',
     'aplikacja-mobilna',
     {

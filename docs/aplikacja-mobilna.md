@@ -11,6 +11,7 @@ OpenKSeF Mobile to aplikacja .NET MAUI na Android i iOS. Umożliwia przeglądani
 
 - Przeglądanie faktur z KSeF (lista, szczegóły, filtrowanie)
 - Numer faktury sprzedawcy i pozycje faktury w szczegółach (zobacz [Faktury](faktury#aplikacja-mobilna))
+- [Wystawianie faktur](wystawianie-faktur) i wysyłka do KSeF
 - Zarządzanie firmami (tenantami)
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie przez Keycloak (OIDC)
