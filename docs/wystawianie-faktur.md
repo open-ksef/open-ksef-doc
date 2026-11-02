@@ -150,6 +150,6 @@ Tych rzeczy OpenKSeF jeszcze nie obsługuje:
 
 Dodatkowo:
 
-- Przyjętej faktury nie można zmienić ani usunąć ani w OpenKSeF, ani w KSeF.
-- Firmy, która ma wystawioną fakturę, nie można usunąć. Firmę z samymi szkicami usuniesz po usunięciu szkiców.
+- Przyjętej faktury nie można zmienić ani usunąć pojedynczo w OpenKSeF. Z KSeF nie można jej usunąć wcale.
+- Firmę usuniesz razem z jej wystawionymi fakturami, chyba że ma fakturę w statusie **Wysyłanie** albo fakturę przyjętą na środowisku PRODUKCJA. Przy wysyłce poczekaj na jej koniec. Przy fakturze przyjętej na środowisku PRODUKCJA skontaktuj się z właścicielem instancji. Usuniętych faktur nie da się przywrócić.
 - OpenKSeF nie ocenia skutków podatkowych faktury. W razie wątpliwości zapytaj księgowego lub doradcę podatkowego.
