@@ -118,6 +118,7 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 - **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. OpenKSeF nie ma eksportu zbiorczego ani pobierania plików faktur otrzymanych. O pozostałe dane poproś właściciela instancji
 - **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie
 - **Cofnięcie zgody** — możesz wyłączyć powiadomienia push w dowolnym momencie
+- **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych
 
 Aby skorzystać z tych praw, skontaktuj się z właścicielem swojej instancji OpenKSeF.
 
