@@ -120,7 +120,7 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 - **Cofnięcie zgody** — możesz wyłączyć powiadomienia push w dowolnym momencie
 - **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych
 
-Aby skorzystać z tych praw, skontaktuj się z właścicielem swojej instancji OpenKSeF.
+Skargę wnosisz bezpośrednio do Prezesa UODO. W pozostałych sprawach skontaktuj się z właścicielem swojej instancji OpenKSeF.
 
 ---
 
