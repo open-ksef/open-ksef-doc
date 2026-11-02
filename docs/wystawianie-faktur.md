@@ -5,7 +5,7 @@ title: Wystawianie faktur
 
 # Wystawianie faktur
 
-OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu i w aplikacji mobilnej. W portalu znajdziesz je w menu **Wystawione**, a dane firmy w menu **Dane do faktur**. W aplikacji mobilnej służy do tego zakładka **Wystawione**.
+OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Dane do faktur**. W aplikacji mobilnej wystawianie faktur pojawi się w jednej z kolejnych wersji.
 
 Faktury, które otrzymujesz od dostawców, opisuje strona [Faktury](faktury).
 
@@ -92,7 +92,7 @@ Pliki są dostępne dla faktury **Przyjętej w KSeF**.
 - **UPO**: urzędowe poświadczenie odbioru. Może pojawić się chwilę po przyjęciu faktury. Do tego czasu widać „Oczekuje na UPO”.
 - **PDF**: wizualizacja faktury z kodem **KOD I**, po którego zeskanowaniu można sprawdzić fakturę w KSeF. Przekaż ten PDF nabywcy, który nie korzysta z KSeF, na przykład osobie prywatnej.
 
-W portalu pliki pobierzesz przyciskami **Pobierz XML**, **Pobierz UPO** i **Pobierz PDF**. W aplikacji mobilnej służą do tego przyciski **Udostępnij**.
+Pliki pobierzesz w portalu przyciskami **Pobierz XML**, **Pobierz UPO** i **Pobierz PDF**.
 
 ## Odrzucona faktura
 
@@ -127,13 +127,7 @@ Dokument sprawdzisz na przykład w Aplikacji Podatnika KSeF:
 
 ## Aplikacja mobilna
 
-W aplikacji wystawisz fakturę tak samo jak w portalu:
-
-- zakładka **Wystawione** zawiera listę faktur i formularz nowej faktury,
-- ekran **Dane do faktur** służy do uzupełnienia danych firmy i numeracji,
-- po przyjęciu faktury możesz udostępnić PDF, XML i UPO oraz pokazać nabywcy kod KOD I.
-
-Jeśli aplikacja pokaże „Ten serwer OpenKSeF nie obsługuje jeszcze wystawiania faktur.”, serwer ma starszą wersję. Poproś administratora o aktualizację.
+Wystawianie faktur działa w portalu. W aplikacji mobilnej pojawi się w jednej z kolejnych wersji.
 
 ## Ograniczenia
 
