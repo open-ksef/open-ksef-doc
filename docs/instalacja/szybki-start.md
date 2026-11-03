@@ -5,7 +5,7 @@ title: Szybki start
 
 # Szybki start
 
-Uruchomienie OpenKSeF zajmuje mniej niż 5 minut. Potrzebujesz tylko Dockera i przeglądarki.
+Potrzebujesz Dockera, pliku `.env` i przeglądarki. Pierwsze pobranie obrazów może potrwać kilka minut, potem przechodzisz przez kreator konfiguracji.
 
 ## Krok 1: Utwórz `docker-compose.yml`
 

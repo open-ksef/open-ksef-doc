@@ -12,7 +12,7 @@ OpenKSeF jest udostępniony na licencji **Elastic License 2.0**.
 - Używać OpenKSeF do celów wewnętrznych (firmowych i prywatnych)
 - Modyfikować kod źródłowy
 - Rozpowszechniać zmodyfikowane wersje
-- Self-hostować bez opłat
+- Uruchamiać u siebie bez opłat
 
 ## Ograniczenie
 

@@ -1,11 +1,12 @@
 import type {ReactNode} from 'react';
+import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
 type StepItem = {
   number: number;
   title: string;
-  description: string;
+  description: ReactNode;
   code?: string;
 };
 
@@ -13,7 +14,7 @@ const steps: StepItem[] = [
   {
     number: 1,
     title: 'Wklej i uruchom',
-    description: 'Skopiuj docker-compose.yml z dokumentacji i uruchom stack jednym poleceniem.',
+    description: 'Skopiuj docker-compose.yml z dokumentacji, utwórz obok plik .env z hasłami i uruchom stack.',
     code: 'docker compose up -d',
   },
   {
@@ -24,7 +25,12 @@ const steps: StepItem[] = [
   {
     number: 3,
     title: 'Gotowe!',
-    description: 'Zaloguj się, dodaj dane KSeF swojej firmy i zacznij synchronizować faktury.',
+    description: (
+      <>
+        Zaloguj się, dodaj dane KSeF swojej firmy i zacznij synchronizować faktury.{' '}
+        <Link to="/docs/wystawianie-faktur#token-ksef">Token ma termin ważności w przepisach</Link>.
+      </>
+    ),
   },
 ];
 

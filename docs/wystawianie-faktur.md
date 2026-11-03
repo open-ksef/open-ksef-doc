@@ -5,7 +5,7 @@ title: Wystawianie faktur
 
 # Wystawianie faktur
 
-OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Dane do faktur**. Aplikacja mobilna tego nie obsługuje.
+OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Dane do faktur**. Wystawianie jest też w aplikacji na Androida, od wersji 1.0.5, ale [kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna).
 
 Faktury, które otrzymujesz od dostawców, opisuje strona [Faktury](faktury).
 
@@ -127,7 +127,7 @@ Dokument sprawdzisz na przykład w Aplikacji Podatnika KSeF:
 
 ## Aplikacja mobilna
 
-Wystawianie faktur działa w portalu. Aplikacja mobilna go nie obsługuje.
+Wystawianie faktur jest też w aplikacji na Androida, od wersji 1.0.5. [Kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna).
 
 ## Ograniczenia
 

@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'OpenKSeF',
-  tagline: 'Miej kontrolę nad fakturami z KSeF — powiadomienia, przegląd i szybkie płatności',
+  tagline: 'Miej kontrolę nad fakturami z KSeF: powiadomienia, przegląd, szybkie płatności i wystawianie',
   favicon: 'img/favicon.svg',
 
   future: {
@@ -22,11 +22,7 @@ const config: Config = {
 
   i18n: {
     defaultLocale: 'pl',
-    locales: ['pl', 'en'],
-    localeConfigs: {
-      pl: { label: 'Polski' },
-      en: { label: 'English' },
-    },
+    locales: ['pl'],
   },
 
   presets: [
@@ -49,7 +45,7 @@ const config: Config = {
     image: 'img/og-image.png',
     announcementBar: {
       id: 'beta',
-      content: 'OpenKSeF jest w fazie <strong>beta</strong> — aktywnie rozwijamy projekt. Zgłaszaj błędy i pomysły na <a href="https://github.com/open-ksef" target="_blank">GitHub</a>.',
+      content: 'OpenKSeF jest w fazie <strong>beta</strong>: aktywnie rozwijamy projekt. Zgłaszaj błędy i pomysły na <a href="https://github.com/open-ksef" target="_blank">GitHub</a>.',
       backgroundColor: '#eef2ff',
       textColor: '#312e81',
     },
@@ -69,10 +65,6 @@ const config: Config = {
           sidebarId: 'docsSidebar',
           position: 'left',
           label: 'Dokumentacja',
-        },
-        {
-          type: 'localeDropdown',
-          position: 'right',
         },
         {
           href: 'https://github.com/open-ksef',
@@ -102,7 +94,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} OpenKSeF (beta). Elastic License 2.0. Projekt stworzony z pomocą AI.`,
+      copyright: `Copyright © ${new Date().getFullYear()} OpenKSeF (beta). Kod źródłowy jest publicznie dostępny na licencji Elastic License 2.0. Niezależny projekt, niepowiązany z Ministerstwem Finansów. Projekt stworzony z pomocą AI.`,
     },
     prism: {
       theme: prismThemes.github,

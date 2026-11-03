@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
@@ -14,15 +15,15 @@ type UseCaseItem = {
 const useCases: UseCaseItem[] = [
   {
     icon: '🔔',
-    title: 'Nigdy więcej zaskoczeń',
+    title: 'Powiadomienia o nowych fakturach',
     problem:
-      'Od kiedy działa KSeF, kontrahenci przestają wysyłać powiadomienia e-mail o wystawionych fakturach. O nowym zobowiązaniu dowiadujesz się dopiero z wezwania do zapłaty albo wpisu w ewidencji.',
+      'Faktura od dostawcy trafia do KSeF i możesz nie dostać o niej osobnej wiadomości. Bez sprawdzania KSeF o nowym zobowiązaniu możesz dowiedzieć się dopiero z wezwania do zapłaty.',
     solution:
-      'OpenKSeF automatycznie synchronizuje faktury z KSeF i natychmiast powiadamia Cię o każdej nowej fakturze — push na telefon, e-mail lub oba naraz.',
+      'OpenKSeF automatycznie pobiera faktury z KSeF, domyślnie co 4 godziny, i wysyła powiadomienie push o nowej fakturze na telefon z aplikacją OpenKSeF.',
     bullets: [
-      'Powiadomienia push na telefon (Android / iOS)',
-      'Fallback e-mail, gdy telefon jest offline',
-      'Synchronizacja w tle — bez ręcznego sprawdzania',
+      'Powiadomienia push w aplikacji na Androida',
+      'Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Play i iPhone jeszcze nie',
+      'Synchronizacja w tle, bez ręcznego sprawdzania',
     ],
   },
   {
@@ -31,11 +32,11 @@ const useCases: UseCaseItem[] = [
     problem:
       'Przeglądanie faktur w portalu KSeF jest uciążliwe, a ręczne przepisywanie danych do przelewu zabiera czas i generuje błędy.',
     solution:
-      'W OpenKSeF przeglądasz faktury zakupowe w jednym miejscu. Chcesz zapłacić? Zeskanuj QR code wygenerowany z danych faktury (kwota, konto, tytuł) aplikacją mobilną swojego banku.',
+      'W OpenKSeF przeglądasz faktury zakupowe w jednym miejscu. Chcesz zapłacić? Zeskanuj kod QR z portalu aplikacją mobilną swojego banku. Kod zawiera kwotę, tytuł i numer konta, jeśli jest na fakturze.',
     bullets: [
       'Lista faktur z filtrami i wyszukiwaniem',
-      'QR code do natychmiastowego przelewu w banku',
-      'Aplikacja mobilna i portal webowy',
+      'Kod QR do przelewu w aplikacji banku',
+      'Działa w portalu webowym',
     ],
     reversed: true,
   },
@@ -67,7 +68,7 @@ export default function UseCases(): ReactNode {
           Po co Ci OpenKSeF?
         </Heading>
         <p className={styles.sectionSubtitle}>
-          Dwa realne problemy, jedno rozwiązanie — darmowe i open source.
+          Kod źródłowy jest publicznie dostępny (Elastic License 2.0). Bez opłat za uruchomienie u siebie. Nie prowadzimy wersji hostowanej dla firm.
         </p>
 
         {useCases.map((uc, idx) => (
@@ -75,13 +76,14 @@ export default function UseCases(): ReactNode {
         ))}
 
         <div className={styles.planned}>
-          <span className={styles.plannedBadge}>wkrótce</span>
+          <span className={styles.plannedBadge}>w portalu</span>
           <Heading as="h3" className={styles.plannedTitle}>
             ✏️ Wystawianie faktur
           </Heading>
           <p className={styles.plannedDescription}>
-            W przyszłości OpenKSeF umożliwi podstawowe wystawianie faktur sprzedażowych
-            bezpośrednio z portalu i aplikacji mobilnej — bez potrzeby korzystania z dodatkowego programu.
+            OpenKSeF wystawia faktury VAT w portalu i wysyła je do KSeF. Pobierzesz XML, UPO i PDF z kodem KOD I.
+            Korekt, faktur zaliczkowych i walut innych niż PLN jeszcze nie obsługuje.{' '}
+            <Link to="/docs/wystawianie-faktur">Zakres i ograniczenia</Link>
           </p>
         </div>
       </div>
