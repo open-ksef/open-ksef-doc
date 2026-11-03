@@ -28,7 +28,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 ### Dane konta użytkownika
 
 - Adres e-mail (do logowania i powiadomień)
-- Imię i nazwisko (opcjonalne, jeśli podasz je przy rejestracji)
+- Imię i nazwisko (opcjonalne przy rejestracji e-mailem; przy logowaniu przez Google pochodzą z konta Google)
 - Identyfikator użytkownika w systemie Keycloak (OIDC)
 
 ### Dane firmowe
@@ -142,13 +142,13 @@ Aby usunąć konto w OpenKSeF i powiązane z nim dane, wyślij prośbę e-mailem
 
 Prośby realizujemy ręcznie. Odpowiadamy w ciągu miesiąca.
 
-**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator), zarejestrowane urządzenia oraz firmy tego konta z tokenem KSeF, fakturami otrzymanymi, danymi do faktur i fakturami wystawionymi, z wyjątkami poniżej.
+**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator), zarejestrowane urządzenia oraz firmy tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur i fakturami wystawionymi, z wyjątkami poniżej.
 
 **Co może zostać:**
 
-- Faktura przyjęta na środowisku PRODUKCJA zostaje w KSeF przez okres podany w sekcji 6. Nikt nie może jej stamtąd usunąć. Jej kopię w instancji możemy zachować i napiszemy o tym w odpowiedzi.
+- Faktura przyjęta na środowisku PRODUKCJA zostaje w KSeF przez okres podany w sekcji 6. Nikt nie może jej stamtąd usunąć. Jej kopię w instancji możemy zachować razem z danymi firmy, do której należy (NIP, nazwa, dane sprzedawcy), i napiszemy o tym w odpowiedzi.
 - Dane w kopiach zapasowych właściciela instancji, do czasu usunięcia tych kopii.
-- Lokalna kopia faktur na telefonie. Usuniesz ją, odinstalowując aplikację.
+- Lokalna kopia faktur na telefonie. Usuniesz ją, odinstalowując aplikację. Może ją też zawierać kopia zapasowa Androida na Twoim koncie Google i wrócić po ponownej instalacji.
 
 ---
 
