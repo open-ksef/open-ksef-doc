@@ -15,14 +15,14 @@ type UseCaseItem = {
 const useCases: UseCaseItem[] = [
   {
     icon: '🔔',
-    title: 'Nigdy więcej zaskoczeń',
+    title: 'Powiadomienia o nowych fakturach',
     problem:
-      'Od kiedy działa KSeF, kontrahenci przestają wysyłać powiadomienia e-mail o wystawionych fakturach. O nowym zobowiązaniu dowiadujesz się dopiero z wezwania do zapłaty albo wpisu w ewidencji.',
+      'Faktura od dostawcy trafia do KSeF i możesz nie dostać o niej osobnej wiadomości. Bez sprawdzania KSeF o nowym zobowiązaniu możesz dowiedzieć się dopiero z wezwania do zapłaty.',
     solution:
       'OpenKSeF automatycznie pobiera faktury z KSeF, domyślnie co 4 godziny, i wysyła powiadomienie push o nowej fakturze na telefon z aplikacją OpenKSeF.',
     bullets: [
       'Powiadomienia push w aplikacji na Androida',
-      'Aplikacja na Androida: kończymy poprawki przed publikacją, Google Play i iPhone jeszcze nie',
+      'Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Play i iPhone jeszcze nie',
       'Synchronizacja w tle, bez ręcznego sprawdzania',
     ],
   },
@@ -32,7 +32,7 @@ const useCases: UseCaseItem[] = [
     problem:
       'Przeglądanie faktur w portalu KSeF jest uciążliwe, a ręczne przepisywanie danych do przelewu zabiera czas i generuje błędy.',
     solution:
-      'W OpenKSeF przeglądasz faktury zakupowe w jednym miejscu. Chcesz zapłacić? Zeskanuj kod QR z portalu (kwota, konto, tytuł) aplikacją mobilną swojego banku.',
+      'W OpenKSeF przeglądasz faktury zakupowe w jednym miejscu. Chcesz zapłacić? Zeskanuj kod QR z portalu aplikacją mobilną swojego banku. Kod zawiera kwotę, tytuł i numer konta, jeśli jest na fakturze.',
     bullets: [
       'Lista faktur z filtrami i wyszukiwaniem',
       'Kod QR do przelewu w aplikacji banku',
@@ -81,7 +81,7 @@ export default function UseCases(): ReactNode {
             ✏️ Wystawianie faktur
           </Heading>
           <p className={styles.plannedDescription}>
-            OpenKSeF wystawia faktury VAT z portalu i wysyła je do KSeF: XML, UPO i PDF z kodem KOD I.
+            OpenKSeF wystawia faktury VAT w portalu i wysyła je do KSeF. Pobierzesz XML, UPO i PDF z kodem KOD I.
             Korekt, faktur zaliczkowych i walut innych niż PLN jeszcze nie obsługuje.{' '}
             <Link to="/docs/wystawianie-faktur">Zakres i ograniczenia</Link>
           </p>

@@ -8,7 +8,7 @@ title: Aplikacja mobilna
 OpenKSeF Mobile to aplikacja .NET MAUI na Androida. Umożliwia przeglądanie faktur, zarządzanie firmami i otrzymywanie powiadomień push o nowych fakturach z KSeF.
 
 :::note[Dostępność]
-Aplikacja na Androida: kończymy poprawki przed publikacją, Google Play i iPhone jeszcze nie.
+Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Play i iPhone jeszcze nie.
 :::
 
 ## Funkcje
@@ -18,7 +18,7 @@ Aplikacja na Androida: kończymy poprawki przed publikacją, Google Play i iPhon
 - Zarządzanie firmami (tenantami)
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie przez Keycloak (OIDC)
-- Kod QR do przelewu z aplikacji bankowej; w wersji 1.0.5 bez numeru rachunku, pełny kod QR jest w portalu
+- Kod QR do przelewu z aplikacji bankowej; w wersji 1.0.5 bez numeru rachunku. W portalu kod QR zawiera numer rachunku, jeśli jest na fakturze
 - [Wystawianie faktur](wystawianie-faktur), od wersji 1.0.5
 - Skanowanie QR do szybkiego połączenia z serwerem
 

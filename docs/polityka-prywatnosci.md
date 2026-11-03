@@ -157,7 +157,7 @@ Prośby realizujemy ręcznie. Odpowiadamy w ciągu miesiąca.
 - Komunikacja między aplikacją a serwerem odbywa się przez HTTPS.
 - Tokeny autoryzacyjne i certyfikaty KSeF (z kluczem prywatnym) są szyfrowane w bazie danych.
 - Uwierzytelnianie oparte na OpenID Connect (Keycloak).
-- Kod źródłowy jest otwarty i dostępny do audytu na [GitHub](https://github.com/open-ksef).
+- Kod źródłowy jest publicznie dostępny i można go sprawdzić na [GitHubie](https://github.com/open-ksef).
 
 ---
 

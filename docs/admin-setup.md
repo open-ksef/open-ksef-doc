@@ -8,7 +8,7 @@ title: Kreator konfiguracji
 Kreator konfiguracji automatyzuje pierwszą konfigurację systemu. Zamiast ręcznie edytować pliki `.env`, kopiować sekrety z Keycloak i restartować kontenery -- wystarczy uruchomić `docker compose up` i przejść przez webowy wizard pod adresem `http://localhost:8080/admin-setup`.
 
 :::tip[Nie masz jeszcze uruchomionego stacku?]
-Przejdź do [Szybki start](instalacja/szybki-start) -- uruchomienie zajmuje mniej niż 5 minut.
+Przejdź do [Szybki start](instalacja/szybki-start).
 :::
 
 ## Wymagania wstępne

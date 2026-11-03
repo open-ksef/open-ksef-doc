@@ -34,7 +34,7 @@ Pełny tekst licencji: [Elastic License 2.0](licencja)
 
 ## Self-hosting i odpowiedzialność za dane
 
-OpenKSeF jest zaprojektowany do **self-hostingu** -- uruchamiasz go na własnej infrastrukturze (serwerze, VPS, chmurze, komputerze domowym). Nie prowadzimy wersji hostowanej dla firm.
+OpenKSeF jest zaprojektowany do **self-hostingu** -- uruchamiasz go na własnej infrastrukturze (serwerze, VPS, chmurze, komputerze domowym). Nie prowadzimy wersji hostowanej dla firm. Instancja prowadzona przez autorów jest tylko na ich własny użytek.
 
 **Co to oznacza:**
 

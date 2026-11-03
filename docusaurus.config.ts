@@ -94,7 +94,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} OpenKSeF (beta). Kod źródłowy jest publicznie dostępny, Elastic License 2.0. Niezależny projekt, niepowiązany z Ministerstwem Finansów. Projekt stworzony z pomocą AI.`,
+      copyright: `Copyright © ${new Date().getFullYear()} OpenKSeF (beta). Kod źródłowy jest publicznie dostępny na licencji Elastic License 2.0. Niezależny projekt, niepowiązany z Ministerstwem Finansów. Projekt stworzony z pomocą AI.`,
     },
     prism: {
       theme: prismThemes.github,

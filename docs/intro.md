@@ -20,7 +20,7 @@ OpenKSeF jest przeznaczony dla:
 
 - **Programistów i administratorów** -- którzy chcą postawić własną instancję i mieć pełną kontrolę nad danymi fakturowymi
 - **Księgowych i właścicieli firm** -- którzy szukają prostego narzędzia do przeglądania faktur z KSeF bez opłat za uruchomienie u siebie
-- **Zespołów IT w firmach** -- które potrzebują self-hosted rozwiązania zgodnego z polskimi przepisami
+- **Zespołów IT w firmach** -- które potrzebują rozwiązania self-hosted, z danymi fakturowymi na własnej infrastrukturze
 
 ## Co potrafi OpenKSeF?
 
@@ -30,10 +30,10 @@ OpenKSeF jest przeznaczony dla:
 | **Faktury** | Szczegóły z pozycjami, status płatności, dane do przelewu i kod QR -- zobacz [Faktury](faktury) |
 | **Wystawianie faktur** | Faktury VAT wysyłane do KSeF z portalu, XML, UPO i PDF z kodem KOD I. Zobacz [Wystawianie faktur](wystawianie-faktur) |
 | **Portal webowy** | React SPA z dashboardem, listą faktur, zarządzaniem firmami |
-| **Aplikacja mobilna** | .NET MAUI z powiadomieniami push. Aplikacja na Androida: kończymy poprawki przed publikacją, Google Play i iPhone jeszcze nie |
+| **Aplikacja mobilna** | .NET MAUI z powiadomieniami push. Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Play i iPhone jeszcze nie |
 | **Multi-tenant** | Wiele firm na jednej instancji, izolacja danych per użytkownik |
-| **Powiadomienia push** | SignalR (lokalne) + relay/Firebase (zdalne). E-mail tylko przy ręcznej synchronizacji |
-| **Bezpieczeństwo** | Keycloak (OIDC), szyfrowanie tokenów KSeF (AES-256), HTTPS |
+| **Powiadomienia push** | SignalR (lokalne) + relay/Firebase (zdalne) |
+| **Bezpieczeństwo** | Keycloak (OIDC). Tokeny KSeF szyfrowane w bazie (AES-256-GCM), klucz też jest w bazie: [szczegóły](instalacja/szybki-start#krok-3-skonfiguruj). HTTPS zapewnia właściciel instancji |
 | **Self-hosting** | Docker Compose: `docker-compose.yml`, plik `.env` z hasłami i `docker compose up -d` |
 
 ## Architektura
@@ -82,6 +82,6 @@ Lista faktur, szczegóły z pozycjami, kod QR przelewu i powiadomienia push na t
 ## Następne kroki
 
 - [Wymagania systemowe](instalacja/wymagania) -- co potrzebujesz przed instalacją
-- [Szybki start](instalacja/szybki-start) -- uruchomienie w 5 minut
+- [Szybki start](instalacja/szybki-start) -- instalacja krok po kroku
 - [Kreator konfiguracji](admin-setup) -- krok po kroku przez wizard
 - [Faktury](faktury) -- lista, szczegóły, status płatności, synchronizacja

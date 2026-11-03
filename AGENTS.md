@@ -18,7 +18,7 @@ To repozytorium (`open-ksef-doc`) zawiera stronę dokumentacji i marketingu dla 
 ```
 GitHub Org: open-ksef
 ├── open-ksef            # kod aplikacji (.NET API, Worker, React portal)
-├── open-ksef-mobile     # aplikacja mobilna (.NET MAUI Android/iOS)
+├── open-ksef-mobile     # aplikacja mobilna (.NET MAUI Android)
 └── open-ksef-doc        # TO REPO -- strona docs/marketing (Docusaurus → GitHub Pages)
 ```
 
@@ -43,14 +43,14 @@ docs/
   intro.md                    # Wprowadzenie -- czym jest OpenKSeF
   instalacja/
     wymagania.md              # Wymagania systemowe
-    szybki-start.md           # Docker compose up w 5 minut
+    szybki-start.md           # docker-compose.yml, .env, docker compose up, kreator
     konfiguracja.md           # Zmienne środowiskowe, KSeF test/prod
   admin-setup.md              # Kreator konfiguracji (wizard krok po kroku)
   logowanie.md                # Strona logowania, Google OAuth, rejestracja
   faktury.md                  # Lista, szczegóły, pozycje, status płatności, przelew/QR, resynchronizacja
   wystawianie-faktur.md       # Dane do faktur, numeracja, wystawianie, statusy, XML/UPO/PDF, odrzucona faktura, ograniczenia
   powiadomienia-push.md       # Push notifications (SignalR, relay, Firebase, email)
-  aplikacja-mobilna.md        # MAUI Android/iOS, ngrok, build
+  aplikacja-mobilna.md        # MAUI Android, ngrok, build
   o-projekcie.md              # AI disclaimer, self-hosting, odpowiedzialność
   licencja.md                 # Elastic License 2.0 + formalny disclaimer bezpieczeństwa
   polityka-prywatnosci.md     # Polityka prywatności (wymóg Google Play)
