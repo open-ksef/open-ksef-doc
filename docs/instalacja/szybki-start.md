@@ -156,7 +156,7 @@ Użyj własnych, silnych haseł. `docker-compose.yml` nie ma wartości domyślny
 :::
 
 :::caution[Aktualizacja istniejącej instalacji]
-Najpierw wykonaj [procedurę aktualizacji klucza](../admin-setup#aktualizacja-z-wersji-v007-lub-starszej). Przed jej krokiem 6 wpisz do `.env` stare wartości z punktu 1 poniżej.
+Najpierw wykonaj [procedurę aktualizacji klucza](../admin-setup#aktualizacja-z-wersji-v007-lub-starszej). Jeśli nie masz `.env` ze starszego pliku, przed jej krokiem 6 wpisz do niego stare wartości z punktu 1 poniżej.
 
 Jeśli uruchamiałeś wcześniej starszą wersję tego pliku (bez `.env`), wolumen `postgres_data` zawiera już użytkownika `openksef` z hasłem `openksef_dev_password`, a Keycloak konto admina `admin` / `admin`. PostgreSQL i Keycloak czytają te zmienne tylko przy pierwszym starcie, więc nowe hasła w `.env` niczego nie zmienią, a API nie połączy się z bazą.
 

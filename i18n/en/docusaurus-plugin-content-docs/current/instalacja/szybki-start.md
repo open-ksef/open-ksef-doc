@@ -156,7 +156,7 @@ Use your own strong passwords. `docker-compose.yml` has no defaults for these fi
 :::
 
 :::caution[Upgrading an existing installation]
-First run the [key upgrade procedure](../admin-setup#upgrade-from-v007-or-earlier). Before its step 6, put the old values from point 1 below in `.env`.
+First run the [key upgrade procedure](../admin-setup#upgrade-from-v007-or-earlier). If you have no `.env` from the older file, put the old values from point 1 below in it before its step 6.
 
 If you previously ran an older version of this file (without `.env`), the `postgres_data` volume already holds user `openksef` with password `openksef_dev_password`, and Keycloak has the admin account `admin` / `admin`. PostgreSQL and Keycloak read these variables only on first start, so new passwords in `.env` change nothing and the API cannot connect to the database.
 
