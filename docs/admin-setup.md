@@ -105,6 +105,12 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 
 Ten opis dotyczy wersji `WERSJA-T-026` i nowszych.
 
+:::danger[Sprawdź ENCRYPTION_KEY przed aktualizacją]
+Przed każdym `docker compose pull`, `docker compose up -d`, aktualizacją stacku lub uruchomieniem automatycznego aktualizatora sprawdź `ENCRYPTION_KEY` w `.env` lub w zmiennych stacku. Jeśli ma prawidłową wartość, pierwszy start nowych obrazów przenosi klucz na tę wartość, bez zatrzymania usług i bez kopii zapasowej. Najpierw wykonaj [procedurę aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej).
+
+Klucz już się przeniósł (zapytanie z jej kroku 1 zwraca 0)? Zachowaj tę wartość, bo to jedyna kopia klucza, a potem wykonaj [rotację](#rotacja-klucza).
+:::
+
 Klucz szyfruje zapisane tokeny i certyfikaty KSeF. Jego utrata oznacza utratę tych danych: trzeba je wprowadzić ponownie.
 
 Prawidłowy klucz to 32 bajty w base64, czyli 44 znaki. Wygeneruj go jednym z poleceń:
@@ -126,7 +132,7 @@ Obrazy `:latest` dostajesz przy zwykłym `docker compose pull`. Do wersji v0.0.7
 | Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` pusty | **Tryb przejściowy.** System działa bez zmian, nic nie ginie. Klucz zostaje w bazie, bezpieczeństwo jest takie jak dotąd. Każdy start loguje Error |
 | Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` nieprawidłowy (np. zły format lub długość) | Tak samo: tryb przejściowy i Error przy każdym starcie |
 | Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` prawidłowy | Klucz jest przenoszony od razu przy pierwszym starcie, właśnie na tę wartość. Upewnij się, że masz ją zapisaną poza bazą, i wykonaj procedurę poniżej **przed** pobraniem obrazów |
-| Nowy `docker-compose.yml` bez `ENCRYPTION_KEY` | `docker compose` odmawia działania i podaje polecenie do wygenerowania klucza. Dotyczy to każdego polecenia `docker compose`, także `stop` i `exec`. Działające kontenery pozostają nietknięte |
+| Nowy `docker-compose.yml` bez `ENCRYPTION_KEY` | `docker compose` odmawia działania i podaje polecenie do wygenerowania klucza. `stop`, `exec`, `ps`, `logs` odmawiają, chyba że ustawiono nazwę projektu. `up`, `pull`, `run` odmawiają zawsze. Działające kontenery pozostają nietknięte |
 
 Tryb przejściowy to rozwiązanie tymczasowe: planujemy, że kolejne wydania przestaną czytać klucz z bazy. Przenieś klucz, gdy tylko możesz.
 
@@ -134,21 +140,35 @@ Tryb przejściowy to rozwiązanie tymczasowe: planujemy, że kolejne wydania prz
 
 Pierwszy start z prawidłowym kluczem w konfiguracji szyfruje ponownie wszystkie dane logowania i usuwa wiersz klucza z bazy, w jednej transakcji.
 
-Kroki 1 i 2 wykonaj plikiem compose, którego używasz teraz. Nowy `docker-compose.yml` podmienisz dopiero w kroku 5.
+Kroki 1 do 3 wykonaj plikiem compose, którego używasz teraz. Nowy `docker-compose.yml` podmienisz dopiero w kroku 6.
 
-1. **Zatrzymaj API i Workera:** `docker compose stop api worker`. Zatrzymaj obie usługi, bo compose uruchamia je w dowolnej kolejności. Stare API, które działa w trakcie przenoszenia klucza, zapisze dane pod starym kluczem i te dane przepadną.
-2. **Zrób kopię zapasową:** `docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-key-move.dump`. Ten zrzut zawiera stary klucz razem z zaszyfrowanymi danymi, więc go chroń. Sprawdź go: `docker compose exec -T postgres pg_restore -l < before-key-move.dump > /dev/null` musi zakończyć się kodem 0.
-3. **Wygeneruj klucz:** `openssl rand -base64 32`. Musi mieć 44 znaki. **Zapisz go w menedżerze haseł przed następnym krokiem**, poza bazą i jej kopiami. Nie używaj ponownie starszej wartości `ENCRYPTION_KEY`.
-4. **Ustaw klucz:** wpisz nową wartość do `ENCRYPTION_KEY` w `.env` lub w zmiennych stacku.
-5. **Uruchom nowe obrazy:** podmień `docker-compose.yml` na nowy plik z [Szybkiego startu](instalacja/szybki-start), potem `docker compose pull api worker portal-web` i `docker compose up -d`.
-6. **Sprawdź:**
+Stary plik został już nadpisany i `docker compose` odmawia działania? Nie dopisuj klucza, żeby to obejść: jedno `up` przeniesie klucz bez kopii zapasowej. Wykonaj kroki 1 do 3 samym Dockerem, a od kroku 4 kontynuuj zgodnie z procedurą. Nazwy kontenerów są stałe:
+
+```bash
+echo "SELECT count(*) FROM \"SystemConfigs\" WHERE \"Key\"='encryption_key';" | docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef -tA'
+docker stop openksef-api openksef-worker
+docker exec openksef-postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-key-move.dump
+docker exec -i openksef-postgres pg_restore -l < before-key-move.dump > /dev/null; echo "exit=$?"
+```
+
+1. **Sprawdź, czy klucz jest nadal w bazie:**
+   ```bash
+   echo "SELECT count(*) FROM \"SystemConfigs\" WHERE \"Key\"='encryption_key';" | docker compose exec -T postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef -tA'
+   ```
+   Kontynuuj tylko przy wyniku `1`. Wynik `0` oznacza, że klucz jest już przeniesiony, a `ENCRYPTION_KEY` to jego jedyna kopia. **Przerwij tę procedurę, nie zmieniaj `ENCRYPTION_KEY`** i przejdź do [rotacji](#rotacja-klucza).
+2. **Zatrzymaj API i Workera:** `docker compose stop api worker`. Zatrzymaj obie usługi, bo compose uruchamia je w dowolnej kolejności. Stare API, które działa w trakcie przenoszenia klucza, zapisze dane pod starym kluczem i te dane przepadną.
+3. **Zrób kopię zapasową:** `docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-key-move.dump`. Ten zrzut zawiera stary klucz razem z zaszyfrowanymi danymi, więc go chroń. Sprawdź go: `docker compose exec -T postgres pg_restore -l < before-key-move.dump > /dev/null; echo "exit=$?"` musi wypisać `exit=0`.
+4. **Wygeneruj klucz:** `openssl rand -base64 32` albo poleceniem Dockera podanym wyżej. Musi mieć 44 znaki. **Zapisz go w menedżerze haseł przed następnym krokiem**, poza bazą i jej kopiami. Nie używaj ponownie starszej wartości `ENCRYPTION_KEY`.
+5. **Ustaw klucz:** skopiuj obecną wartość `ENCRYPTION_KEY`, jeśli jest ustawiona, do menedżera haseł, zanim ją nadpiszesz. Potem wpisz nową wartość do `ENCRYPTION_KEY` w `.env` lub w zmiennych stacku.
+6. **Uruchom nowe obrazy:** podmień `docker-compose.yml` na nowy plik z [Szybkiego startu](instalacja/szybki-start), potem `docker compose pull api worker portal-web` i `docker compose up -d`.
+7. **Sprawdź:**
    - W `docker compose logs api worker` jedna usługa loguje `Encryption key moved out of the database`. Druga nic o tym nie loguje. Żadna nie loguje Critical.
-   - Zapytanie w bazie (`docker compose exec postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef'`) zwraca 0: `SELECT count(*) FROM "SystemConfigs" WHERE "Key"='encryption_key';`
+   - Zapytanie z kroku 1 zwraca 0.
    - Jedna ręczna synchronizacja kończy się sukcesem: **Dane logowania** > wiersz firmy > **Wymuś synchronizację**.
 
-Zrzut z kroku 2 to teraz jedyna kopia starego klucza. Zachowaj go co najmniej do udanej synchronizacji. Zrzuty sprzed przeniesienia klucza pozwalają odszyfrować tokeny, dopóki ich nie usuniesz.
+Zrzut z kroku 3 to teraz jedyna kopia starego klucza. Zachowaj go co najmniej do udanej synchronizacji. Zrzuty sprzed przeniesienia klucza pozwalają odszyfrować tokeny, dopóki ich nie usuniesz.
 
-Log Critical z identyfikatorem danych logowania oznacza, że tych danych nie da się odszyfrować i nic się nie zmieniło. Usuń je lub wprowadź ponownie w portalu i uruchom usługi ponownie.
+Log Critical z identyfikatorem danych logowania oznacza, że tych danych nie da się odszyfrować i nic się nie zmieniło. Usuń je lub wprowadź ponownie w portalu i uruchom usługi ponownie. Log Critical bez identyfikatora danych logowania oznacza, że nic się nie zmieniło: uruchom usługi ponownie.
 
 **Wycofanie zmian**
 
@@ -160,21 +180,21 @@ Poprzednie obrazy mają tag wydania, np. `:v0.0.7`.
 | Wiersza już nie ma, poprzednie obrazy, `ENCRYPTION_KEY` zachowany | Działa: poprzednie obrazy czytają klucz ze zmiennej, gdy nie ma wiersza |
 | Wiersza już nie ma, poprzednie obrazy, klucz tylko w `ENCRYPTION_KEY_FILE` | Użycie danych logowania nie działa: poprzednie obrazy nie czytają tego pliku. Ustaw `ENCRYPTION_KEY` na tę samą wartość |
 | Wiersza już nie ma, poprzednie obrazy, `ENCRYPTION_KEY` cofnięty lub pusty | Usługi działają, użycie danych logowania kończy się błędem w logach, dane się nie zmieniają. Przywróć nowy klucz. **Nie cofaj klucza** |
-| Nowy klucz utracony | Obecnych danych nie da się odzyskać. Firmy wprowadzają tokeny ponownie albo przywracasz zrzut z kroku 2 i tracisz późniejsze zmiany |
-| Przywrócony zrzut z kroku 2 | Wraca wiersz i stare dane. Następny start znowu przeniesie klucz |
+| Nowy klucz utracony | Obecnych danych nie da się odzyskać. Firmy wprowadzają tokeny ponownie albo przywracasz zrzut z kroku 3 i tracisz późniejsze zmiany |
+| Przywrócony zrzut z kroku 3 | Wraca wiersz i stare dane. Następny start znowu przeniesie klucz |
 
 Aby przywrócić zrzut, najpierw zatrzymaj obie usługi, potem uruchom `docker compose exec -T postgres sh -c 'pg_restore -U "$POSTGRES_USER" -d openksef --clean --if-exists' < before-key-move.dump`.
 
 ### Rotacja klucza
 
-Wykonaj ją na stacku z aktualnymi obrazami i z kluczem już przeniesionym: zapytanie z procedury aktualizacji zwraca 0.
+Wykonaj ją na stacku z aktualnymi obrazami i z kluczem już przeniesionym: zapytanie z kroku 1 procedury aktualizacji zwraca 0.
 
-1. Wygeneruj nowy klucz: `openssl rand -base64 32`. **Zapisz go w menedżerze haseł, zanim cokolwiek uruchomisz.** Stary klucz zachowaj do udanego kroku 6.
+1. Wygeneruj nowy klucz: `openssl rand -base64 32` albo poleceniem Dockera podanym wyżej. **Zapisz go w menedżerze haseł, zanim cokolwiek uruchomisz.** Stary klucz zachowaj do udanego kroku 6.
 2. Zatrzymaj API i Workera: `docker compose stop api worker`.
-3. Zrób kopię zapasową i sprawdź zrzut, jak w procedurze aktualizacji.
+3. Zrób kopię zapasową i sprawdź zrzut, jak w procedurze aktualizacji, ale do pliku `before-rotation.dump`. Nie nadpisuj `before-key-move.dump`.
 4. Zaszyfruj dane ponownie, z `ENCRYPTION_KEY` nadal ustawionym na stary klucz. Nowy klucz jest czytany ze zmiennej środowiskowej i nigdy nie jest argumentem polecenia:
    ```bash
-   read -s ENCRYPTION_KEY_NEW && export ENCRYPTION_KEY_NEW
+   read -rsp 'New key: ' ENCRYPTION_KEY_NEW && echo && export ENCRYPTION_KEY_NEW
    docker compose run --rm -e ENCRYPTION_KEY_NEW api rotate-encryption-key
    unset ENCRYPTION_KEY_NEW
    ```
@@ -194,8 +214,10 @@ Polecenie kończy się kodem 1 i niczego nie zapisuje, gdy:
 | Sytuacja | Działanie |
 |---|---|
 | Polecenie odmówiło | Nic się nie zmieniło. Usuń przyczynę i spróbuj ponownie |
-| Po kroku 4, problem przed krokiem 6 | Wykonaj rotację w drugą stronę (`ENCRYPTION_KEY` = nowy klucz, `ENCRYPTION_KEY_NEW` = stary klucz) albo przywróć zrzut z kroku 3 i zachowaj stary klucz |
-| Nowy klucz utracony po kroku 4 | Przywróć zrzut z kroku 3 ze starym kluczem i strać późniejsze zmiany. Bez starego klucza firmy wprowadzają tokeny ponownie |
+| Po kroku 4, problem przed krokiem 6 | Zatrzymaj API i Workera. Potem wykonaj rotację w drugą stronę (`ENCRYPTION_KEY` = nowy klucz, `ENCRYPTION_KEY_NEW` = stary klucz) albo przywróć `before-rotation.dump` i zachowaj stary klucz |
+| Nowy klucz utracony po kroku 4 | Przywróć `before-rotation.dump` ze starym kluczem i strać późniejsze zmiany. Bez starego klucza firmy wprowadzają tokeny ponownie |
+
+Rotację wycofuje `before-rotation.dump`. Przywróć go tym samym poleceniem co w procedurze aktualizacji, po zatrzymaniu obu usług. `before-key-move.dump` wraca do stanu sprzed przeniesienia klucza i nie służy do wycofania rotacji.
 
 ## Architektura
 
@@ -223,19 +245,19 @@ Portal sprawdza `/api/system/setup-status` przy każdym ładowaniu chronionej st
 
 ## Rozwiązywanie problemów
 
+:::danger[Tryb przejściowy a usuwanie wierszy]
+Dopóki klucz jest w bazie, wiersz `encryption_key` to jedyna jego kopia. Jeśli usuniesz wiersze z `SystemConfigs` przed [przeniesieniem klucza](#aktualizacja-z-wersji-v007-lub-starszej), stracisz zapisane tokeny i certyfikaty KSeF. Po przeniesieniu klucza kreator musi działać z tym samym `ENCRYPTION_KEY`, inaczej danych logowania nie da się odszyfrować.
+:::
+
 | Problem | Rozwiązanie |
 |---------|-------------|
-| Wizard się nie pojawia | Sprawdź, czy tabela `SystemConfigs` jest pusta. Usuń wiersze i zrestartuj API. |
+| Wizard się nie pojawia | Tylko jeśli zapytanie z [kroku 1 aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej) zwraca 0: sprawdź, czy tabela `SystemConfigs` jest pusta. Usuń wiersze i zrestartuj API. |
 | Logowanie Keycloak nie działa | Sprawdź, czy Keycloak działa (`docker compose logs keycloak`). Dane logowania: `KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`. |
 | Apply zwraca 500 | Sprawdź logi API (`docker compose logs api`). Częsta przyczyna: Keycloak nie jest jeszcze gotowy. |
 | Test email SMTP nie działa | Zweryfikuj dane SMTP. Gmail wymaga Hasła aplikacji. |
 | Pętla przekierowań po setup | Wyczyść cache/cookies przeglądarki. Portal cachuje status setup na 60 sekund. |
-| Chcę uruchomić wizard ponownie | Usuń wszystkie wiersze z tabeli `SystemConfigs` i zrestartuj kontener API. |
+| Chcę uruchomić wizard ponownie | Tylko jeśli zapytanie z [kroku 1 aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej) zwraca 0: usuń wszystkie wiersze z tabeli `SystemConfigs` i zrestartuj kontener API. |
 | Wizard zgłasza brak prawidłowego klucza szyfrowania | Wygeneruj klucz, ustaw `ENCRYPTION_KEY`, zapisz kopię poza bazą i uruchom `docker compose up -d`. Potem kliknij **Dalej** i przejdź wizard jeszcze raz. Wprowadzone dane zostają zachowane. |
-| `docker compose` zgłasza brak `ENCRYPTION_KEY` | Nowy `docker-compose.yml` wymaga klucza. Na istniejącej instalacji wykonaj [aktualizację](#aktualizacja-z-wersji-v007-lub-starszej): sam wpis klucza pomija zatrzymanie usług i kopię zapasową. |
+| `docker compose` zgłasza brak `ENCRYPTION_KEY` | Nowy `docker-compose.yml` wymaga klucza. Na istniejącej instalacji najpierw uruchom zapytanie o wiersz klucza w wersji `docker exec` z [aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej). Wynik 1: wykonaj aktualizację, bo sam wpis klucza pomija zatrzymanie usług i kopię zapasową. Wynik 0: klucz jest już przeniesiony, więc przywróć poprzednią wartość `ENCRYPTION_KEY` i nie generuj nowej, bo nowy klucz nie odszyfruje zapisanych danych. |
 | Critical: `The configured encryption key does not decrypt` | Ustawiony klucz nie pasuje do danych w bazie. Przywróć klucz, którym je zaszyfrowano. |
 | Critical: `The configured encryption key cannot be used` | Klucza nie ma już w bazie, a `ENCRYPTION_KEY` jest pusty lub nieprawidłowy. Logowanie i odczyt faktur działają. Dodawanie danych logowania, synchronizacja i wysyłka nie. Przywróć klucz. |
-
-:::danger[Tryb przejściowy a usuwanie wierszy]
-Dopóki klucz jest w bazie, wiersz `encryption_key` to jedyna jego kopia. Jeśli usuniesz wiersze z `SystemConfigs` przed [przeniesieniem klucza](#aktualizacja-z-wersji-v007-lub-starszej), stracisz zapisane tokeny i certyfikaty KSeF.
-:::

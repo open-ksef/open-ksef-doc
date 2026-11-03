@@ -105,6 +105,12 @@ Review all settings and click "Apply". The wizard:
 
 This section applies to version `WERSJA-T-026` and later.
 
+:::danger[Check ENCRYPTION_KEY before you upgrade]
+Before any `docker compose pull`, `docker compose up -d`, stack update or automatic updater run, check `ENCRYPTION_KEY` in `.env` or the stack environment. If it holds a valid value, the first start of the new images moves the key to that value, with no stop and no backup. Follow the [upgrade procedure](#upgrade-from-v007-or-earlier) first.
+
+Has the key already moved (the query in its step 1 returns 0)? Keep that value, because it is the only copy of the key, then [rotate the key](#rotate-the-key).
+:::
+
 The key encrypts stored KSeF tokens and certificates. Losing it loses them: they must be entered again.
 
 A valid key is 32 bytes in base64, which is 44 characters. Generate it with one of these commands:
@@ -126,7 +132,7 @@ A plain `docker compose pull` gets you the `:latest` images. Up to and including
 | New images, key in the database, `ENCRYPTION_KEY` empty | **Legacy mode.** The system works as before and nothing is lost. The key stays in the database and security is unchanged. Each start logs an Error |
 | New images, key in the database, `ENCRYPTION_KEY` malformed (e.g. wrong format or length) | The same: legacy mode and an Error at each start |
 | New images, key in the database, `ENCRYPTION_KEY` valid | The key moves at the first start, to exactly this value. Make sure you have it stored outside the database, and follow the procedure below **before** you pull the images |
-| New `docker-compose.yml` without `ENCRYPTION_KEY` | `docker compose` refuses to run and names the command that generates a key. This applies to every `docker compose` command, including `stop` and `exec`. Running containers stay untouched |
+| New `docker-compose.yml` without `ENCRYPTION_KEY` | `docker compose` refuses to run and names the command that generates a key. `stop`, `exec`, `ps`, `logs` refuse unless the project name is set. `up`, `pull`, `run` always refuse. Running containers stay untouched |
 
 Legacy mode is temporary: we plan for later releases to stop reading the key from the database. Move the key as soon as you can.
 
@@ -134,21 +140,35 @@ Legacy mode is temporary: we plan for later releases to stop reading the key fro
 
 The first start with a valid configured key re-encrypts all credentials and deletes the key row from the database, in one transaction.
 
-Run steps 1 and 2 with the compose file you use now. The new `docker-compose.yml` arrives at step 5.
+Run steps 1 to 3 with the compose file you use now. The new `docker-compose.yml` arrives at step 6.
 
-1. **Stop API and Worker:** `docker compose stop api worker`. Stop both, because compose starts them in no fixed order. An old API that still serves while the key moves writes under the old key, and that data is lost.
-2. **Back up:** `docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-key-move.dump`. This dump holds the old key together with the encrypted data, so protect it. Verify it: `docker compose exec -T postgres pg_restore -l < before-key-move.dump > /dev/null` must exit 0.
-3. **Generate the key:** `openssl rand -base64 32`. It must have 44 characters. **Store it in a password manager before the next step**, outside the database and its backups. Do not reuse an older `ENCRYPTION_KEY` value.
-4. **Set the key:** put the new value in `ENCRYPTION_KEY` in `.env` or the stack environment.
-5. **Start the new images:** replace `docker-compose.yml` with the new file from [Quick start](instalacja/szybki-start), then `docker compose pull api worker portal-web` and `docker compose up -d`.
-6. **Verify:**
+Old file already overwritten and `docker compose` refuses to run? Do not add the key to get past it: one `up` moves the key with no backup. Run steps 1 to 3 with Docker alone, then continue the procedure from step 4. The container names are fixed:
+
+```bash
+echo "SELECT count(*) FROM \"SystemConfigs\" WHERE \"Key\"='encryption_key';" | docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef -tA'
+docker stop openksef-api openksef-worker
+docker exec openksef-postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-key-move.dump
+docker exec -i openksef-postgres pg_restore -l < before-key-move.dump > /dev/null; echo "exit=$?"
+```
+
+1. **Check that the key is still in the database:**
+   ```bash
+   echo "SELECT count(*) FROM \"SystemConfigs\" WHERE \"Key\"='encryption_key';" | docker compose exec -T postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef -tA'
+   ```
+   Continue only if the result is `1`. A result of `0` means the key has already moved, and `ENCRYPTION_KEY` is its only copy. **Stop this procedure, do not change `ENCRYPTION_KEY`** and go to [rotation](#rotate-the-key).
+2. **Stop API and Worker:** `docker compose stop api worker`. Stop both, because compose starts them in no fixed order. An old API that still serves while the key moves writes under the old key, and that data is lost.
+3. **Back up:** `docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-key-move.dump`. This dump holds the old key together with the encrypted data, so protect it. Verify it: `docker compose exec -T postgres pg_restore -l < before-key-move.dump > /dev/null; echo "exit=$?"` must print `exit=0`.
+4. **Generate the key:** `openssl rand -base64 32`, or the Docker command above. It must have 44 characters. **Store it in a password manager before the next step**, outside the database and its backups. Do not reuse an older `ENCRYPTION_KEY` value.
+5. **Set the key:** copy the current `ENCRYPTION_KEY` value, if one is set, to a password manager before you overwrite it. Then put the new value in `ENCRYPTION_KEY` in `.env` or the stack environment.
+6. **Start the new images:** replace `docker-compose.yml` with the new file from [Quick start](instalacja/szybki-start), then `docker compose pull api worker portal-web` and `docker compose up -d`.
+7. **Verify:**
    - In `docker compose logs api worker` one service logs `Encryption key moved out of the database`. The other logs nothing about it. Neither logs Critical.
-   - A query in the database (`docker compose exec postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef'`) returns 0: `SELECT count(*) FROM "SystemConfigs" WHERE "Key"='encryption_key';`
+   - The query from step 1 returns 0.
    - One manual sync succeeds: **Dane logowania** (Credentials) > the company row > **Wymuś synchronizację** (Force sync).
 
-The dump from step 2 is now the only copy of the old key. Keep it at least until a sync succeeds. Dumps taken before the key moved can decrypt the tokens until you delete them.
+The dump from step 3 is now the only copy of the old key. Keep it at least until a sync succeeds. Dumps taken before the key moved can decrypt the tokens until you delete them.
 
-A Critical log that names a credential means it could not be decrypted, and nothing changed. Delete or re-enter that credential in the portal and restart the services.
+A Critical log that names a credential means it could not be decrypted, and nothing changed. Delete or re-enter that credential in the portal and restart the services. A Critical log that names no credential means nothing changed: restart the services.
 
 **Rollback**
 
@@ -160,21 +180,21 @@ Previous images carry a release tag, e.g. `:v0.0.7`.
 | Row gone, previous images, `ENCRYPTION_KEY` kept | Works: the previous images read the key from the variable when no row exists |
 | Row gone, previous images, key only in `ENCRYPTION_KEY_FILE` | Credential use fails: the previous images do not read that file. Set `ENCRYPTION_KEY` to the same value |
 | Row gone, previous images, `ENCRYPTION_KEY` reverted or emptied | Services run, credential use fails with logs, no data changes. Restore the new key. **Do not revert the key** |
-| New key lost | Current data cannot be recovered. Companies re-enter tokens, or you restore the dump from step 2 and lose later changes |
-| Dump from step 2 restored | The row and old data return. The next start moves the key again |
+| New key lost | Current data cannot be recovered. Companies re-enter tokens, or you restore the dump from step 3 and lose later changes |
+| Dump from step 3 restored | The row and old data return. The next start moves the key again |
 
 To restore a dump, stop both services first, then run `docker compose exec -T postgres sh -c 'pg_restore -U "$POSTGRES_USER" -d openksef --clean --if-exists' < before-key-move.dump`.
 
 ### Rotate the key
 
-Run this on a stack that already runs the current images and has moved the key: the query from the upgrade procedure returns 0.
+Run this on a stack that already runs the current images and has moved the key: the query from step 1 of the upgrade procedure returns 0.
 
-1. Generate the new key: `openssl rand -base64 32`. **Store it in a password manager before you run anything.** Keep the old key until step 6 succeeds.
+1. Generate the new key: `openssl rand -base64 32`, or the Docker command above. **Store it in a password manager before you run anything.** Keep the old key until step 6 succeeds.
 2. Stop API and Worker: `docker compose stop api worker`.
-3. Back up and verify the dump, as in the upgrade.
+3. Back up and verify the dump, as in the upgrade, but to `before-rotation.dump`. Do not overwrite `before-key-move.dump`.
 4. Re-encrypt, with `ENCRYPTION_KEY` still on the old key. The new key is read from the environment and is never a command argument:
    ```bash
-   read -s ENCRYPTION_KEY_NEW && export ENCRYPTION_KEY_NEW
+   read -rsp 'New key: ' ENCRYPTION_KEY_NEW && echo && export ENCRYPTION_KEY_NEW
    docker compose run --rm -e ENCRYPTION_KEY_NEW api rotate-encryption-key
    unset ENCRYPTION_KEY_NEW
    ```
@@ -194,8 +214,10 @@ The command exits 1 and writes nothing when:
 | Situation | Action |
 |---|---|
 | Command refused | Nothing changed. Fix the reason and retry |
-| After step 4, problem before step 6 | Rotate back (`ENCRYPTION_KEY` = new key, `ENCRYPTION_KEY_NEW` = old key), or restore the dump from step 3 and keep the old key |
-| New key lost after step 4 | Restore the dump from step 3 with the old key, and lose later changes. Without the old key, companies re-enter tokens |
+| After step 4, problem before step 6 | Stop API and Worker. Then rotate back (`ENCRYPTION_KEY` = new key, `ENCRYPTION_KEY_NEW` = old key), or restore `before-rotation.dump` and keep the old key |
+| New key lost after step 4 | Restore `before-rotation.dump` with the old key, and lose later changes. Without the old key, companies re-enter tokens |
+
+`before-rotation.dump` is the dump that rolls back a rotation. Restore it with the same command as in the upgrade procedure, after you stop both services. `before-key-move.dump` returns to the state before the key moved and does not roll back a rotation.
 
 ## Architecture
 
@@ -223,19 +245,19 @@ The portal checks `/api/system/setup-status` on every protected page load. If `i
 
 ## Troubleshooting
 
+:::danger[Legacy mode and deleting rows]
+While the key is in the database, the `encryption_key` row is its only copy. If you delete rows from `SystemConfigs` before [moving the key](#upgrade-from-v007-or-earlier), you lose stored KSeF tokens and certificates. After the key has moved, the wizard must run with the same `ENCRYPTION_KEY`, or the credentials stop decrypting.
+:::
+
 | Problem | Solution |
 |---------|----------|
-| Wizard doesn't appear | Check if the `SystemConfigs` table is empty. Delete rows and restart the API. |
+| Wizard doesn't appear | Only if the query from [upgrade step 1](#upgrade-from-v007-or-earlier) returns 0: check if the `SystemConfigs` table is empty. Delete rows and restart the API. |
 | Keycloak login doesn't work | Check if Keycloak is running (`docker compose logs keycloak`). Credentials: `KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` from `.env`. |
 | Apply returns 500 | Check API logs (`docker compose logs api`). Common cause: Keycloak is not ready yet. |
 | SMTP email test fails | Verify SMTP credentials. Gmail requires an App Password. |
 | Redirect loop after setup | Clear browser cache/cookies. The portal caches setup status for 60 seconds. |
-| Want to run the wizard again | Delete all rows from the `SystemConfigs` table and restart the API container. |
+| Want to run the wizard again | Only if the query from [upgrade step 1](#upgrade-from-v007-or-earlier) returns 0: delete all rows from the `SystemConfigs` table and restart the API container. |
 | Wizard reports no valid encryption key | Generate a key, set `ENCRYPTION_KEY`, keep a copy outside the database and run `docker compose up -d`. Then click **Dalej** (Next) and go through the wizard again. Entered data is kept. |
-| `docker compose` reports a missing `ENCRYPTION_KEY` | The new `docker-compose.yml` requires the key. On an existing installation follow the [upgrade](#upgrade-from-v007-or-earlier): setting the key alone skips stopping the services and the backup. |
+| `docker compose` reports a missing `ENCRYPTION_KEY` | The new `docker-compose.yml` requires the key. On an existing installation first run the key row query in its `docker exec` form from the [upgrade](#upgrade-from-v007-or-earlier). Result 1: follow the upgrade, because setting the key alone skips stopping the services and the backup. Result 0: the key has already moved, so restore the previous `ENCRYPTION_KEY` value and do not generate a new one, because a new key does not decrypt the stored data. |
 | Critical: `The configured encryption key does not decrypt` | The configured key does not match the data in the database. Restore the key that encrypted it. |
 | Critical: `The configured encryption key cannot be used` | The key is no longer in the database and `ENCRYPTION_KEY` is empty or malformed. Login and invoice reads work. Adding credentials, sync and send do not. Restore the key. |
-
-:::danger[Legacy mode and deleting rows]
-While the key is in the database, the `encryption_key` row is its only copy. If you delete rows from `SystemConfigs` before [moving the key](#upgrade-from-v007-or-earlier), you lose stored KSeF tokens and certificates.
-:::
