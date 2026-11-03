@@ -17,7 +17,7 @@ Administratorem danych osobowych jest właściciel instancji OpenKSeF, z której
 
 Właściciel instancji podaje swoim użytkownikom swoją nazwę i dane kontaktowe. Jeśli ich nie znasz, zapytaj osobę, która dała Ci dostęp. Autorzy OpenKSeF nie mają dostępu do instancji, których sami nie prowadzą.
 
-W sklepie Google Play aplikację OpenKSeF publikuje **[NAZWA DEWELOPERA Z GOOGLE PLAY]**. Wydawca aplikacji nie staje się przez to administratorem danych w instancjach, których nie prowadzi.
+W sklepie Google Play aplikację OpenKSeF publikuje **Krystian Mikrut**. Wydawca aplikacji nie staje się przez to administratorem danych w instancjach, których nie prowadzi.
 
 Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w OpenKSeF, w sprawie tych danych skontaktuj się ze sprzedawcą.
 
