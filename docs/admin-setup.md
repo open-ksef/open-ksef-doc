@@ -142,7 +142,7 @@ Pierwszy start z prawidłowym kluczem w konfiguracji szyfruje ponownie wszystkie
 
 Kroki 1 do 3 wykonaj plikiem compose, którego używasz teraz. Nowy `docker-compose.yml` podmienisz dopiero w kroku 6.
 
-Stary plik został już nadpisany i `docker compose` odmawia działania? Nie dopisuj klucza, żeby to obejść: jedno `up` przeniesie klucz bez kopii zapasowej. Wykonaj kroki 1 do 3 samym Dockerem, a od kroku 4 kontynuuj zgodnie z procedurą. Nazwy kontenerów są stałe:
+Stary plik został już nadpisany i `docker compose` odmawia działania? Nie dopisuj klucza, żeby to obejść: jedno `up` przeniesie klucz bez kopii zapasowej. Wykonaj kroki 1 do 3 samym Dockerem, a od kroku 4 kontynuuj zgodnie z procedurą. Uruchamiaj po jednym poleceniu. Pierwsze to krok 1: przy wyniku `0` przerwij, tak jak w tym kroku. Nazwy kontenerów są stałe:
 
 ```bash
 echo "SELECT count(*) FROM \"SystemConfigs\" WHERE \"Key\"='encryption_key';" | docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef -tA'

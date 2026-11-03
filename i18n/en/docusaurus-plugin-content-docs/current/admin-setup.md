@@ -142,7 +142,7 @@ The first start with a valid configured key re-encrypts all credentials and dele
 
 Run steps 1 to 3 with the compose file you use now. The new `docker-compose.yml` arrives at step 6.
 
-Old file already overwritten and `docker compose` refuses to run? Do not add the key to get past it: one `up` moves the key with no backup. Run steps 1 to 3 with Docker alone, then continue the procedure from step 4. The container names are fixed:
+Old file already overwritten and `docker compose` refuses to run? Do not add the key to get past it: one `up` moves the key with no backup. Run steps 1 to 3 with Docker alone, then continue the procedure from step 4. Run one command at a time. The first is step 1: on a result of `0`, stop as that step says. The container names are fixed:
 
 ```bash
 echo "SELECT count(*) FROM \"SystemConfigs\" WHERE \"Key\"='encryption_key';" | docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef -tA'
