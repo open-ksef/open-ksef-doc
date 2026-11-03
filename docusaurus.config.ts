@@ -1,11 +1,16 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import focusableTables from './src/rehype/focusableTables';
 
 const config: Config = {
   title: 'OpenKSeF',
   tagline: 'Miej kontrolę nad fakturami z KSeF: powiadomienia, przegląd, szybkie płatności i wystawianie',
   favicon: 'img/favicon.svg',
+  headTags: [
+    {tagName: 'link', attributes: {rel: 'alternate icon', href: '/img/favicon.ico'}},
+    {tagName: 'link', attributes: {rel: 'apple-touch-icon', href: '/img/favicon-180.png'}},
+  ],
 
   future: {
     v4: true,
@@ -31,6 +36,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          rehypePlugins: [focusableTables],
           editUrl: 'https://github.com/open-ksef/open-ksef-doc/tree/main/',
         },
         blog: false,
@@ -46,8 +52,8 @@ const config: Config = {
     announcementBar: {
       id: 'beta',
       content: 'OpenKSeF jest w fazie <strong>beta</strong>: aktywnie rozwijamy projekt. Zgłaszaj błędy i pomysły na <a href="https://github.com/open-ksef" target="_blank">GitHub</a>.',
-      backgroundColor: '#eef2ff',
-      textColor: '#312e81',
+      backgroundColor: 'var(--ifm-color-primary-lightest)',
+      textColor: 'var(--ifm-color-primary-darkest)',
     },
     colorMode: {
       defaultMode: 'light',
@@ -56,8 +62,8 @@ const config: Config = {
     navbar: {
       title: 'OpenKSeF',
       logo: {
-        alt: 'OpenKSeF Logo',
-        src: 'img/logo.svg',
+        src: 'img/mark.svg',
+        srcDark: 'img/mark-dark.svg',
       },
       items: [
         {
@@ -74,7 +80,7 @@ const config: Config = {
       ],
     },
     footer: {
-      style: 'dark',
+      style: 'light',
       links: [
         {
           title: 'Dokumentacja',
@@ -97,8 +103,26 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} OpenKSeF (beta). Kod źródłowy jest publicznie dostępny na licencji Elastic License 2.0. Niezależny projekt, niepowiązany z Ministerstwem Finansów. Projekt stworzony z pomocą AI.`,
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: {
+        ...prismThemes.github,
+        styles: [
+          ...prismThemes.github.styles,
+          {types: ['comment', 'prolog', 'doctype', 'cdata'], style: {color: 'var(--ifm-color-emphasis-600)'}},
+          {types: ['string', 'attr-value', 'function', 'deleted'], style: {color: 'var(--ifm-color-danger)'}},
+          {
+            types: ['entity', 'url', 'symbol', 'number', 'boolean', 'variable', 'constant', 'property', 'regex', 'inserted'],
+            style: {color: 'var(--ifm-color-success)'},
+          },
+          {types: ['atrule', 'attr-name'], style: {color: 'var(--ifm-link-color)'}},
+        ],
+      },
+      darkTheme: {
+        ...prismThemes.dracula,
+        styles: [
+          ...prismThemes.dracula.styles,
+          {types: ['comment', 'prolog', 'doctype', 'cdata'], style: {color: 'var(--ifm-color-emphasis-600)'}},
+        ],
+      },
       additionalLanguages: ['bash', 'json', 'yaml', 'csharp'],
     },
   } satisfies Preset.ThemeConfig,
