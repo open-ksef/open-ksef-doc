@@ -7,6 +7,10 @@ const config: Config = {
   title: 'OpenKSeF',
   tagline: 'Miej kontrolę nad fakturami z KSeF: powiadomienia, przegląd, szybkie płatności i wystawianie',
   favicon: 'img/favicon.svg',
+  headTags: [
+    {tagName: 'link', attributes: {rel: 'alternate icon', href: '/img/favicon.ico'}},
+    {tagName: 'link', attributes: {rel: 'apple-touch-icon', href: '/img/favicon-180.png'}},
+  ],
 
   future: {
     v4: true,
@@ -58,8 +62,9 @@ const config: Config = {
     navbar: {
       title: 'OpenKSeF',
       logo: {
-        alt: 'OpenKSeF Logo',
-        src: 'img/logo.svg',
+        alt: 'OpenKSeF',
+        src: 'img/mark.svg',
+        srcDark: 'img/mark-dark.svg',
       },
       items: [
         {

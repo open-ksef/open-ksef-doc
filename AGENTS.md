@@ -32,7 +32,7 @@ Strona wizualnie nawiązuje do portalu OpenKSeF:
 - Font: Inter + JetBrains Mono, lokalne pliki woff2 w `src/fonts`, licencje OFL w `static/fonts`
 - Gradient hero: `linear-gradient(135deg, #1e1b4b, #312e81, #4338ca)`
 - Karty z shadow i hover lift
-- Logo: ⚡ + "OpenKSeF"
+- Logo: `static/img/mark.svg` (ciemny motyw: `mark-dark.svg`) + "OpenKSeF"
 
 Design tokens zdefiniowane w `src/css/custom.css` (nadpisują zmienne Docusaurus `--ifm-*`).
 
