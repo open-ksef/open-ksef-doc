@@ -167,6 +167,8 @@ Jeśli uruchamiałeś wcześniej starszą wersję tego pliku (bez `.env`), wolum
 
 ## Krok 2: Uruchom
 
+Tylko nowe instalacje. Na istniejącej instalacji nie uruchamiaj tego kroku: wykonaj [procedurę aktualizacji](../admin-setup#aktualizacja-z-wersji-v007-lub-starszej).
+
 ```bash
 docker compose up -d
 ```

@@ -167,6 +167,8 @@ If you previously ran an older version of this file (without `.env`), the `postg
 
 ## Step 2: Start
 
+New installations only. On an existing installation do not run this step: follow the [upgrade procedure](../admin-setup#upgrade-from-v007-or-earlier).
+
 ```bash
 docker compose up -d
 ```
