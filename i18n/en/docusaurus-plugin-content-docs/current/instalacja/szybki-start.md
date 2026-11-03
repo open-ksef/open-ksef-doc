@@ -74,7 +74,7 @@ services:
       ConnectionStrings__Db: Host=postgres;Port=5432;Database=openksef;Username=${POSTGRES_USER:?POSTGRES_USER is required};Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       Auth__Authority: http://keycloak:8080/auth/realms/openksef
       Auth__PublicAuthority: ${APP_EXTERNAL_BASE_URL:-http://localhost:8080}/auth/realms/openksef
-      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      ENCRYPTION_KEY: "${ENCRYPTION_KEY:?Generate with: openssl rand -base64 32}"
       Auth__ServiceAccount__ClientId: openksef-api
       Auth__ServiceAccount__ClientSecret: ${API_CLIENT_SECRET:-}
       KSeF__BaseUrl: ${KSEF_BASE_URL:-https://ksef-test.mf.gov.pl/api}
@@ -93,7 +93,7 @@ services:
     environment:
       ConnectionStrings__Db: Host=postgres;Port=5432;Database=openksef;Username=${POSTGRES_USER:?POSTGRES_USER is required};Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       Auth__Authority: http://keycloak:8080/auth/realms/openksef
-      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-}
+      ENCRYPTION_KEY: "${ENCRYPTION_KEY:?Generate with: openssl rand -base64 32}"
       KSeF__BaseUrl: ${KSEF_BASE_URL:-https://ksef-test.mf.gov.pl/api}
       Firebase__CredentialsJson: ${FIREBASE_CREDENTIALS_JSON:-}
 
@@ -129,17 +129,26 @@ volumes:
 Click the copy icon in the top-right corner of the code block to copy the entire content. Paste it into a new `docker-compose.yml` file.
 :::
 
-In the same directory, create an `.env` file with the credentials (usernames and passwords) for PostgreSQL and the Keycloak admin console. Without it, `docker compose up` fails (e.g. `POSTGRES_USER is required`):
+Generate the KSeF token encryption key. Docker is enough, and if you have `openssl` you can use `openssl rand -base64 32`:
+
+```bash
+docker run --rm postgres:16-alpine sh -c "head -c 32 /dev/urandom | base64"
+```
+
+**Store the result in a password manager.** Without this key stored KSeF tokens cannot be read, and it is neither in the database nor in its backups.
+
+In the same directory, create an `.env` file with the credentials (usernames and passwords) for PostgreSQL and the Keycloak admin console, and with the generated key. Without it, `docker compose up` fails (e.g. `POSTGRES_USER is required`):
 
 ```bash
 POSTGRES_USER=openksef
 POSTGRES_PASSWORD=change_me
 KEYCLOAK_ADMIN=admin
 KEYCLOAK_ADMIN_PASSWORD=change_me_too
+ENCRYPTION_KEY=paste_the_generated_key_here
 ```
 
 :::warning[Credentials]
-Use your own strong passwords. `docker-compose.yml` has no defaults for these four variables on purpose.
+Use your own strong passwords. `docker-compose.yml` has no defaults for these five variables on purpose.
 :::
 
 :::caution[Upgrading an existing installation]
@@ -148,6 +157,10 @@ If you previously ran an older version of this file (without `.env`), the `postg
 1. Put the old values in `.env`: `POSTGRES_USER=openksef`, `POSTGRES_PASSWORD=openksef_dev_password`, `KEYCLOAK_ADMIN=admin`, `KEYCLOAK_ADMIN_PASSWORD=admin` and run `docker compose up -d`.
 2. Change the database password: `docker compose exec postgres psql -U openksef -c "ALTER USER openksef WITH PASSWORD 'new_password';"`, put it in `POSTGRES_PASSWORD` in `.env` and run `docker compose up -d` again.
 3. Change the Keycloak admin password in the console (http://localhost:8082/auth/admin, realm `master` > **Users** > `admin` > **Credentials** > **Reset password**) and put it in `KEYCLOAK_ADMIN_PASSWORD` in `.env`.
+:::
+
+:::danger[Existing installation and the encryption key]
+Already running an installation? **Do not add the key straight away.** The first start with a key moves it out of the database and re-encrypts the data, so first stop API and Worker and back up. Follow the [upgrade procedure](../admin-setup#upgrade-from-v007-or-earlier). The new `docker-compose.yml` without `ENCRYPTION_KEY` refuses to run, and running containers stay untouched.
 :::
 
 ## Step 2: Start
@@ -184,14 +197,14 @@ The system will detect that it's not yet configured and automatically redirect y
 1. Logging in with Keycloak admin credentials (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` from `.env`)
 2. **Pierwsze konto i firma** (first account and company): external URL, KSeF environment, e-mail and password of the first user, and the company NIP
 3. Login policy and optionally SMTP
-4. Automatic generation of encryption key and API secret
+4. Automatic fetch of the API secret (you set the encryption key in `.env`, not in the wizard)
 5. Optionally: Google OAuth, push notifications
 6. Click "Apply" -- done!
 
 Detailed description of each step can be found in the [Setup Wizard](../admin-setup).
 
 :::info[Encryption key]
-The wizard stores the encryption key in the database (table `SystemConfigs`, key `encryption_key`), and the database value takes precedence over the `ENCRYPTION_KEY` variable. You do not need to add the key to `.env` or restart containers. Because the key lives in the database, a backup of the `postgres_data` volume contains it together with the encrypted KSeF tokens -- protect it like a password.
+The key is read from the `ENCRYPTION_KEY` variable of the API and Worker services. The wizard neither generates nor stores it, and it does not apply the configuration without a valid key. A backup of the `postgres_data` volume does not contain the key, so restoring data takes both the backup and the key. Still protect the backup like a password: it holds other wizard secrets. Upgrade and rotation: [Encryption key](../admin-setup#encryption-key).
 :::
 
 ## Service URLs
@@ -217,7 +230,7 @@ docker compose down -v
 
 ## Advanced configuration
 
-The `.env` file from step 1 only needs the credentials. Other variables have defaults, and the setup wizard automatically generates missing secrets.
+The `.env` file from step 1 needs the credentials and the encryption key. Other variables have defaults, and the setup wizard automatically fills in the remaining secrets.
 
 If you want to change other settings **before** launching (e.g. ports, URL), add them to the same `.env` file, below the credentials from step 1:
 
@@ -242,7 +255,7 @@ If you want to change other settings **before** launching (e.g. ports, URL), add
 :::info[Configuration priority]
 Setup wizard (database) > `.env` file > defaults in `docker-compose.yml`
 
-Applies to settings the wizard stores (e.g. encryption key, API secret, public URL, KSeF environment). After the wizard runs, its values take precedence, and `.env` applies only to values the wizard did not set. PostgreSQL and Keycloak credentials always come from `.env`.
+Applies to settings the wizard stores (e.g. API secret, public URL, KSeF environment). After the wizard runs, its values take precedence, and `.env` applies only to values the wizard did not set. PostgreSQL and Keycloak credentials and the encryption key always come from `.env`.
 :::
 
 Full description of all variables can be found in [Configuration](konfiguracja).

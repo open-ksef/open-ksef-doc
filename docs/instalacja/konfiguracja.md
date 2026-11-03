@@ -13,7 +13,7 @@ OpenKSeF konfiguruje się na trzy sposoby (w kolejności priorytetu):
 
 **Priorytet:** Kreator (baza danych) > plik `.env` > wartości domyślne
 
-Plik `.env` jest **wymagany**: musi zawierać dane logowania do PostgreSQL i Keycloak (patrz [Zmienne infrastruktury](#zmienne-infrastruktury)). Resztę ustawisz w [kreatorze konfiguracji](../admin-setup). W `.env` możesz też zmienić porty lub publiczny URL przed pierwszym uruchomieniem.
+Plik `.env` jest **wymagany**: musi zawierać dane logowania do PostgreSQL i Keycloak (patrz [Zmienne infrastruktury](#zmienne-infrastruktury)) oraz `ENCRYPTION_KEY`. Resztę ustawisz w [kreatorze konfiguracji](../admin-setup). W `.env` możesz też zmienić porty lub publiczny URL przed pierwszym uruchomieniem.
 
 ## Architektura kontenerów
 
@@ -35,7 +35,8 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 |---------|------|-----------|
 | `ConnectionStrings__Db` | Connection string PostgreSQL | `Host=postgres;Database=openksef;...` |
 | `Auth__Authority` | URL Keycloak realm | `http://keycloak:8080/auth/realms/openksef` |
-| `ENCRYPTION_KEY` | Klucz AES-256 do szyfrowania tokenów KSeF. Kreator zapisuje go w bazie i wartość z bazy ma pierwszeństwo; zmienna potrzebna tylko bez kreatora | *(generowany przez kreator)* |
+| `ENCRYPTION_KEY` | Klucz AES-256 do szyfrowania tokenów KSeF, 44 znaki base64 (`openssl rand -base64 32`). Ustaw go przed pierwszym uruchomieniem i przechowuj poza bazą. Kreator go nie generuje. `docker-compose.yml` bez tej zmiennej odmawia działania. Istniejąca instalacja, nieprawidłowa wartość, rotacja: [Klucz szyfrowania](../admin-setup#klucz-szyfrowania) | *(wymagane)* |
+| `ENCRYPTION_KEY_FILE` | Ścieżka do pliku z kluczem, czytana gdy `ENCRYPTION_KEY` jest pusty. Wymaga własnego pliku compose: dostarczony `docker-compose.yml` przekazuje tylko `ENCRYPTION_KEY` i odmawia działania bez niego, a sam plik override tego nie zmienia | *(brak)* |
 | `ASPNETCORE_ENVIRONMENT` | Środowisko API. `Production` wyłącza Swaggera | `Production` |
 | `Auth__RequireHttpsMetadata` | Czy API wymaga HTTPS przy pobieraniu metadanych OIDC z `Auth__Authority`. Compose ustawia `"false"`, bo API łączy się z Keycloak w sieci Docker po HTTP (`http://keycloak:8080`). Domyślnie (bez zmiennej) `true` -- wtedy API odrzuca adres `http://` | `"false"` |
 | `KSeF__BaseUrl` | Adres API KSeF | `https://ksef-test.mf.gov.pl/api` |
