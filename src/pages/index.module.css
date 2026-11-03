@@ -44,20 +44,20 @@
 }
 
 .heroButtonPrimary {
-  background: linear-gradient(135deg, #6366f1, #818cf8) !important;
+  background: #ffffff !important;
   border: none !important;
-  color: #ffffff !important;
+  color: #312e81 !important;
   font-weight: 600 !important;
   font-size: 1.1rem !important;
   padding: 0.75rem 2rem !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   transition: transform 0.2s, box-shadow 0.2s !important;
 }
 
 .heroButtonPrimary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4) !important;
-  color: #ffffff !important;
+  color: #312e81 !important;
 }
 
 .heroButtonSecondary {
@@ -67,7 +67,7 @@
   font-weight: 600 !important;
   font-size: 1.1rem !important;
   padding: 0.75rem 2rem !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   transition: background 0.2s !important;
 }
 
