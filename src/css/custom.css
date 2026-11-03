@@ -101,8 +101,9 @@
   --ifm-font-family-monospace: ui-monospace, 'SF Mono', monospace;
 }
 
-[data-theme='dark'] .theme-announcement-bar button {
-  color: #fff;
+.theme-announcement-bar button {
+  color: inherit;
+  opacity: 0.6;
 }
 
 /* Navbar */

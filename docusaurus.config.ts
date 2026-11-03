@@ -62,7 +62,6 @@ const config: Config = {
     navbar: {
       title: 'OpenKSeF',
       logo: {
-        alt: 'OpenKSeF',
         src: 'img/mark.svg',
         srcDark: 'img/mark-dark.svg',
       },
