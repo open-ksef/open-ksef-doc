@@ -4,7 +4,7 @@ Instrukcje dla agentów AI pracujących z tym repozytorium.
 
 ## Koncept
 
-To repozytorium (`open-ksef-doc`) zawiera stronę dokumentacji i marketingu dla projektu **OpenKSeF** -- otwartoźródłowego systemu do synchronizacji i przeglądania faktur z polskiego KSeF.
+To repozytorium (`open-ksef-doc`) zawiera stronę dokumentacji i marketingu dla projektu **OpenKSeF** -- systemu z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z polskiego KSeF.
 
 ### Czym jest to repo
 
@@ -94,6 +94,6 @@ npm run serve   # podgląd buildu lokalnie
 2. Dokumentacja musi być **spójna** z aktualnym stanem kodu w `open-ksef` i `open-ksef-mobile`
 3. Design musi **nawiązywać** do portalu (paleta indigo, Inter font, karty z shadow)
 4. Sekcja "O projekcie" zawiera **disclaimer**: projekt stworzony z pomocą AI, self-hosting = odpowiedzialność użytkownika
-5. Licencja **Elastic License 2.0 (ELv2)** -- darmowy self-hosting, zakaz SaaS bez zgody autora
+5. Licencja **Elastic License 2.0 (ELv2)** -- bez opłat za uruchomienie u siebie, zakaz SaaS bez zgody autora
 6. Przy zmianach **modyfikuj istniejące pliki** -- nie twórz równoległych wersji. Jeśli strona/komponent już istnieje, refaktoryzuj go zamiast dodawać nowy obok.
 7. Usuwaj nieużywany kod po refaktoryzacji.

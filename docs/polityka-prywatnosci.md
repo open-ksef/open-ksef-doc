@@ -7,7 +7,7 @@ title: Polityka prywatności
 
 *Ostatnia aktualizacja: 3 listopada 2026 r.*
 
-OpenKSeF to oprogramowanie open-source do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
+OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
 ---
 

@@ -11,22 +11,22 @@ OpenKSeF jest w fazie **beta**. Aktywnie rozwijamy projekt -- nowe funkcjonalno�
 
 ## Czym jest OpenKSeF?
 
-OpenKSeF to otwartoźródłowy system do synchronizacji i przeglądania faktur z polskiego Krajowego Systemu e-Faktur (KSeF). Projekt został stworzony, aby każdy mógł postawić własną instancję i mieć pełną kontrolę nad swoimi danymi fakturowymi.
+OpenKSeF to system do synchronizacji i przeglądania faktur z polskiego Krajowego Systemu e-Faktur (KSeF). Kod źródłowy jest publicznie dostępny. To niezależny projekt, niepowiązany z Ministerstwem Finansów. Projekt został stworzony, aby każdy mógł postawić własną instancję i mieć pełną kontrolę nad swoimi danymi fakturowymi.
 
 ## Stworzony z pomocą AI
 
 OpenKSeF powstał z wykorzystaniem narzędzi AI -- w szczególności [Cursor](https://cursor.com/) i modeli Claude (Anthropic). AI wspierało programowanie, generowanie testów, pisanie dokumentacji i projektowanie architektury.
 
-Wierzymy w transparentność: AI to narzędzie, które przyspiesza rozwój oprogramowania. Kod jest otwarty i każdy może go zweryfikować.
+Wierzymy w transparentność: AI to narzędzie, które przyspiesza rozwój oprogramowania. Kod źródłowy jest publicznie dostępny i każdy może go zweryfikować.
 
-## Open Source
+## Kod źródłowy i licencja
 
 Projekt jest udostępniony na licencji **Elastic License 2.0 (ELv2)**. Możesz:
 
 - Używać OpenKSeF do celów wewnętrznych (firmowych i prywatnych)
 - Modyfikować kod źródłowy
 - Rozpowszechniać zmodyfikowane wersje
-- Self-hostować bez opłat
+- Uruchamiać u siebie bez opłat
 
 **Ograniczenie:** nie możesz oferować OpenKSeF jako usługi hostowanej (SaaS) bez zgody autora. Szczegóły: [COMMERCIAL.md](https://github.com/open-ksef/open-ksef/blob/main/COMMERCIAL.md).
 
@@ -34,7 +34,7 @@ Pełny tekst licencji: [Elastic License 2.0](licencja)
 
 ## Self-hosting i odpowiedzialność za dane
 
-OpenKSeF jest zaprojektowany do **self-hostingu** -- uruchamiasz go na własnej infrastrukturze (serwerze, VPS, chmurze, komputerze domowym).
+OpenKSeF jest zaprojektowany do **self-hostingu** -- uruchamiasz go na własnej infrastrukturze (serwerze, VPS, chmurze, komputerze domowym). Nie prowadzimy wersji hostowanej dla firm.
 
 **Co to oznacza:**
 
@@ -64,7 +64,7 @@ Jeśli uruchamiasz OpenKSeF z dostępem z internetu:
 | Backend API | .NET 10, ASP.NET Core |
 | Worker | .NET 10, Background Service |
 | Portal webowy | React 19, TypeScript, Vite |
-| Aplikacja mobilna | .NET MAUI (Android, iOS) |
+| Aplikacja mobilna | .NET MAUI (Android) |
 | Baza danych | PostgreSQL |
 | Uwierzytelnianie | Keycloak (OIDC) |
 | Konteneryzacja | Docker, Docker Compose |

@@ -70,7 +70,7 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 | `APP_EXTERNAL_BASE_URL` | Publiczny URL instancji (np. `http://192.168.1.50:8080`) |
 | `API_CLIENT_SECRET` | Secret klienta `openksef-api` w Keycloak *(generowany przez kreator)* |
 | `FIREBASE_CREDENTIALS_JSON` | Firebase service account JSON (dla direct push) |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` | Konfiguracja poczty (email fallback) |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` | Konfiguracja poczty (powiadomienia e-mail tylko przy ręcznej synchronizacji) |
 
 ## Środowiska KSeF
 

@@ -22,7 +22,7 @@ Przejdź do [Szybki start](instalacja/szybki-start) -- uruchomienie zajmuje mnie
 
 ![Krok 1 - logowanie Keycloak](/img/screenshots/portal/admin-setup-step1.png)
 
-Wprowadź dane logowania admina Keycloak (domyślnie: `admin` / `admin` z `docker-compose.yml`). Wizard uwierzytelnia się w realm `master` i zapisuje dane logowania w tymczasowym tokenie sesji (ważnym 10 minut), który jest używany do konfiguracji Keycloak w kolejnych krokach.
+Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`). Wizard uwierzytelnia się w realm `master` i zapisuje dane logowania w tymczasowym tokenie sesji (ważnym 10 minut), który jest używany do konfiguracji Keycloak w kolejnych krokach.
 
 ### Krok 2: Konfiguracja podstawowa
 

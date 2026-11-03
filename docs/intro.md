@@ -10,14 +10,16 @@ title: Wprowadzenie
 OpenKSeF jest w fazie **beta**. Projekt jest aktywnie rozwijany -- mogą wystąpić zmiany w API, strukturze bazy danych i konfiguracji. Używaj w środowiskach testowych lub z pełną świadomością aktualnego stanu projektu.
 :::
 
-**OpenKSeF** to otwartoźródłowy system do synchronizacji i przeglądania faktur z polskiego **Krajowego Systemu e-Faktur (KSeF)**. Umożliwia automatyczne pobieranie faktur, ich przeglądanie przez portal webowy lub aplikację mobilną, oraz zarządzanie wieloma firmami z jednego miejsca.
+**OpenKSeF** to system do synchronizacji i przeglądania faktur z polskiego **Krajowego Systemu e-Faktur (KSeF)**. Umożliwia automatyczne pobieranie faktur, ich przeglądanie przez portal webowy lub aplikację mobilną, oraz zarządzanie wieloma firmami z jednego miejsca.
+
+Kod źródłowy jest publicznie dostępny ([Elastic License 2.0](licencja)). To niezależny projekt, niepowiązany z Ministerstwem Finansów.
 
 ## Dla kogo?
 
 OpenKSeF jest przeznaczony dla:
 
 - **Programistów i administratorów** -- którzy chcą postawić własną instancję i mieć pełną kontrolę nad danymi fakturowymi
-- **Księgowych i właścicieli firm** -- którzy szukają prostego narzędzia do przeglądania faktur z KSeF bez opłat abonamentowych
+- **Księgowych i właścicieli firm** -- którzy szukają prostego narzędzia do przeglądania faktur z KSeF bez opłat za uruchomienie u siebie
 - **Zespołów IT w firmach** -- które potrzebują self-hosted rozwiązania zgodnego z polskimi przepisami
 
 ## Co potrafi OpenKSeF?
@@ -26,13 +28,13 @@ OpenKSeF jest przeznaczony dla:
 |---------|------|
 | **Synchronizacja faktur** | Automatyczne pobieranie faktur z KSeF w tle, ręczna i pełna resynchronizacja |
 | **Faktury** | Szczegóły z pozycjami, status płatności, dane do przelewu i kod QR -- zobacz [Faktury](faktury) |
-| **Wystawianie faktur** | Faktury VAT wysyłane do KSeF z portalu, XML, UPO i PDF z kodem KOD I. Aplikacja mobilna tego nie obsługuje. Zobacz [Wystawianie faktur](wystawianie-faktur) |
+| **Wystawianie faktur** | Faktury VAT wysyłane do KSeF z portalu, XML, UPO i PDF z kodem KOD I. Zobacz [Wystawianie faktur](wystawianie-faktur) |
 | **Portal webowy** | React SPA z dashboardem, listą faktur, zarządzaniem firmami |
-| **Aplikacja mobilna** | .NET MAUI na Android i iOS z powiadomieniami push |
+| **Aplikacja mobilna** | .NET MAUI z powiadomieniami push. Aplikacja na Androida: kończymy poprawki przed publikacją, Google Play i iPhone jeszcze nie |
 | **Multi-tenant** | Wiele firm na jednej instancji, izolacja danych per użytkownik |
-| **Powiadomienia push** | SignalR (lokalne) + relay/Firebase (zdalne) + email |
+| **Powiadomienia push** | SignalR (lokalne) + relay/Firebase (zdalne). E-mail tylko przy ręcznej synchronizacji |
 | **Bezpieczeństwo** | Keycloak (OIDC), szyfrowanie tokenów KSeF (AES-256), HTTPS |
-| **Self-hosting** | Docker Compose -- jedno polecenie i gotowe |
+| **Self-hosting** | Docker Compose: `docker-compose.yml`, plik `.env` z hasłami i `docker compose up -d` |
 
 ## Architektura
 

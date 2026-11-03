@@ -1,6 +1,6 @@
 # open-ksef-doc
 
-Documentation and marketing website for [OpenKSeF](https://github.com/open-ksef) -- an open-source system for synchronizing and browsing invoices from KSeF (Poland's National e-Invoice System).
+Documentation and marketing website for [OpenKSeF](https://github.com/open-ksef) -- a system for synchronizing and browsing invoices from KSeF (Poland's National e-Invoice System). The source code is publicly available under the Elastic License 2.0. Independent project, not affiliated with the Ministry of Finance.
 
 Available at: **https://open-ksef.pl**
 
