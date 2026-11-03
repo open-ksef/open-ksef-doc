@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 2 listopada 2026 r.*
+*Ostatnia aktualizacja: 3 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie open-source do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -17,6 +17,8 @@ Administratorem danych osobowych jest właściciel instancji OpenKSeF, z której
 
 Właściciel instancji podaje swoim użytkownikom swoją nazwę i dane kontaktowe. Jeśli ich nie znasz, zapytaj osobę, która dała Ci dostęp. Autorzy OpenKSeF nie mają dostępu do instancji, których sami nie prowadzą.
 
+W sklepie Google Play aplikację OpenKSeF publikuje **Krystian Mikrut**. Wydawca aplikacji nie staje się przez to administratorem danych w instancjach, których nie prowadzi.
+
 Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w OpenKSeF, w sprawie tych danych skontaktuj się ze sprzedawcą.
 
 ---
@@ -26,6 +28,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 ### Dane konta użytkownika
 
 - Adres e-mail (do logowania i powiadomień)
+- Imię i nazwisko (opcjonalne przy rejestracji e-mailem; przy logowaniu przez Google pochodzą z konta Google)
 - Identyfikator użytkownika w systemie Keycloak (OIDC)
 
 ### Dane firmowe
@@ -50,7 +53,8 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 
 ### Dane techniczne
 
-- Token urządzenia (FCM/APNs) — wyłącznie do dostarczania powiadomień push
+- Token urządzenia (FCM/APNs) albo identyfikator urządzenia wygenerowany przez aplikację, gdy tokenu nie ma — do dostarczania powiadomień push
+- Identyfikator instalacji Firebase, wersja aplikacji i identyfikator klienta (user agent) — zbiera je biblioteka Firebase w aplikacji na Androida
 - Identyfikator i adres instancji — do rejestracji w usłudze relay push
 
 ---
@@ -59,12 +63,12 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 
 | Dane | Cel | Podstawa prawna |
 |------|-----|-----------------|
-| E-mail, identyfikator OIDC | Uwierzytelnianie i obsługa konta | Umowa (art. 6 ust. 1 lit. b RODO) |
+| E-mail, imię i nazwisko (jeśli podane), identyfikator OIDC | Uwierzytelnianie i obsługa konta | Umowa (art. 6 ust. 1 lit. b RODO) |
 | NIP, nazwa firmy, token lub certyfikat KSeF | Synchronizacja faktur z KSeF | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Dane faktur, status płatności | Wyświetlanie i przeszukiwanie faktur, dane do przelewu | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Dane wystawionej faktury, w tym nabywcy będącego osobą prywatną | Wystawienie faktury i wysłanie jej do KSeF | Obowiązek prawny (art. 6 ust. 1 lit. c RODO, art. 106e ustawy o VAT) |
 | Kopia wystawionej faktury w instancji | Podgląd faktury, pobieranie plików, wyjaśnienie numeracji | Prawnie uzasadniony interes sprzedawcy (art. 6 ust. 1 lit. f RODO) |
-| Token urządzenia (FCM/APNs) | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
+| Token i identyfikator urządzenia, identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
 | Adres e-mail do powiadomień (per firma) | Wysyłanie powiadomień e-mail o nowych fakturach | Umowa (art. 6 ust. 1 lit. b RODO) |
 
 ---
@@ -79,7 +83,10 @@ Aplikacja mobilna OpenKSeF obsługuje powiadomienia push w modelu warstwowym:
 
 Relay `push.open-ksef.pl` prowadzą autorzy OpenKSeF. Administratorem danych w powiadomieniu jest właściciel instancji, z której ono pochodzi.
 
-Możesz wyłączyć powiadomienia push w ustawieniach aplikacji mobilnej.
+Aplikacja rejestruje urządzenie do powiadomień po każdym zalogowaniu. W wydanych wersjach aplikacji (do 1.0.5) przełącznik **Powiadomienia push** na ekranie **Konto** nie wyłącza powiadomień. Aby przestać je otrzymywać, wybierz jeden ze sposobów:
+
+- Wyloguj się z aplikacji i usuń urządzenie w portalu, na liście **Urządzenia**. Przy następnym logowaniu urządzenie zarejestruje się ponownie.
+- Wyłącz powiadomienia dla aplikacji OpenKSeF w ustawieniach telefonu. Telefon przestanie je pokazywać, ale instancja może je nadal wysyłać.
 
 ---
 
@@ -89,8 +96,8 @@ Możesz wyłączyć powiadomienia push w ustawieniach aplikacji mobilnej.
 - Dane mogą być przekazywane do:
   - **Ministerstwo Finansów, KSeF** — wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF.
   - **Ministerstwo Finansów, wykaz podatników VAT (biała lista)** — NIP wpisany przy użyciu przycisku **Pobierz z NIP**.
-  - **Firebase Cloud Messaging (Google)** — wyłącznie token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory), w celu dostarczenia powiadomień push na Androida.
-  - **Apple Push Notification service (Apple)** — te same dane, w celu dostarczenia powiadomień push na iOS.
+  - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent).
+  - **Apple Push Notification service (Apple)** — token urządzenia i treść powiadomienia, jak wyżej, w celu dostarczenia powiadomień push na iOS.
   - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze, jeśli właściciel skonfigurował SMTP.
   - **Relay OpenKSeF** (`push.open-ksef.pl`) — jeśli włączona jest warstwa relay (domyślnie).
 
@@ -114,17 +121,38 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 
 - **Dostęp** — możesz sprawdzić, jakie dane są przechowywane
 - **Sprostowanie** — możesz poprawić nieprawidłowe dane
-- **Usunięcie** — możesz zażądać od właściciela instancji usunięcia konta i danych
+- **Usunięcie** — możesz zażądać usunięcia konta i danych, zobacz <a href="#usuwanie-konta">Usuwanie konta i danych</a>
 - **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. OpenKSeF nie ma eksportu zbiorczego ani pobierania plików faktur otrzymanych. O pozostałe dane poproś właściciela instancji
 - **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie
-- **Cofnięcie zgody** — możesz wyłączyć powiadomienia push w dowolnym momencie
+- **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push, w sposób opisany w sekcji 4
 - **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych
 
 Skargę wnosisz bezpośrednio do Prezesa UODO. W pozostałych sprawach skontaktuj się z właścicielem swojej instancji OpenKSeF.
 
 ---
 
-## 8. Bezpieczeństwo
+<a id="usuwanie-konta" style={{scrollMarginTop: '5rem'}}></a>
+
+## 8. Usuwanie konta i danych
+
+Aby usunąć konto w OpenKSeF i powiązane z nim dane, wyślij prośbę e-mailem. Nie potrzebujesz do tego aplikacji.
+
+1. Jeśli dostęp do OpenKSeF dała Ci firma lub osoba prowadząca własną instancję, napisz do niej. Autorzy OpenKSeF nie mogą usunąć konta w instancji, której sami nie prowadzą.
+2. Jeśli korzystasz z instancji prowadzonej przez autorów OpenKSeF albo nie wiesz, czyja to instancja, napisz na [krystian@mikrut.dev](mailto:krystian@mikrut.dev) z adresu e-mail konta, w temacie „Usunięcie konta OpenKSeF”.
+
+Prośby realizujemy ręcznie. Odpowiadamy w ciągu miesiąca.
+
+**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator), zarejestrowane urządzenia oraz firmy tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur i fakturami wystawionymi, z wyjątkami poniżej.
+
+**Co może zostać:**
+
+- Faktura przyjęta na środowisku PRODUKCJA zostaje w KSeF przez okres podany w sekcji 6. Nikt nie może jej stamtąd usunąć. Jej kopię w instancji możemy zachować razem z danymi firmy, do której należy (NIP, nazwa, dane sprzedawcy), i napiszemy o tym w odpowiedzi.
+- Dane w kopiach zapasowych właściciela instancji, do czasu usunięcia tych kopii.
+- Lokalna kopia faktur na telefonie. Usuniesz ją, odinstalowując aplikację. Może ją też zawierać kopia zapasowa Androida na Twoim koncie Google i wrócić po ponownej instalacji.
+
+---
+
+## 9. Bezpieczeństwo
 
 - Komunikacja między aplikacją a serwerem odbywa się przez HTTPS.
 - Tokeny autoryzacyjne i certyfikaty KSeF (z kluczem prywatnym) są szyfrowane w bazie danych.
@@ -133,13 +161,13 @@ Skargę wnosisz bezpośrednio do Prezesa UODO. W pozostałych sprawach skontaktu
 
 ---
 
-## 9. Zmiany w polityce prywatności
+## 10. Zmiany w polityce prywatności
 
 O istotnych zmianach w polityce prywatności poinformujemy przez aktualizację tej strony. Data ostatniej aktualizacji znajduje się na górze dokumentu.
 
 ---
 
-## 10. Kontakt
+## 11. Kontakt
 
 W sprawach tej strony i usługi relay:
 
