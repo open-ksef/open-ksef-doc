@@ -27,9 +27,9 @@ Kod aplikacji żyje w `open-ksef` (backend + portal) i `open-ksef-mobile` (aplik
 ### Design
 
 Strona wizualnie nawiązuje do portalu OpenKSeF:
-- Primary color: `#6366f1` (indigo)
-- Dark sidebar/footer: `#1e1b4b`
-- Font: Inter + system fallback
+- Primary color: `#4f46e5` (light), `#a5b4fc` (dark)
+- Footer: `#f3f4f8` (light), `#1c2033` (dark)
+- Font: Inter + JetBrains Mono, lokalne pliki woff2 w `src/fonts`, licencje OFL w `static/fonts`
 - Gradient hero: `linear-gradient(135deg, #1e1b4b, #312e81, #4338ca)`
 - Karty z shadow i hover lift
 - Logo: ⚡ + "OpenKSeF"

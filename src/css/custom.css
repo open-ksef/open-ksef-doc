@@ -3,7 +3,7 @@
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url('/fonts/inter-latin-wght-normal.woff2') format('woff2');
+  src: url('../fonts/inter-latin-wght-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
@@ -12,7 +12,7 @@
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url('/fonts/inter-latin-ext-wght-normal.woff2') format('woff2');
+  src: url('../fonts/inter-latin-ext-wght-normal.woff2') format('woff2');
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
@@ -21,7 +21,7 @@
   font-style: normal;
   font-display: swap;
   font-weight: 100 800;
-  src: url('/fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2');
+  src: url('../fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
@@ -30,7 +30,7 @@
   font-style: normal;
   font-display: swap;
   font-weight: 100 800;
-  src: url('/fonts/jetbrains-mono-latin-ext-wght-normal.woff2') format('woff2');
+  src: url('../fonts/jetbrains-mono-latin-ext-wght-normal.woff2') format('woff2');
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
@@ -43,6 +43,7 @@
   --ifm-color-primary-lighter: #818cf8;
   --ifm-color-primary-lightest: #eef2ff;
   --ifm-link-color: #4338ca;
+  --ifm-menu-color-active: var(--ifm-link-color);
 
   --ifm-font-family-base: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --ifm-font-family-monospace: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
@@ -58,6 +59,10 @@
   --ifm-hr-background-color: #e5e7eb;
   --ifm-navbar-shadow: 0 1px 0 var(--ifm-toc-border-color);
   --site-surface-2: #f3f4f8;
+  --ifm-footer-background-color: var(--site-surface-2);
+  --ifm-footer-color: var(--ifm-font-color-base);
+  --ifm-footer-link-color: var(--ifm-font-color-base);
+  --ifm-footer-title-color: var(--ifm-font-color-base);
 
   --ifm-color-success: #047857;
   --ifm-color-warning: #92400e;
@@ -91,22 +96,18 @@
   --docusaurus-highlighted-code-line-bg: rgba(99, 102, 241, 0.3);
 }
 
-/* Announcement bar dark mode */
-[data-theme='dark'] .theme-announcement-bar {
-  background: var(--ifm-color-primary-lightest) !important;
-  color: var(--ifm-color-primary-dark) !important;
+/* The Latin subsets have no box-drawing glyphs; mixing fonts breaks the diagram in docs/intro.md. */
+.language-text {
+  --ifm-font-family-monospace: ui-monospace, 'SF Mono', monospace;
+}
+
+[data-theme='dark'] .theme-announcement-bar button {
+  color: #fff;
 }
 
 /* Navbar */
 .navbar__title {
   font-weight: 700;
-}
-
-.footer--dark {
-  --ifm-footer-background-color: var(--site-surface-2);
-  --ifm-footer-color: var(--ifm-font-color-base);
-  --ifm-footer-link-color: var(--ifm-font-color-base);
-  --ifm-footer-title-color: var(--ifm-font-color-base);
 }
 
 /* Sidebar */
@@ -117,43 +118,10 @@
 
 /* Tables */
 table thead tr {
-  background: var(--ifm-color-primary-lightest);
+  background: var(--site-surface-2);
 }
 
 .markdown,
 main p {
   --ifm-link-decoration: underline;
-}
-
-/* Prism themes write token colours inline and miss AA on their code background. */
-.theme-code-block .token.comment,
-.theme-code-block .token.prolog,
-.theme-code-block .token.doctype,
-.theme-code-block .token.cdata {
-  color: var(--ifm-color-emphasis-600) !important;
-}
-
-[data-theme='light'] .theme-code-block .token.string,
-[data-theme='light'] .theme-code-block .token.attr-value,
-[data-theme='light'] .theme-code-block .token.function,
-[data-theme='light'] .theme-code-block .token.deleted {
-  color: var(--ifm-color-danger) !important;
-}
-
-[data-theme='light'] .theme-code-block .token.entity,
-[data-theme='light'] .theme-code-block .token.url,
-[data-theme='light'] .theme-code-block .token.symbol,
-[data-theme='light'] .theme-code-block .token.number,
-[data-theme='light'] .theme-code-block .token.boolean,
-[data-theme='light'] .theme-code-block .token.variable,
-[data-theme='light'] .theme-code-block .token.constant,
-[data-theme='light'] .theme-code-block .token.property,
-[data-theme='light'] .theme-code-block .token.regex,
-[data-theme='light'] .theme-code-block .token.inserted {
-  color: var(--ifm-color-success) !important;
-}
-
-[data-theme='light'] .theme-code-block .token.atrule,
-[data-theme='light'] .theme-code-block .token.attr-name {
-  color: var(--ifm-link-color) !important;
 }
