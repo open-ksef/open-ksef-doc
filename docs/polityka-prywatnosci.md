@@ -97,7 +97,7 @@ Aplikacja rejestruje urządzenie do powiadomień po każdym zalogowaniu. W wydan
   - **Ministerstwo Finansów, KSeF** — wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF.
   - **Ministerstwo Finansów, wykaz podatników VAT (biała lista)** — NIP wpisany przy użyciu przycisku **Pobierz z NIP**.
   - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent).
-  - **Apple Push Notification service (Apple)** — te same dane, w celu dostarczenia powiadomień push na iOS.
+  - **Apple Push Notification service (Apple)** — token urządzenia i treść powiadomienia, jak wyżej, w celu dostarczenia powiadomień push na iOS.
   - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze, jeśli właściciel skonfigurował SMTP.
   - **Relay OpenKSeF** (`push.open-ksef.pl`) — jeśli włączona jest warstwa relay (domyślnie).
 
