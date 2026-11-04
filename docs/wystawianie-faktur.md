@@ -5,9 +5,9 @@ title: Wystawianie faktur
 
 # Wystawianie faktur
 
-OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Dane do faktur**. Wystawianie jest też w aplikacji na Androida, od wersji 1.0.5, ale [kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna).
+OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Firma**, na karcie **Dane do faktur**. Wystawianie jest też w aplikacji na Androida, od wersji 1.0.5, ale [kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna).
 
-Faktury, które otrzymujesz od dostawców, opisuje strona [Faktury](faktury).
+Faktury, które otrzymujesz od dostawców, opisuje strona [Otrzymane faktury](faktury).
 
 :::warning[Sprawdź środowisko]
 Przy fakturze widać środowisko KSeF: **TEST**, **DEMO** albo **PRODUKCJA**. Na środowisku PRODUKCJA przyjęta faktura staje się dokumentem prawnym. Nie można jej usunąć ani edytować.
@@ -15,7 +15,7 @@ Przy fakturze widać środowisko KSeF: **TEST**, **DEMO** albo **PRODUKCJA**. Na
 
 ## Zanim zaczniesz
 
-1. Zapisz w ustawieniach firmy [token KSeF z uprawnieniem do zapisu](#token-ksef).
+1. Zapisz w **Firma** > **Token KSeF i pobieranie** [token KSeF z uprawnieniem do zapisu](#token-ksef).
 2. Uzupełnij [dane do faktur](#dane-do-faktur).
 
 ## Token KSeF
@@ -123,7 +123,7 @@ Jeśli numer KSeF tego dokumentu jest znany, OpenKSeF go pokaże, razem ze wskaz
 Dokument sprawdzisz na przykład w Aplikacji Podatnika KSeF:
 
 - **To ta sama sprzedaż:** nie wystawiaj faktury ponownie. Kopia oznaczałaby drugi dokument i drugi VAT dla jednej sprzedaży.
-- **To inna sprzedaż:** użyj **Kopiuj jako nową**. Jeśli wcześniejsze numery nadano poza OpenKSeF, najpierw ustaw wyższy następny numer w **Dane do faktur**.
+- **To inna sprzedaż:** użyj **Kopiuj jako nową**. Jeśli wcześniejsze numery nadano poza OpenKSeF, najpierw ustaw wyższy następny numer w **Firma** > **Dane do faktur**.
 
 ## Aplikacja mobilna
 

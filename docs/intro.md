@@ -27,13 +27,13 @@ OpenKSeF jest przeznaczony dla:
 | Funkcja | Opis |
 |---------|------|
 | **Synchronizacja faktur** | Automatyczne pobieranie faktur z KSeF w tle, ręczna i pełna resynchronizacja |
-| **Faktury** | Szczegóły z pozycjami, status płatności, dane do przelewu i kod QR -- zobacz [Faktury](faktury) |
+| **Otrzymane faktury** | Termin płatności, filtr Nieopłacone, szczegóły z pozycjami, status płatności, dane do przelewu i kod QR -- zobacz [Otrzymane faktury](faktury) |
 | **Wystawianie faktur** | Faktury VAT wysyłane do KSeF z portalu, XML, UPO i PDF z kodem KOD I. Zobacz [Wystawianie faktur](wystawianie-faktur) |
-| **Portal webowy** | React SPA z dashboardem, listą faktur, zarządzaniem firmami |
+| **Portal webowy** | React SPA ze stroną Start, listami otrzymanych i wystawionych faktur, zarządzaniem firmami |
 | **Aplikacja mobilna** | .NET MAUI z powiadomieniami push. Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Play i iPhone jeszcze nie |
 | **Multi-tenant** | Wiele firm na jednej instancji, izolacja danych per użytkownik |
 | **Powiadomienia push** | SignalR (lokalne) + relay/Firebase (zdalne) |
-| **Bezpieczeństwo** | Keycloak (OIDC). Tokeny KSeF szyfrowane w bazie (AES-256-GCM), klucz też jest w bazie: [szczegóły](instalacja/szybki-start#krok-3-skonfiguruj). HTTPS zapewnia właściciel instancji |
+| **Bezpieczeństwo** | Keycloak (OIDC). Tokeny KSeF szyfrowane w bazie (AES-256-GCM), klucz poza bazą, w `ENCRYPTION_KEY`: [szczegóły](admin-setup#klucz-szyfrowania). HTTPS zapewnia właściciel instancji |
 | **Self-hosting** | Docker Compose: `docker-compose.yml`, plik `.env` z hasłami i `docker compose up -d` |
 
 ## Architektura
@@ -67,7 +67,7 @@ OpenKSeF jest przeznaczony dla:
 
 ## Portal webowy
 
-![Dashboard portalu](/img/screenshots/portal/dashboard.png)
+![Strona startowa portalu](/img/screenshots/portal/dashboard.png)
 
 ![Lista faktur](/img/screenshots/portal/invoices.png)
 
@@ -84,4 +84,4 @@ Lista faktur, szczegóły z pozycjami, kod QR przelewu i powiadomienia push na t
 - [Wymagania systemowe](instalacja/wymagania) -- co potrzebujesz przed instalacją
 - [Szybki start](instalacja/szybki-start) -- instalacja krok po kroku
 - [Kreator konfiguracji](admin-setup) -- krok po kroku przez wizard
-- [Faktury](faktury) -- lista, szczegóły, status płatności, synchronizacja
+- [Otrzymane faktury](faktury) -- lista, szczegóły, status płatności, synchronizacja

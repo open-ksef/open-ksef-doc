@@ -26,9 +26,9 @@ Tylko nowe instalacje. Na istniejącej instalacji nie uruchamiaj `docker compose
 
 Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`). Wizard uwierzytelnia się w realm `master` i zapisuje dane logowania w tymczasowym tokenie sesji (ważnym 10 minut), który jest używany do konfiguracji Keycloak w kolejnych krokach.
 
-### Krok 2: Konfiguracja podstawowa
+### Krok 2: Pierwsze konto i firma
 
-![Krok 2 - konfiguracja podstawowa](/img/screenshots/portal/admin-setup-step2.png)
+![Krok 2 - pierwsze konto i firma](/img/screenshots/portal/admin-setup-step2.png)
 
 | Pole | Opis | Domyślnie |
 |------|------|-----------|
@@ -37,8 +37,10 @@ Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PAS
 | Email admina | Email pierwszego użytkownika | *(wymagany)* |
 | Hasło admina | Hasło pierwszego użytkownika | *(wymagane, min. 8 znaków)* |
 | Imię / Nazwisko | Opcjonalne dane użytkownika | Admin |
+| NIP | NIP pierwszej firmy | *(wymagany)* |
+| Nazwa firmy | Opcjonalna nazwa firmy | *(brak)* |
 
-### Krok 3: Uwierzytelnianie i email
+### Krok 3: Autoryzacja i e-mail
 
 ![Krok 3 - autoryzacja i email](/img/screenshots/portal/admin-setup-step3.png)
 
@@ -105,7 +107,7 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 
 ## Klucz szyfrowania
 
-Ten opis dotyczy wersji `WERSJA-T-026` i nowszych.
+Ten opis dotyczy wersji `v0.0.8` i nowszych.
 
 :::danger[Sprawdź ENCRYPTION_KEY przed aktualizacją]
 Przed każdym `docker compose pull`, `docker compose up -d`, aktualizacją stacku lub uruchomieniem automatycznego aktualizatora sprawdź `ENCRYPTION_KEY` w `.env` lub w zmiennych stacku. Jeśli ma prawidłową wartość, pierwszy start nowych obrazów przenosi klucz na tę wartość, bez zatrzymania usług i bez kopii zapasowej. Najpierw wykonaj [procedurę aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej).
@@ -175,7 +177,7 @@ docker exec -i openksef-postgres pg_restore -l < before-key-move.dump > /dev/nul
 7. **Sprawdź:**
    - W `docker compose logs api worker` jedna usługa loguje `Encryption key moved out of the database`. Druga nic o tym nie loguje. Żadna nie loguje Critical.
    - Zapytanie z kroku 1 zwraca 0.
-   - Jedna ręczna synchronizacja kończy się sukcesem: **Dane logowania** > wiersz firmy > **Wymuś synchronizację**.
+   - Jedna ręczna synchronizacja kończy się sukcesem: **Firma** > **Token KSeF i pobieranie** > **Pobierz z KSeF**.
 
 Zrzut z kroku 3 to teraz jedyna kopia starego klucza. Zachowaj go co najmniej do udanej synchronizacji. Zrzuty sprzed przeniesienia klucza pozwalają odszyfrować tokeny, dopóki ich nie usuniesz.
 

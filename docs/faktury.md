@@ -1,11 +1,11 @@
 ---
 sidebar_position: 5
-title: Faktury
+title: Otrzymane faktury
 ---
 
-# Faktury
+# Otrzymane faktury
 
-OpenKSeF pobiera z KSeF faktury, w których Twoja firma jest nabywcą (faktury kosztowe). W portalu znajdziesz je w menu **Faktury**, a w aplikacji mobilnej na ekranie **Faktury**.
+OpenKSeF pobiera z KSeF faktury, w których Twoja firma jest nabywcą (faktury kosztowe). W portalu znajdziesz je w menu **Otrzymane**, a w aplikacji mobilnej na ekranie **Faktury**.
 
 Faktury sprzedażowe opisuje strona [Wystawianie faktur](wystawianie-faktur).
 
@@ -13,10 +13,21 @@ Faktury sprzedażowe opisuje strona [Wystawianie faktur](wystawianie-faktur).
 
 ![Lista faktur](/img/screenshots/portal/invoices.png)
 
-- Pierwsza kolumna **Nr faktury** to numer nadany przez sprzedawcę (np. `FV/2026/10/0042`). Jeśli faktura go nie ma, wyświetlany jest numer KSeF.
-- Kolumna **Numer KSeF** to identyfikator nadany przez KSeF.
-- Kolumna **Status** pokazuje, czy faktura jest oznaczona jako opłacona.
-- Filtry: firma, zakres dat wystawienia, liczba faktur na stronie.
+- Kolumna **Sprzedawca i numer** pokazuje nazwę sprzedawcy, numer nadany przez sprzedawcę (np. `FV/2026/10/0042`) i datę wystawienia. Jeśli faktura nie ma numeru sprzedawcy, wyświetlany jest numer KSeF.
+- Kolumna **Termin płatności** pokazuje termin z faktury w KSeF. Jeśli termin minął, a faktura nie jest oznaczona jako opłacona, przy dacie pojawia się `po terminie`.
+- Kolumna **Płatność** pokazuje, czy faktura jest oznaczona jako opłacona.
+- Kolumny **Netto** i **Numer KSeF** są widoczne na szerszych ekranach.
+- Filtry: **Wszystkie** lub **Nieopłacone**, nazwa lub NIP sprzedawcy, zakres dat wystawienia. Firmę wybierasz w karcie **Firma** w menu bocznym.
+
+**Wszystkie** pokazuje faktury od najnowszej. **Nieopłacone** pokazuje faktury, których nie oznaczono jako opłacone, od najbliższego terminu. Faktury bez terminu są na końcu.
+
+:::caution[Starsze faktury bez terminu]
+Faktury pobrane przed wprowadzeniem tej funkcji mają w kolumnie **Termin płatności** kreskę (`—`), dopóki termin nie zostanie uzupełniony. Automatyczne uzupełnianie jeszcze nie działa. Taka faktura nie dostanie oznaczenia `po terminie`, a na liście **Nieopłacone** będzie na końcu, więc sprawdź te faktury osobno. Kreskę zobaczysz też, gdy faktura nie ma terminu albo nie udało się pobrać jej pliku XML.
+:::
+
+## Strona Start
+
+Na stronie **Start** karta **Nieopłacone, od najbliższego terminu** pokazuje pierwsze faktury z filtra **Nieopłacone**, a przy minionym terminie także `po terminie`. Link **Wszystkie nieopłacone** otwiera pełną listę. Faktury bez terminu dotyczy to samo ostrzeżenie co na liście.
 
 ## Szczegóły faktury
 
@@ -26,14 +37,14 @@ Kliknij fakturę na liście, aby zobaczyć jej szczegóły: numery, sprzedawcę 
 
 ### Pozycje faktury
 
-Pod danymi faktury jest tabela **Pozycje faktury** z wierszami faktury (`FaWiersz`): nazwa, jednostka miary, ilość, cena netto i brutto, wartości netto / VAT / brutto oraz stawka VAT.
+Karta **Pozycje** zawiera wiersze faktury (`FaWiersz`): nazwa, jednostka miary, ilość, cena netto i brutto, wartości netto / VAT / brutto oraz stawka VAT.
 
 ![Pozycje faktury](/img/screenshots/portal/invoice-lines.png)
 
 - Większość faktur zawiera tylko ceny netto i stawkę VAT. Wtedy cena brutto i VAT pozycji są **wyliczane** przez OpenKSeF ze stawki (netto × stawka). Mogą się różnić o grosze od kwot na fakturze, bo sprzedawca mógł liczyć VAT od sumy, a nie od każdej pozycji. Wiążące są kwoty z nagłówka faktury.
 - Dla stawek nieliczbowych (np. `zw`, `oo`, `np I`, `np II`) VAT pozycji wynosi 0, a brutto = netto.
-- Jeśli faktura w KSeF nie ma pozycji (np. niektóre faktury zaliczkowe), tabela nie jest wyświetlana.
-- Faktury pobrane przed wprowadzeniem tej funkcji nie mają pozycji. Uzupełnisz je [pełną resynchronizacją](#pełna-resynchronizacja).
+- Jeśli faktura w KSeF nie ma pozycji (np. niektóre faktury zaliczkowe), karta pokazuje `Brak pozycji w pobranych danych.`
+- Faktury pobrane przed wprowadzeniem tej funkcji nie mają pozycji. Może je uzupełnić [pełna resynchronizacja](#pełna-resynchronizacja), w granicach limitu KSeF.
 
 ### Status płatności
 
@@ -47,24 +58,24 @@ Status płatności to Twoja notatka w OpenKSeF. Nie jest wysyłany do KSeF ani d
 
 Status płatności zmienisz w portalu. Aplikacja mobilna go nie pokazuje.
 
-### Dane do przelewu i kod QR
+### Zapłać tę fakturę
 
-Sekcja **Dane do przelewu** zawiera odbiorcę, NIP, numer rachunku sprzedawcy (z faktury w KSeF), kwotę i tytuł przelewu. **Kopiuj dane przelewu** kopiuje je do schowka, a **kod QR** (standard ZBP) zeskanujesz w aplikacji bankowej.
+Karta **Zapłać tę fakturę** zawiera kwotę, termin płatności, odbiorcę, tytuł przelewu i numer rachunku sprzedawcy (z faktury w KSeF). **Kopiuj dane przelewu** kopiuje je do schowka, a **kod QR** (standard ZBP) zeskanujesz w aplikacji bankowej. Bez kodu QR karta nazywa się **Dane do przelewu**. Po oznaczeniu faktury jako opłaconej karta nazywa się **Opłacona**, a dane otworzysz przez **Pokaż dane do przelewu**.
 
-![Dane do przelewu i kod QR](/img/screenshots/portal/invoice-qr.png)
+![Zapłać tę fakturę: dane do przelewu i kod QR](/img/screenshots/portal/invoice-qr.png)
 
-Tytuł przelewu to sam numer faktury sprzedawcy, np. `FV/2026/10/0042`; w kodzie QR jest skrócony do 32 znaków. Jeśli faktura nie ma numeru sprzedawcy, tytułem jest numer KSeF. Gdy faktura nie zawiera numeru rachunku, pole **Nr rachunku** pokazuje `brak`.
+Tytuł przelewu to sam numer faktury sprzedawcy, np. `FV/2026/10/0042`; w kodzie QR jest skrócony do 32 znaków. Jeśli faktura nie ma numeru sprzedawcy, tytułem jest numer KSeF. Gdy faktura nie zawiera numeru rachunku, pole **Rachunek odbiorcy** pokazuje `brak`.
 
 ## Synchronizacja z KSeF
 
-Worker pobiera nowe faktury automatycznie w tle, domyślnie co 4 godziny. Pierwsza synchronizacja nowej firmy pobiera faktury z ostatnich 6 miesięcy. Synchronizację uruchomisz też ręcznie w portalu: **Dane logowania** > wiersz firmy.
+Worker pobiera nowe faktury automatycznie w tle, domyślnie co 4 godziny. Pierwsza synchronizacja nowej firmy pobiera faktury z ostatnich 6 miesięcy. Synchronizację uruchomisz też ręcznie przyciskiem **Pobierz z KSeF** na stronach **Start**, **Otrzymane** i **Firma** > **Token KSeF i pobieranie**. Na tej ostatniej, w sekcji **Działania ryzykowne**, jest też **Pełna resynchronizacja**.
 
-![Dane logowania -- synchronizacja](/img/screenshots/portal/credentials-resync.png)
+![Synchronizacja z KSeF](/img/screenshots/portal/credentials-resync.png)
 
 | Przycisk | Co robi | Kiedy użyć |
 |----------|---------|------------|
-| **Wymuś synchronizację** | Pobiera faktury, które pojawiły się w KSeF od ostatniej synchronizacji | Nie chcesz czekać na automatyczną synchronizację |
-| **Pełna resynchronizacja** | Pobiera ponownie wszystkie faktury firmy z KSeF i nadpisuje ich dane (w tym pozycje i numer rachunku) | Brakuje pozycji lub numeru rachunku na starszych fakturach |
+| **Pobierz z KSeF** | Pobiera faktury, które pojawiły się w KSeF od ostatniej synchronizacji | Nie chcesz czekać na automatyczną synchronizację |
+| **Pełna resynchronizacja** | Sprawdza wszystkie faktury firmy w KSeF i nadpisuje ich dane (w tym pozycje, numer rachunku i termin płatności) dla plików XML, które zmieszczą się w limicie KSeF | Brakuje pozycji, numeru rachunku lub terminu płatności na starszych fakturach |
 
 ### Pełna resynchronizacja
 
@@ -73,11 +84,21 @@ Przed uruchomieniem portal prosi o potwierdzenie.
 ![Potwierdzenie pełnej resynchronizacji](/img/screenshots/portal/credentials-resync-confirm.png)
 
 - Obejmuje całą historię firmy: od najstarszej faktury zapisanej w OpenKSeF, a nie tylko z okresu synchronizacji początkowej.
-- Trwa dłużej niż zwykła synchronizacja, bo każda faktura jest pobierana z KSeF od nowa.
-- Faktury są zapisywane partiami. Jeśli resynchronizacja przerwie się w trakcie, część faktur może być już zaktualizowana, a część nie. Uruchom ją ponownie, żeby dokończyć.
-- Jeśli OpenKSeF nie odczyta pliku XML którejś faktury, jej pozycje mogą zniknąć. Kolejna pełna resynchronizacja je przywróci, gdy plik da się odczytać.
+- Trwa dłużej niż zwykła synchronizacja, bo OpenKSeF próbuje pobrać plik XML każdej faktury od nowa.
+- Faktury są zapisywane partiami. Jeśli resynchronizacja przerwie się w trakcie, część faktur może być już zaktualizowana, a część nie.
+- Jeśli OpenKSeF nie odczyta pliku XML którejś faktury, jej pozycje mogą zniknąć. Kolejna pełna resynchronizacja może je przywrócić, jeśli plik da się odczytać i zmieści się w limicie KSeF.
 - Nie wysyła powiadomień. Nowe faktury znalezione przez pełną resynchronizację nie wygenerują powiadomienia ani teraz, ani później. Tak samo działa pierwsza synchronizacja nowej firmy.
 - Status płatności faktur zostaje zachowany.
+
+:::warning[Limit KSeF: duża firma nie skończy w jednym uruchomieniu]
+KSeF pozwala pobrać plik XML faktury najwyżej 8 razy na sekundę, 16 razy na minutę i 64 razy na godzinę ([limity API KSeF](https://github.com/CIRFMF/ksef-docs/blob/main/limity/limity-api.md)). Pełna resynchronizacja nie czeka na odblokowanie limitu: pliku ponad limit nie pobiera i przechodzi dalej.
+
+- Firma, która ma więcej faktur, niż mieści się w limicie, nie zostanie uzupełniona w jednym uruchomieniu. W teście na środowisku TEST pierwsze uruchomienie uzupełniło termin w 10 z 25 faktur.
+- Ponowne uruchomienie nie dokańcza pracy. Każde zaczyna od początku, pobiera także faktury już uzupełnione i znów trafia na limit. W tym samym teście po dwóch kolejnych uruchomieniach termin miało 11 z 25 faktur.
+- Komunikat `Pełna resynchronizacja zakończona` nie znaczy, że pobrano wszystkie pliki. Liczba `Pobrane` to faktury z listy KSeF, a nie pobrane pliki XML.
+- Faktura, której pliku nie udało się pobrać, zachowuje dotychczasowe pozycje, numer rachunku i termin.
+- Częste uruchamianie może wyczerpać także limit zapytań o listę faktur. Resynchronizacja kończy się wtedy błędem, a kolejną próbę warto odłożyć na około godzinę.
+:::
 
 ## Aplikacja mobilna
 
