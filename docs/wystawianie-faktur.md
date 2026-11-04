@@ -41,7 +41,8 @@ Te dane trafiają na każdą wystawianą fakturę. Bez nich wystawianie jest zab
 
 - **Sprzedawca**: nazwa i adres. **Pobierz z NIP** uzupełnia je z białej listy Ministerstwa Finansów i pokazuje status VAT. Jeśli firmy nie ma na białej liście, wpisz dane ręcznie.
 - **Rachunek bankowy**: wybierz rachunek z białej listy albo wpisz inny. Numer rachunku jest wymagany przy płatności przelewem. Rachunek spoza białej listy to ryzyko podatkowe nabywcy przy płatnościach powyżej 15 000 zł.
-- **Metoda kasowa**: dodaje na fakturze adnotację „metoda kasowa”.
+- **Metoda kasowa**: dodaje na fakturze adnotację „metoda kasowa”. Faktura dla firmy zagranicznej nie ma tej adnotacji.
+- **Rachunek do faktur zagranicznych**: opcjonalny. Zobacz [Rachunek i SWIFT](#rachunek-i-swift).
 
 ### Numeracja
 
@@ -65,8 +66,9 @@ Formularz pokazuje numer, który dostanie następna faktura.
 2. Wybierz nabywcę:
    - **Firma**: wymagany jest poprawny NIP. **Pobierz z NIP** uzupełni nazwę i adres.
    - **Osoba prywatna**: bez NIP, z nazwą i adresem. Po przyjęciu faktury przekaż nabywcy PDF z kodem KOD I.
+   - **Firma zagraniczna**: usługi dla firmy spoza Polski. Zobacz [Faktury dla firm zagranicznych](#faktury-dla-firm-zagranicznych).
 3. Sprawdź daty. Data wystawienia nie może być późniejsza niż dzisiejsza, a termin płatności nie może być wcześniejszy niż data wystawienia.
-4. Dodaj pozycje: nazwa, jednostka, ilość, cena netto, stawka VAT. Dostępne stawki to 23, 8, 5, 0 KR i zw. Przy stawce zw podaj podstawę zwolnienia.
+4. Dodaj pozycje: nazwa, jednostka, ilość, cena netto, stawka VAT. Dostępne stawki to 23, 8, 5, 0 KR i zw. Przy stawce zw podaj podstawę zwolnienia. Dla firmy zagranicznej dostępne są tylko np I i np II.
 5. Wybierz płatność: **Przelew**, **Gotówka** albo **Karta**. W razie potrzeby zaznacz mechanizm podzielonej płatności. Program przypomni o nim, ale nie rozstrzygnie, czy faktura go wymaga.
 6. Kliknij **Zapisz szkic**, jeśli chcesz wrócić do faktury później. Szkic można edytować i usunąć.
 7. Kliknij **Wystaw i wyślij do KSeF**. Na środowiskach TEST i DEMO faktura wysyła się od razu. W pozostałych przypadkach potwierdź w oknie z numerem, nabywcą, datą i kwotą.
@@ -92,7 +94,7 @@ Pliki są dostępne dla faktury wystawionej w OpenKSeF i **Przyjętej w KSeF**.
 - **UPO**: urzędowe poświadczenie odbioru. Może pojawić się chwilę po przyjęciu faktury. Do tego czasu widać „Oczekuje na UPO”.
 - **PDF**: wizualizacja faktury z kodem **KOD I**, po którego zeskanowaniu można sprawdzić fakturę w KSeF. Przekaż ten PDF nabywcy, który nie korzysta z KSeF, na przykład osobie prywatnej.
 
-Pliki pobierzesz w portalu przyciskami **Pobierz XML**, **Pobierz UPO** i **Pobierz PDF**.
+Pliki pobierzesz w portalu przyciskami **Pobierz XML**, **Pobierz UPO** i **Pobierz PDF**. Faktura dla firmy zagranicznej ma [trzy przyciski PDF](#pdf-dla-nabywcy).
 
 ## Odrzucona faktura
 
@@ -125,6 +127,110 @@ Dokument sprawdzisz na przykład w Aplikacji Podatnika KSeF:
 - **To ta sama sprzedaż:** nie wystawiaj faktury ponownie. Kopia oznaczałaby drugi dokument i drugi VAT dla jednej sprzedaży.
 - **To inna sprzedaż:** użyj **Kopiuj jako nową**. Jeśli wcześniejsze numery nadano poza OpenKSeF, najpierw ustaw wyższy następny numer w **Firma** > **Dane do faktur**.
 
+## Faktury dla firm zagranicznych
+
+OpenKSeF wystawia faktury za **usługi** dla firm spoza Polski, w PLN lub w walucie obcej. Działa to tylko w portalu. Faktura trafia do KSeF jak każda inna.
+
+:::warning[O stawce decydujesz Ty]
+OpenKSeF nie sprawdzi, czy nabywca naprawdę prowadzi firmę ani czy miejsce świadczenia usługi jest poza Polską. Wybierając **Firma zagraniczna**, sam to stwierdzasz. Faktura w tej formie nie jest przeznaczona dla osoby prywatnej. Jeśli masz wątpliwość, [zapytaj księgowego](#zapytaj-księgowego).
+:::
+
+### Kiedy np I, a kiedy np II
+
+Obie stawki oznaczają usługę poza polskim VAT. Faktura nie ma kwoty VAT. Program przyjmuje stawkę zgodną z krajem nabywcy i sam proponuje ją w formularzu.
+
+| Stawka | Nabywca | Kiedy | Numer nabywcy |
+|--------|---------|-------|---------------|
+| **np II** | Firma z innego kraju UE | Usługa opodatkowana w kraju nabywcy, a VAT rozlicza nabywca (art. 28b i art. 100 ust. 1 pkt 4 ustawy o VAT) | **Numer VAT UE**, wymagany, z kodem kraju lub bez niego |
+| **np I** | Firma spoza UE, na przykład z Wielkiej Brytanii, USA lub Szwajcarii | Usługa opodatkowana poza UE (art. 28b ustawy o VAT) | **Numer podatkowy** albo **Bez numeru podatkowego** |
+
+Art. 28b to zasada ogólna. Inne przepisy określają miejsce świadczenia inaczej, na przykład usług związanych z nieruchomością (art. 28e) i transportu pasażerów (art. 28f). Wtedy te stawki mogą nie pasować.
+
+Nabywca z polskim NIP to zwykła **Firma**. Program nie przyjmie jako numeru zagranicznego polskiego NIP z przedrostkiem `PL`. Numeru VAT UE nie sprawdza w systemie VIES, więc sprawdź go sam.
+
+### Nabywca bez numeru podatkowego
+
+Dla nabywcy spoza UE możesz zaznaczyć **Bez numeru podatkowego**. Faktura nie będzie wtedy miała numeru nabywcy, a wydruk pominie ten wiersz. Dla nabywcy z UE ta opcja nie istnieje, bo numer VAT UE jest wymagany.
+
+Brak numeru nie zmienia decyzji o stawce: nadal to Ty stwierdzasz, że nabywca jest firmą. Po ponownym otwarciu szkicu lub skopiowaniu faktury zaznaczenie znika. Zaznacz je jeszcze raz albo wpisz numer, inaczej wystawienie zostanie zablokowane.
+
+### Dane nabywcy
+
+Wpisz nazwę i adres alfabetem łacińskim, także dla kraju, który używa innego pisma. Inne pismo nie wydrukuje się na PDF. Polskie znaki drukują się poprawnie.
+
+### Waluta i kurs
+
+Wybierz walutę w sekcji **Daty i płatność**. Przy walucie innej niż PLN wymagany jest kurs, widoczny w polu **Kurs: 1 GBP w PLN**. Kurs trafia do faktury w KSeF i na wydruk. Kwoty na liście, w szczegółach i na PDF są w walucie faktury.
+
+- **Podpowiedź:** program proponuje średni kurs NBP z tabeli A, z ostatniego dnia roboczego przed wcześniejszą z dwóch dat: wystawienia i sprzedaży. Pod polem widać datę tabeli. Po zmianie daty podpowiedź się odświeża.
+- **Własny kurs:** wpisz go w polu. Zobaczysz `Kurs wpisany ręcznie.` oraz kurs NBP do porównania. Program nie sprawdza wpisanego kursu. **Użyj kursu NBP** przywraca podpowiedź.
+- **Brak kursu NBP:** gdy NBP nie odpowiada albo nie podaje tej waluty, zobaczysz `Brak kursu NBP. Wpisz kurs ręcznie.` Szkic można zapisać, ale wystawienie wymaga kursu.
+- **Kurs niepasujący do dat:** jeśli zapisany kurs NBP nie pasuje do dat faktury, wystawienie zostanie zablokowane. Pobierz kurs ponownie albo wpisz go ręcznie.
+- **Kopiuj jako nową:** nowy szkic dostaje nową podpowiedź kursu.
+
+:::caution[Nie czyść pola kursu przed wystawieniem]
+Gdy pole jest puste, a NBP zna walutę, program sam wpisze kurs NBP. Na środowiskach TEST i DEMO faktura wyśle się od razu, więc tego kursu nie zobaczysz przed wysyłką.
+:::
+
+Podpowiedź liczy się tylko z dat na fakturze. Przy usługach ciągłych i przy obowiązku podatkowym w innym dniu ustal kurs z księgowym.
+
+### Rachunek i SWIFT
+
+W **Firma** > **Dane do faktur** możesz podać rachunek w karcie **Rachunek do faktur zagranicznych**: IBAN, SWIFT i nazwę banku.
+
+- Z tym rachunkiem faktura dla firmy zagranicznej pokaże jego dane.
+- Bez niego pokaże rachunek główny jako `PL` + numer rachunku, ze SWIFT i nazwą banku, jeśli wpiszesz je przy rachunku głównym.
+
+Rachunek jest zapisywany na fakturze w chwili wystawienia. Późniejsza zmiana danych firmy nie zmienia wystawionych faktur. Faktura dla firmy zagranicznej nie ma pola mechanizmu podzielonej płatności.
+
+### Nazwa pozycji po polsku i angielsku
+
+Wpisz nazwę w jednym polu: najpierw po polsku, potem po angielsku, rozdzielone ukośnikiem:
+
+```
+Usługi programistyczne/Software development services
+```
+
+Na wydruku dwujęzycznym program rozdzieli te części, a ukośnik zniknie. W pliku XML i w KSeF nazwa zostaje w całości.
+
+- Części rozdziela ukośnik ze spacjami (`Usługi doradcze / Consulting services`) albo ukośnik bez spacji, z małą literą przed nim i wielką po nim.
+- Nazwy takie jak `Konsultacje 10/2026` i `Wsparcie CI/CD` nie zostaną rozdzielone. Wydrukują się raz, w całości.
+- Program nie rozpoznaje języka. Nazwa zaczynająca się od angielskiego wydrukuje angielski na miejscu polskiego.
+
+### PDF dla nabywcy
+
+Nabywca nie dostanie tej faktury z KSeF. Gdy faktura ma status **Przyjęta w KSeF**, pobierz PDF i wyślij mu go w sposób, który z nim uzgodnisz. OpenKSeF nie wysyła go sam. Każdy PDF ma kod **KOD I** i numer KSeF, więc nabywca może sprawdzić fakturę w KSeF.
+
+| Przycisk | Co dostajesz |
+|----------|--------------|
+| **Pobierz PDF (EN/PL)** | Wydruk dwujęzyczny: angielski duży, polski mały, kwoty w formacie `2,350.50 GBP` |
+| **Pobierz PDF (PL/EN)** | Wydruk dwujęzyczny: polski duży, angielski mały, kwoty w formacie `2 350,50 GBP` |
+| **Pobierz PDF (wzór MF)** | Wizualizacja według wzoru Ministerstwa Finansów |
+
+Wydruk dwujęzyczny bierze wszystkie dane z pliku XML wysłanego do KSeF. Podaje kurs waluty i kwotę słownie w obu językach. Nie jest nowym dokumentem: fakturą pozostaje XML w KSeF.
+
+Wydruk zawsze pokazuje `Paid` / `Zapłacono` 0 i całą kwotę do zapłaty. Zawiera też adnotację `Reverse charge` / `Odwrotne obciążenie` i objaśnienie `np: not subject to VAT in Poland` / `np: niepodlegające opodatkowaniu w Polsce`.
+
+### Aplikacja mobilna a faktury zagraniczne
+
+Faktury dla firmy zagranicznej nie wystawisz w aplikacji mobilnej. Obecna wersja aplikacji (1.0.5) pokazuje taką fakturę błędnie do czasu kolejnego wydania aplikacji: cena pozycji i podsumowanie szkicu mają oznaczenie PLN, stawka wygląda jak `np I%`, nie ma kraju ani numeru nabywcy. Właściwe dane są w portalu i w KSeF.
+
+Szkicu tej faktury nie edytuj w aplikacji. Zapis się nie uda albo wystawienie zostanie zablokowane, więc taka faktura nie trafi do KSeF. Popraw szkic w portalu.
+
+### Zapytaj księgowego
+
+Faktury dla firm zagranicznych sprawdziliśmy na środowisku testowym KSeF. KSeF je przyjmuje, ale to nie rozstrzyga skutków podatkowych. Nie jest to porada podatkowa, a księgowy nie sprawdzał jeszcze tych ustawień. Zapytaj swojego księgowego, zwłaszcza o to:
+
+- Czy zastosować np I lub np II do Twojej usługi i tego nabywcy.
+- Czy adnotacja `Odwrotne obciążenie` (`P_18 = 1` w XML) jest właściwa dla np I, a nie tylko dla np II.
+- Czy objaśnienie `not subject to VAT in Poland` dobrze opisuje np I i np II.
+- Czy można wysłać nabywcy sam wydruk dwujęzyczny, bez PDF według wzoru MF.
+- Czy rozdzielona lub przetłumaczona nazwa pozycji, kraj i sposób zapłaty są zgodne z XML.
+- Czy `Paid 0` na każdym wydruku jest do przyjęcia.
+- Jak traktować usługę dla Irlandii Północnej (kod `XI`). Program uznaje ją za usługę spoza UE, ze stawką np I.
+- Który kurs przyjąć przy usługach ciągłych.
+- Jak ująć faktury w JPK_V7 i VAT-UE. OpenKSeF tych plików nie tworzy.
+
 ## Faktury spoza OpenKSeF
 
 OpenKSeF pobiera z KSeF także faktury sprzedażowe, które firma wystawiła w innym programie. Pierwsze pobranie sięga najwyżej 12 miesięcy wstecz. Później dochodzą tylko nowe faktury.
@@ -150,7 +256,7 @@ Usunięcie firmy usuwa te faktury tylko z OpenKSeF. W KSeF zostają.
 
 ## Aplikacja mobilna
 
-Wystawianie faktur jest też w aplikacji na Androida, od wersji 1.0.5. [Kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna).
+Wystawianie faktur jest też w aplikacji na Androida, od wersji 1.0.5. [Kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna). Faktury dla firm zagranicznych wystawisz tylko w portalu: [szczegóły](#aplikacja-mobilna-a-faktury-zagraniczne).
 
 ## Ograniczenia
 
@@ -161,8 +267,12 @@ Tych rzeczy OpenKSeF jeszcze nie obsługuje:
 | **Faktura korygująca (korekta)** | Wystaw ją w Aplikacji Podatnika KSeF Ministerstwa Finansów |
 | **Faktura zaliczkowa i rozliczeniowa** | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **Proforma** | Użyj innego programu. Proforma nie jest fakturą i nie trafia do KSeF |
-| **Waluty inne niż PLN** | Użyj Aplikacji Podatnika KSeF lub innego programu |
-| **Stawki inne niż 23, 8, 5, 0 KR i zw**, na przykład 0% przy WDT lub eksporcie, „np” i „oo” | Użyj Aplikacji Podatnika KSeF lub innego programu |
+| **Towary za granicę**: WDT i eksport, stawki 0 WDT i 0 EX | Użyj Aplikacji Podatnika KSeF lub innego programu |
+| **VAT w walucie obcej**: stawka 23, 8 lub 5 w innej walucie niż PLN | Użyj Aplikacji Podatnika KSeF lub innego programu |
+| **Waluta obca dla nabywcy Firma lub Osoba prywatna** | Użyj Aplikacji Podatnika KSeF lub innego programu |
+| **Osoba prywatna za granicą i OSS** | Użyj Aplikacji Podatnika KSeF lub innego programu |
+| **Stawka oo** | Użyj Aplikacji Podatnika KSeF lub innego programu |
+| **Faktura dla firmy zagranicznej w aplikacji mobilnej** | Wystaw ją w portalu |
 | **Kilka serii numeracji i numery wpisywane ręcznie** | Jedna firma ma jeden wzorzec numeru |
 
 Dodatkowo:
