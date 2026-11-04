@@ -132,19 +132,19 @@ Dokument sprawdzisz na przykład w Aplikacji Podatnika KSeF:
 OpenKSeF wystawia faktury za **usługi** dla firm spoza Polski, w PLN lub w walucie obcej. Działa to tylko w portalu. Faktura trafia do KSeF jak każda inna.
 
 :::warning[O stawce decydujesz Ty]
-OpenKSeF nie sprawdzi, czy nabywca naprawdę prowadzi firmę ani czy miejsce świadczenia usługi jest poza Polską. Wybierając **Firma zagraniczna**, sam to stwierdzasz. Faktura w tej formie nie jest przeznaczona dla osoby prywatnej. Jeśli masz wątpliwość, [zapytaj księgowego](#zapytaj-księgowego).
+OpenKSeF nie sprawdzi, czy nabywca naprawdę prowadzi firmę ani czy miejsce świadczenia usługi jest poza Polską. Wybierając **Firma zagraniczna**, sam to stwierdzasz. Faktura w tej formie nie jest przeznaczona dla osoby prywatnej. Jeśli masz wątpliwość, [zapytaj księgowego](#zapytaj-księgowego). Ten opis nie jest poradą podatkową ani stanowiskiem Ministerstwa Finansów.
 :::
 
 ### Kiedy np I, a kiedy np II
 
-Obie stawki oznaczają usługę poza polskim VAT. Faktura nie ma kwoty VAT. Program przyjmuje stawkę zgodną z krajem nabywcy i sam proponuje ją w formularzu.
+Obie stawki oznaczają, że miejsce świadczenia usługi jest poza Polską. Faktura nie ma kwoty VAT. Program przyjmuje stawkę zgodną z krajem nabywcy i sam proponuje ją w formularzu.
 
 | Stawka | Nabywca | Kiedy | Numer nabywcy |
 |--------|---------|-------|---------------|
 | **np II** | Firma z innego kraju UE | Usługa opodatkowana w kraju nabywcy, a VAT rozlicza nabywca (art. 28b i art. 100 ust. 1 pkt 4 ustawy o VAT) | **Numer VAT UE**, wymagany, z kodem kraju lub bez niego |
-| **np I** | Firma spoza UE, na przykład z Wielkiej Brytanii, USA lub Szwajcarii | Usługa opodatkowana poza UE (art. 28b ustawy o VAT) | **Numer podatkowy** albo **Bez numeru podatkowego** |
+| **np I** | Firma spoza UE, na przykład z Wielkiej Brytanii, USA lub Szwajcarii | Miejsce świadczenia usługi poza UE (art. 28b ustawy o VAT) | **Numer podatkowy** albo **Bez numeru podatkowego** |
 
-Art. 28b to zasada ogólna. Inne przepisy określają miejsce świadczenia inaczej, na przykład usług związanych z nieruchomością (art. 28e) i transportu pasażerów (art. 28f). Wtedy te stawki mogą nie pasować.
+Art. 28b to zasada ogólna dla usług na rzecz podatnika. Inne przepisy określają miejsce świadczenia inaczej, na przykład usług związanych z nieruchomością (art. 28e) i transportu pasażerów (art. 28f). Wtedy te stawki mogą nie pasować.
 
 Nabywca z polskim NIP to zwykła **Firma**. Program nie przyjmie jako numeru zagranicznego polskiego NIP z przedrostkiem `PL`. Numeru VAT UE nie sprawdza w systemie VIES, więc sprawdź go sam.
 
@@ -156,7 +156,7 @@ Brak numeru nie zmienia decyzji o stawce: nadal to Ty stwierdzasz, że nabywca j
 
 ### Dane nabywcy
 
-Wpisz nazwę i adres alfabetem łacińskim, także dla kraju, który używa innego pisma. Inne pismo nie wydrukuje się na PDF. Polskie znaki drukują się poprawnie.
+Wpisz nazwę i adres alfabetem łacińskim, także dla kraju, który używa innego pisma. Wydruk dwujęzyczny nie pokaże niektórych pism, na przykład arabskiego i chińskiego. Polskie znaki drukują się poprawnie.
 
 ### Waluta i kurs
 
@@ -215,7 +215,7 @@ Wydruk zawsze pokazuje `Paid` / `Zapłacono` 0 i całą kwotę do zapłaty. Zawi
 
 Faktury dla firmy zagranicznej nie wystawisz w aplikacji mobilnej. Obecna wersja aplikacji (1.0.5) pokazuje taką fakturę błędnie do czasu kolejnego wydania aplikacji: cena pozycji i podsumowanie szkicu mają oznaczenie PLN, stawka wygląda jak `np I%`, nie ma kraju ani numeru nabywcy. Właściwe dane są w portalu i w KSeF.
 
-Szkicu tej faktury nie edytuj w aplikacji. Zapis się nie uda albo wystawienie zostanie zablokowane, więc taka faktura nie trafi do KSeF. Popraw szkic w portalu.
+Szkicu tej faktury nie edytuj w aplikacji. Zapis się nie uda albo wystawienie zostanie zablokowane. Szkic w PLN po zmianie nabywcy na Osobę prywatną stanie się zwykłą fakturą krajową. Popraw szkic w portalu.
 
 ### Zapytaj księgowego
 
@@ -230,6 +230,7 @@ Faktury dla firm zagranicznych sprawdziliśmy na środowisku testowym KSeF. KSeF
 - Jak traktować usługę dla Irlandii Północnej (kod `XI`). Program uznaje ją za usługę spoza UE, ze stawką np I.
 - Który kurs przyjąć przy usługach ciągłych.
 - Jak ująć faktury w JPK_V7 i VAT-UE. OpenKSeF tych plików nie tworzy.
+- Czy przed wystawieniem faktury np II musisz być zarejestrowany jako podatnik VAT UE.
 
 ## Faktury spoza OpenKSeF
 
