@@ -32,7 +32,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title="Miej kontrolę nad fakturami z KSeF"
-      description="OpenKSeF -- darmowy, otwartoźródłowy system do powiadomień o fakturach z KSeF, szybkiego przeglądu i płatności. Self-hosted, bez opłat.">
+      description="OpenKSeF: pobieranie i przegląd faktur z KSeF, kod QR do przelewu i wystawianie faktur w portalu. Kod źródłowy jest publicznie dostępny. Bez opłat za uruchomienie u siebie.">
       <HomepageHeader />
       <main>
         <UseCases />

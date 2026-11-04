@@ -5,7 +5,7 @@ title: Szybki start
 
 # Szybki start
 
-Uruchomienie OpenKSeF zajmuje mniej niż 5 minut. Potrzebujesz tylko Dockera i przeglądarki.
+Potrzebujesz Dockera, pliku `.env` i przeglądarki. Pierwsze pobranie obrazów może potrwać kilka minut, potem przechodzisz przez kreator konfiguracji.
 
 :::danger[Istniejąca instalacja i klucz szyfrowania]
 Masz już działającą instalację? **Nie podmieniaj `docker-compose.yml` i nie dopisuj klucza od razu.** Pierwszy start z kluczem przenosi go z bazy i szyfruje dane ponownie, więc najpierw zatrzymaj API i Workera i zrób kopię zapasową. Dotyczy to także klucza, który już masz w `.env`. Wykonaj [procedurę aktualizacji](../admin-setup#aktualizacja-z-wersji-v007-lub-starszej). Nowy plik `docker-compose.yml` bez `ENCRYPTION_KEY` odmówi działania, a działające kontenery pozostaną nietknięte.

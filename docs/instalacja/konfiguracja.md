@@ -71,7 +71,7 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 | `APP_EXTERNAL_BASE_URL` | Publiczny URL instancji (np. `http://192.168.1.50:8080`) |
 | `API_CLIENT_SECRET` | Secret klienta `openksef-api` w Keycloak *(generowany przez kreator)* |
 | `FIREBASE_CREDENTIALS_JSON` | Firebase service account JSON (dla direct push) |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` | Konfiguracja poczty (email fallback) |
+| `Email__Enabled`, `Email__SmtpHost`, `Email__SmtpPort`, `Email__UseSsl`, `Email__Username`, `Email__Password`, `Email__FromAddress` | E-mail o nowej fakturze, tylko przy ręcznej synchronizacji. Domyślnie wyłączony. Dopisz te zmienne w `environment` usługi `api` w `docker-compose.yml`: sam plik `.env` ich nie przekaże |
 
 ## Środowiska KSeF
 

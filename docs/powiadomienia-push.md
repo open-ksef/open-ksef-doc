@@ -31,7 +31,7 @@ graph LR
 |---------|--------------|--------------|
 | **SignalR** | Aplikacja jest połączona z serwerem; tylko ręczna synchronizacja | Brak -- zawsze włączone |
 | **Relay** | Aplikacja w tle | Wybierz w kreatorze (domyślnie) |
-| **Email** | Tylko ręczna synchronizacja | Skonfiguruj SMTP i adres e-mail do powiadomień w firmie |
+| **Email** | Tylko ręczna synchronizacja | Domyślnie wyłączony. Ustaw zmienne `Email__*` ([Konfiguracja](instalacja/konfiguracja)) i adres e-mail do powiadomień w firmie. SMTP z kreatora dotyczy tylko Keycloak |
 
 Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konfiguracji Firebase.
 
