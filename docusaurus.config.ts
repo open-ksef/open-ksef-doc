@@ -75,66 +75,7 @@ const config: Config = {
         },
         {
           to: '/#zakres',
-          activeBaseRegex: '^/#zakres          position: 'left',
-        },
-        {
-          href: 'https://github.com/open-ksef',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
-    },
-    footer: {
-      style: 'light',
-      links: [
-        {
-          title: 'Dokumentacja',
-          items: [
-            {label: 'Wprowadzenie', to: '/docs/intro'},
-            {label: 'Szybki start', to: '/docs/instalacja/szybki-start'},
-            {label: 'Wystawianie faktur', to: '/docs/wystawianie-faktur'},
-          ],
-        },
-        {
-          title: 'Projekt',
-          items: [
-            {label: 'GitHub', href: 'https://github.com/open-ksef'},
-            {label: 'O projekcie', to: '/docs/o-projekcie'},
-            {label: 'Licencja ELv2', to: '/docs/licencja'},
-            {label: 'Polityka prywatności', to: '/docs/polityka-prywatnosci'},
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} OpenKSeF (beta). Elastic License 2.0. Projekt stworzony z pomocą AI. Niezależny projekt, niepowiązany z Ministerstwem Finansów.`,
-    },
-    prism: {
-      theme: {
-        ...prismThemes.github,
-        styles: [
-          ...prismThemes.github.styles,
-          {types: ['comment', 'prolog', 'doctype', 'cdata'], style: {color: 'var(--ifm-color-emphasis-600)'}},
-          {types: ['string', 'attr-value', 'function', 'deleted'], style: {color: 'var(--ifm-color-danger)'}},
-          {
-            types: ['entity', 'url', 'symbol', 'number', 'boolean', 'variable', 'constant', 'property', 'regex', 'inserted'],
-            style: {color: 'var(--ifm-color-success)'},
-          },
-          {types: ['atrule', 'attr-name'], style: {color: 'var(--ifm-link-color)'}},
-        ],
-      },
-      darkTheme: {
-        ...prismThemes.dracula,
-        styles: [
-          ...prismThemes.dracula.styles,
-          {types: ['comment', 'prolog', 'doctype', 'cdata'], style: {color: 'var(--ifm-color-emphasis-600)'}},
-        ],
-      },
-      additionalLanguages: ['bash', 'json', 'yaml', 'csharp'],
-    },
-  } satisfies Preset.ThemeConfig,
-};
-
-export default config;
-,
+          activeBaseRegex: '^/#zakres$',
           label: 'Zakres',
           position: 'left',
         },
