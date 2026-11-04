@@ -5,7 +5,7 @@ import focusableTables from './src/rehype/focusableTables';
 
 const config: Config = {
   title: 'OpenKSeF',
-  tagline: 'Miej kontrolę nad fakturami z KSeF: powiadomienia, przegląd, szybkie płatności i wystawianie',
+  tagline: 'Faktury z KSeF na Twoim serwerze',
   favicon: 'img/favicon.svg',
   headTags: [
     {tagName: 'link', attributes: {rel: 'alternate icon', href: '/img/favicon.ico'}},
@@ -51,9 +51,10 @@ const config: Config = {
     image: 'img/og-image.png',
     announcementBar: {
       id: 'beta',
-      content: 'OpenKSeF jest w fazie <strong>beta</strong>: aktywnie rozwijamy projekt. Zgłaszaj błędy i pomysły na <a href="https://github.com/open-ksef" target="_blank">GitHub</a>.',
+      content: 'OpenKSeF jest w fazie <strong>beta</strong>. Zgłaszaj błędy i pomysły na <a href="https://github.com/open-ksef">GitHub</a>.',
       backgroundColor: 'var(--ifm-color-primary-lightest)',
       textColor: 'var(--ifm-color-primary-darkest)',
+      isCloseable: false,
     },
     colorMode: {
       defaultMode: 'light',
@@ -73,6 +74,12 @@ const config: Config = {
           label: 'Dokumentacja',
         },
         {
+          to: '/#zakres',
+          activeBaseRegex: '^/#zakres$',
+          label: 'Zakres',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/open-ksef',
           label: 'GitHub',
           position: 'right',
@@ -87,7 +94,7 @@ const config: Config = {
           items: [
             {label: 'Wprowadzenie', to: '/docs/intro'},
             {label: 'Szybki start', to: '/docs/instalacja/szybki-start'},
-            {label: 'Kreator konfiguracji', to: '/docs/admin-setup'},
+            {label: 'Wystawianie faktur', to: '/docs/wystawianie-faktur'},
           ],
         },
         {
@@ -100,7 +107,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} OpenKSeF (beta). Kod źródłowy jest publicznie dostępny na licencji Elastic License 2.0. Niezależny projekt, niepowiązany z Ministerstwem Finansów. Projekt stworzony z pomocą AI.`,
+      copyright: `Copyright © ${new Date().getFullYear()} OpenKSeF (beta). Elastic License 2.0. Projekt stworzony z pomocą AI. Niezależny projekt, niepowiązany z Ministerstwem Finansów.`,
     },
     prism: {
       theme: {
