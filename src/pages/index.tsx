@@ -205,7 +205,7 @@ export default function Home(): ReactNode {
                 <Yes>Dane do przelewu i kod QR w portalu</Yes>
                 <Yes>Faktury VAT w PLN ze stawkami 23, 8, 5, 0 KR i zw <small>Także dla osoby prywatnej, z PDF i kodem KOD I.</small></Yes>
                 <Yes>Środowiska KSeF: test i produkcja <small>Na produkcji przyjęta faktura jest dokumentem prawnym.</small></Yes>
-                <Yes>Powiadomienia push na Androidzie</Yes>
+                <Yes>Powiadomienia push na Androidzie <small>Aplikacja: kończymy poprawki, zanim zalecimy instalację.</small></Yes>
               </ul>
             </div>
             <div>

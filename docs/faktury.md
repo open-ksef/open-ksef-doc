@@ -37,7 +37,7 @@ Kliknij fakturę na liście, aby zobaczyć jej szczegóły: numery, sprzedawcę 
 
 ### Pozycje faktury
 
-Karta **Pozycje** zawiera wiersze faktury (`FaWiersz`): nazwa, jednostka miary, ilość, cena netto i brutto, wartości netto / VAT / brutto oraz stawka VAT.
+Karta **Pozycje** zawiera wiersze faktury (`FaWiersz`): nazwa, ilość z jednostką, **Cena netto**, **Stawka** i **Brutto**.
 
 ![Pozycje faktury](/img/screenshots/portal/invoice-lines.png)
 
