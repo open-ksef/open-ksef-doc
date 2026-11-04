@@ -30,11 +30,10 @@ Strona wizualnie nawiązuje do portalu OpenKSeF:
 - Primary color: `#4f46e5` (light), `#a5b4fc` (dark)
 - Footer: `#f3f4f8` (light), `#1c2033` (dark)
 - Font: Inter + JetBrains Mono, lokalne pliki woff2 w `src/fonts`, licencje OFL w `static/fonts`
-- Gradient hero: `linear-gradient(135deg, #1e1b4b, #312e81, #4338ca)`
-- Karty z shadow i hover lift
+- Strona główna bez gradientów: pełna szerokość, sekcje na przemian tło i powierzchnia, karty z obramowaniem
 - Logo: `static/img/mark.svg` (ciemny motyw: `mark-dark.svg`) + "OpenKSeF"
 
-Design tokens zdefiniowane w `src/css/custom.css` (nadpisują zmienne Docusaurus `--ifm-*`).
+Design tokens zdefiniowane w `src/css/custom.css` (nadpisują zmienne Docusaurus `--ifm-*`, własne mają prefiks `--site-`). Bez `src/theme`, klas układu Infima (`container`, `row`), `!important` i stałej maksymalnej szerokości strony głównej.
 
 ### Struktura dokumentacji
 
@@ -58,22 +57,24 @@ docs/
 
 ### Landing page
 
-`src/pages/index.tsx` -- strona główna z sekcjami:
-- Hero (gradient bg, CTA)
-- Dlaczego OpenKSeF (6 kart feature'ów)
+`src/pages/index.tsx` i `index.module.css` -- strona główna, bez osobnych komponentów, z sekcjami:
+- Hero (zrzut strony Start, CTA)
+- Co robi OpenKSeF (4 karty)
+- Tak wygląda portal (2 zrzuty)
+- Co działa, a czego nie ma (`#zakres`, 2 listy)
 - Jak zacząć (3 kroki)
-- Technologie (ikony stacku)
-
-Komponenty w `src/components/`: `HomepageFeatures`, `HowToStart`, `TechStack`, `UseCases`.
+- Gdzie są Twoje dane
+- Kod, licencja i status
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego (login, admin-setup, faktury, dane logowania)
+`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (login, admin-setup, faktury, token KSeF i pobieranie), tylko jasny motyw
+`static/img/screenshots/home/` -- screeny na stronę główną, jasny i ciemny motyw
 `static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (obecnie brak)
 
 Screeny zawierają wyłącznie dane fikcyjne (np. NIP 1111111111, nazwy "Przykład"). Żadnych prawdziwych NIP-ów, numerów KSeF, nazw firm ani adresów serwerów.
 
-Screeny robione z działającego środowiska dev za pomocą Playwright/Cursor Browser.
+Screeny robione Playwrightem z osobnego stacku z wydanej wersji (`docker compose -p <nazwa>`) z danymi fikcyjnymi. Nigdy z bazy dev ani produkcji: są w nich prawdziwe dane. Stack bez Workera, usuń go po zrzutach. **Zastosuj** w kreatorze w trybie Relay rejestruje instancję w produkcyjnym relay: po zrzucie kroku 6 wróć do kroku 5 i wybierz **Tylko lokalne (SignalR)**. Gateway podaje w OIDC port 8080, więc stack musi działać na tym porcie.
 
 ### CI/CD
 
@@ -92,7 +93,7 @@ npm run serve   # podgląd buildu lokalnie
 
 1. Cała treść po **polsku** (polski odbiorca)
 2. Dokumentacja musi być **spójna** z aktualnym stanem kodu w `open-ksef` i `open-ksef-mobile`
-3. Design musi **nawiązywać** do portalu (paleta indigo, Inter font, karty z shadow)
+3. Design musi **nawiązywać** do portalu (paleta indigo, Inter font, karty)
 4. Sekcja "O projekcie" zawiera **disclaimer**: projekt stworzony z pomocą AI, self-hosting = odpowiedzialność użytkownika
 5. Licencja **Elastic License 2.0 (ELv2)** -- bez opłat za uruchomienie u siebie, zakaz SaaS bez zgody autora
 6. Przy zmianach **modyfikuj istniejące pliki** -- nie twórz równoległych wersji. Jeśli strona/komponent już istnieje, refaktoryzuj go zamiast dodawać nowy obok.
