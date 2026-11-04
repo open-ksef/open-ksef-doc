@@ -7,7 +7,7 @@ title: Wystawianie faktur
 
 OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Firma**, na karcie **Dane do faktur**. Wystawianie jest też w aplikacji na Androida, od wersji 1.0.5, ale [kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna).
 
-Faktury, które otrzymujesz od dostawców, opisuje strona [Otrzymane faktury](faktury).
+Faktury, które otrzymujesz od dostawców, opisuje strona [Otrzymane faktury](faktury). Sprzedaż wystawioną w innym programie opisuje sekcja [Faktury spoza OpenKSeF](#faktury-spoza-openksef).
 
 :::warning[Sprawdź środowisko]
 Przy fakturze widać środowisko KSeF: **TEST**, **DEMO** albo **PRODUKCJA**. Na środowisku PRODUKCJA przyjęta faktura staje się dokumentem prawnym. Nie można jej usunąć ani edytować.
@@ -86,7 +86,7 @@ Jeśli KSeF nie odpowiada albo wynik wysyłki jest niepewny, faktura zostaje w s
 
 ## XML, UPO i PDF
 
-Pliki są dostępne dla faktury **Przyjętej w KSeF**.
+Pliki są dostępne dla faktury wystawionej w OpenKSeF i **Przyjętej w KSeF**.
 
 - **XML**: dokładnie te dane, które trafiły do KSeF.
 - **UPO**: urzędowe poświadczenie odbioru. Może pojawić się chwilę po przyjęciu faktury. Do tego czasu widać „Oczekuje na UPO”.
@@ -125,6 +125,29 @@ Dokument sprawdzisz na przykład w Aplikacji Podatnika KSeF:
 - **To ta sama sprzedaż:** nie wystawiaj faktury ponownie. Kopia oznaczałaby drugi dokument i drugi VAT dla jednej sprzedaży.
 - **To inna sprzedaż:** użyj **Kopiuj jako nową**. Jeśli wcześniejsze numery nadano poza OpenKSeF, najpierw ustaw wyższy następny numer w **Firma** > **Dane do faktur**.
 
+## Faktury spoza OpenKSeF
+
+OpenKSeF pobiera z KSeF także faktury sprzedażowe, które firma wystawiła w innym programie. Pierwsze pobranie sięga najwyżej 12 miesięcy wstecz. Później dochodzą tylko nowe faktury.
+
+Znajdziesz je w menu **Wystawione**, pod filtrami **Wszystkie** i **Przyjęte**, ze statusem **Przyjęta w KSeF** i oznaczeniem `Spoza OpenKSeF`. Faktura wystawiona w OpenKSeF jest na liście raz i nie ma tego oznaczenia.
+
+Te faktury są tylko do odczytu:
+
+- Nie mają statusu płatności ani terminu płatności. Nie oznaczysz ich jako opłaconych.
+- Nie mają danych do przelewu ani kodu QR.
+- Nie mają plików XML, UPO i PDF.
+- Nie mają jeszcze pozycji. W szczegółach zobaczysz `Pozycji tej faktury nie pobrano jeszcze z KSeF.`
+
+Przy fakturze w walucie obcej wiersz VAT nazywa się **VAT w przeliczeniu na PLN**. Netto i brutto są w walucie faktury, więc netto plus VAT nie daje brutto.
+
+:::caution[Po pierwszej synchronizacji lista może być pusta]
+Lista może zostać pusta albo niepełna, zwłaszcza gdy firma ma dużo faktur otrzymanych. Synchronizacja nie pokazuje wtedy błędu. Brakujące faktury doda kolejna synchronizacja: automatyczna (domyślnie do 4 godzin) albo [ręczna](faktury#synchronizacja-z-ksef).
+:::
+
+Tych faktur nie obejmują powiadomienia push i nie ma ich w aplikacji mobilnej.
+
+Usunięcie firmy usuwa te faktury tylko z OpenKSeF. W KSeF zostają.
+
 ## Aplikacja mobilna
 
 Wystawianie faktur jest też w aplikacji na Androida, od wersji 1.0.5. [Kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna).
@@ -145,5 +168,5 @@ Tych rzeczy OpenKSeF jeszcze nie obsługuje:
 Dodatkowo:
 
 - Przyjętej faktury nie można zmienić ani usunąć pojedynczo w OpenKSeF. Z KSeF nie można jej usunąć wcale.
-- Firmę usuniesz razem z jej wystawionymi fakturami, chyba że ma fakturę w statusie **Wysyłanie** albo fakturę przyjętą na środowisku PRODUKCJA. Przy wysyłce poczekaj na jej koniec. Przy fakturze przyjętej na środowisku PRODUKCJA skontaktuj się z właścicielem instancji. Usuniętych faktur nie da się przywrócić.
+- Firmę usuniesz razem z jej wystawionymi fakturami, chyba że ma fakturę wystawioną w OpenKSeF w statusie **Wysyłanie** albo przyjętą na środowisku PRODUKCJA. [Faktury spoza OpenKSeF](#faktury-spoza-openksef) nie blokują usunięcia. Przy wysyłce poczekaj na jej koniec. Przy fakturze przyjętej na środowisku PRODUKCJA skontaktuj się z właścicielem instancji. Usuniętych faktur wystawionych w OpenKSeF i szkiców nie da się przywrócić.
 - OpenKSeF nie ocenia skutków podatkowych faktury. W razie wątpliwości zapytaj księgowego lub doradcę podatkowego.

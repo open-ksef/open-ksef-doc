@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 3 listopada 2026 r.*
+*Ostatnia aktualizacja: 4 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -19,7 +19,7 @@ Właściciel instancji podaje swoim użytkownikom swoją nazwę i dane kontaktow
 
 W sklepie Google Play aplikację OpenKSeF publikuje **Krystian Mikrut**. Wydawca aplikacji nie staje się przez to administratorem danych w instancjach, których nie prowadzi.
 
-Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w OpenKSeF, w sprawie tych danych skontaktuj się ze sprzedawcą.
+Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w OpenKSeF lub pobranej z KSeF, w sprawie tych danych skontaktuj się ze sprzedawcą.
 
 ---
 
@@ -43,6 +43,10 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 - Dane faktur pobrane z KSeF: nagłówek (numer, kwoty, daty, dane kontrahentów, numer rachunku sprzedawcy) i pozycje faktury (nazwa towaru lub usługi, ilość, ceny, stawka VAT)
 - Status płatności faktury ustawiony przez użytkownika
 - Faktury są przechowywane w bazie danych instancji
+
+### Dane faktur sprzedaży
+
+- Dane faktur sprzedaży pobrane z KSeF, także wystawionych w innym programie: numer, kwoty, daty i dane nabywcy.
 
 ### Dane faktur wystawionych
 
