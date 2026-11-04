@@ -91,7 +91,7 @@ Faktura pojawia się na liście od razu. Jej pozycje, numer rachunku i termin p�
 - Automatyczna synchronizacja: do 60 plików na firmę (NIP) w jednym cyklu, domyślnie co 4 godziny.
 - **Pobierz z KSeF**: do 15 plików na kliknięcie. Reszta czeka na automatyczną synchronizację.
 
-Duża firma potrzebuje kilku cykli. Na przykład 300 plików to 5 cykli, czyli około 16 godzin.
+Duża firma potrzebuje kilku cykli. Szacunkowo 300 plików to 5 cykli, czyli około 16 godzin od pierwszego cyklu.
 
 Kolejność pobierania:
 
@@ -102,7 +102,7 @@ Kolejność pobierania:
 
 Opłacona faktura, która ma pozycje, ale nie ma terminu, nie trafia do tej kolejki. Uzupełni ją tylko [pełna resynchronizacja](#pełna-resynchronizacja).
 
-Odczytany plik nie jest pobierany ponownie. Po limicie KSeF pobieranie dla tej firmy zatrzymuje się, a reszta czeka na kolejną synchronizację. Plik, którego nie udało się pobrać lub odczytać, jest ponawiany po pozostałych. W obu przypadkach faktura zachowuje swoje dane i status płatności.
+Odczytany plik nie jest pobierany ponownie. Po limicie KSeF pobieranie dla tej firmy zatrzymuje się, a reszta czeka na kolejną synchronizację. Plik, którego nie udało się pobrać lub odczytać, jest ponawiany po pozostałych z tego samego punktu kolejności. W obu przypadkach faktura zachowuje swoje dane i status płatności.
 
 ### Pełna resynchronizacja
 
