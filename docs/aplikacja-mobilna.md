@@ -14,7 +14,7 @@ Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Pl
 ## Funkcje
 
 - Przeglądanie faktur z KSeF (lista, szczegóły, filtrowanie)
-- Numer faktury sprzedawcy i pozycje faktury w szczegółach (zobacz [Faktury](faktury#aplikacja-mobilna))
+- Numer faktury sprzedawcy i pozycje faktury w szczegółach (zobacz [Otrzymane faktury](faktury#aplikacja-mobilna))
 - Zarządzanie firmami (tenantami)
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie przez Keycloak (OIDC)
@@ -29,7 +29,7 @@ Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Pl
 3. Zaloguj się danymi z Keycloak
 
 :::tip[Szybkie połączenie]
-W portalu webowym przejdź do strony **Aplikacja mobilna** -- znajdziesz tam kod QR, który możesz zeskanować w aplikacji mobilnej, żeby automatycznie ustawić adres serwera.
+W portalu webowym przejdź do strony **Telefon** -- znajdziesz tam kod QR, który możesz zeskanować w aplikacji mobilnej, żeby automatycznie ustawić adres serwera.
 :::
 
 ## Wymagania dla Android

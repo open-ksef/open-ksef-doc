@@ -85,7 +85,7 @@ Relay `push.open-ksef.pl` prowadzą autorzy OpenKSeF. Administratorem danych w p
 
 Aplikacja rejestruje urządzenie do powiadomień po każdym zalogowaniu. W wydanych wersjach aplikacji (do 1.0.5) przełącznik **Powiadomienia push** na ekranie **Konto** nie wyłącza powiadomień. Aby przestać je otrzymywać, wybierz jeden ze sposobów:
 
-- Wyloguj się z aplikacji i usuń urządzenie w portalu, na liście **Urządzenia**. Przy następnym logowaniu urządzenie zarejestruje się ponownie.
+- Wyloguj się z aplikacji i usuń urządzenie w portalu: **Telefon** > **Moje urządzenia**. Przy następnym logowaniu urządzenie zarejestruje się ponownie.
 - Wyłącz powiadomienia dla aplikacji OpenKSeF w ustawieniach telefonu. Telefon przestanie je pokazywać, ale instancja może je nadal wysyłać.
 
 ---

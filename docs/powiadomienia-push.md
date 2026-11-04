@@ -41,7 +41,7 @@ Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konf
 - **Ręczna synchronizacja** (przycisk w portalu lub w aplikacji mobilnej) wysyła dodatkowo powiadomienie SignalR i e-mail.
 - Powiadomienie push trafia na urządzenia użytkownika, do którego należy firma. Inni użytkownicy instancji go nie dostają.
 - E-mail trafia na adres do powiadomień ustawiony w danych firmy. Może to być dowolny adres, także osoby spoza instancji.
-- Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika, chyba że w portalu (**Urządzenia**) przypisano je do jednej firmy.
+- Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika, chyba że przypisano je do jednej firmy. Przypisanie widać w portalu: **Telefon** > **Moje urządzenia**, kolumna **Powiadomienia**.
 - Pierwsza synchronizacja nowej firmy i [pełna resynchronizacja](faktury#pełna-resynchronizacja) nie wysyłają powiadomień, nawet jeśli pobiorą wiele faktur.
 
 ## Niezawodność
@@ -69,18 +69,18 @@ Komunikacja z relay jest zabezpieczona trzema warstwami:
 
 ## Testowanie
 
-1. Zaloguj się do portalu > **Urządzenia**
-2. Znajdź zarejestrowane urządzenie > **Testuj**
+1. Zaloguj się do portalu > **Telefon**
+2. Znajdź urządzenie na liście **Moje urządzenia** > **Wyślij test**
 
 ## Rozwiązywanie problemów
 
 | Objaw | Rozwiązanie |
 |-------|-------------|
 | Brak powiadomień | Włącz relay w kreatorze |
-| Brak powiadomień, urządzenie nie widnieje w **Urządzenia** | W aplikacji mobilnej: **Konto** > wyłącz i włącz **Powiadomienia push**. Aplikacja zarejestruje urządzenie ponownie |
+| Brak powiadomień, urządzenia nie ma w portalu na liście **Telefon** > **Moje urządzenia** | W aplikacji mobilnej: **Konto** > wyłącz i włącz **Powiadomienia push**. Aplikacja zarejestruje urządzenie ponownie |
 | Brak powiadomień po pełnej resynchronizacji | Zamierzone -- pełna resynchronizacja nie wysyła powiadomień |
 | SignalR nie łączy | Zaloguj się ponownie w aplikacji |
-| Relay zwraca 401 | Instancja niezarejestrowana -- przejdź do Ustawienia > Powiadomienia push > Zarejestruj ponownie |
+| Relay zwraca 401 | Instancja niezarejestrowana -- przejdź do **Ustawienia** > **Administracja instancji** > **Powiadomienia push** > **Zarejestruj ponownie** |
 | Relay zwraca 403 | Instancja wyłączona przez administratora relay |
 | Relay zwraca 429 | Przekroczono limit żądań |
 | Relay zwraca 502 | Problem z Firebase/APNs po stronie relay |
