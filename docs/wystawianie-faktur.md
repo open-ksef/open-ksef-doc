@@ -243,12 +243,12 @@ Te faktury są tylko do odczytu:
 - Nie mają statusu płatności ani terminu płatności. Nie oznaczysz ich jako opłaconych.
 - Nie mają danych do przelewu ani kodu QR.
 - Nie mają plików XML, UPO i PDF.
-- Nie mają jeszcze pozycji. W szczegółach zobaczysz `Pozycji tej faktury nie pobrano jeszcze z KSeF.`
+- Pozycje [dochodzą stopniowo](faktury#uzupełnianie-pozycji-rachunku-i-terminu), po nowych i nieopłaconych fakturach otrzymanych. Do tego czasu w szczegółach zobaczysz `Pozycji tej faktury nie pobrano jeszcze z KSeF.`
 
 Przy fakturze w walucie obcej wiersz VAT nazywa się **VAT w przeliczeniu na PLN**. Netto i brutto są w walucie faktury, więc netto plus VAT nie daje brutto.
 
 :::caution[Po pierwszej synchronizacji lista może być pusta]
-Lista może zostać pusta albo niepełna, zwłaszcza gdy firma ma dużo faktur otrzymanych. Synchronizacja nie pokazuje wtedy błędu. Brakujące faktury doda kolejna synchronizacja: automatyczna (domyślnie do 4 godzin) albo [ręczna](faktury#synchronizacja-z-ksef).
+Lista może zostać pusta albo niepełna, jeśli pobranie listy sprzedaży z KSeF się nie uda. Synchronizacja nie pokazuje wtedy błędu. Brakujące faktury doda kolejna synchronizacja: automatyczna (domyślnie do 4 godzin) albo [ręczna](faktury#synchronizacja-z-ksef).
 :::
 
 Tych faktur nie obejmują powiadomienia push i nie ma ich w aplikacji mobilnej.

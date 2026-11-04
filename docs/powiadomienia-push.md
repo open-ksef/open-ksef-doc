@@ -43,6 +43,7 @@ Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konf
 - E-mail trafia na adres do powiadomień ustawiony w danych firmy. Może to być dowolny adres, także osoby spoza instancji.
 - Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika, chyba że przypisano je do jednej firmy. Przypisanie widać w portalu: **Telefon** > **Moje urządzenia**, kolumna **Powiadomienia**.
 - Pierwsza synchronizacja nowej firmy i [pełna resynchronizacja](faktury#pełna-resynchronizacja) nie wysyłają powiadomień, nawet jeśli pobiorą wiele faktur.
+- Powiadomienie może przyjść kilka sekund przed pozycjami i numerem rachunku, bo OpenKSeF pobiera je z KSeF [po zapisaniu faktury](faktury#uzupełnianie-pozycji-rachunku-i-terminu). Gdy czeka dużo starszych faktur, może to potrwać kilka minut, a po limicie KSeF do kolejnej automatycznej synchronizacji. Otwórz fakturę ponownie.
 
 ## Niezawodność
 
