@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react';
 import Head from '@docusaurus/Head';
 import Link from '@docusaurus/Link';
+import useBrokenLinks from '@docusaurus/useBrokenLinks';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import ThemedImage from '@theme/ThemedImage';
@@ -112,6 +113,7 @@ function Fact({term, children}: {term: string; children: ReactNode}) {
 }
 
 export default function Home(): ReactNode {
+  useBrokenLinks().collectAnchor('zakres');
   return (
     <Layout description={DESCRIPTION}>
       <Head>
@@ -173,7 +175,7 @@ export default function Home(): ReactNode {
             <div className={styles.card}>
               <Icon name="bell" size={24} />
               <h3>Powiadamia o nowej fakturze</h3>
-              <p>Push na telefon po pobraniu nowej faktury. Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Play i iPhone jeszcze nie.</p>
+              <p>Push na telefon po pobraniu nowej faktury. Android: plik APK na GitHubie, Google Play i iPhone jeszcze nie.</p>
             </div>
           </div>
         </section>
@@ -206,7 +208,7 @@ export default function Home(): ReactNode {
                 <Yes>Faktury VAT w PLN ze stawkami 23, 8, 5, 0 KR i zw <small>Także dla osoby prywatnej, z PDF i kodem KOD I.</small></Yes>
                 <Yes>Faktury za usługi dla firm zagranicznych <small>Stawki np I i np II, waluta obca, kurs NBP, PDF po angielsku i polsku. Tylko w portalu.</small></Yes>
                 <Yes>Środowiska KSeF: test i produkcja <small>Na produkcji przyjęta faktura jest dokumentem prawnym.</small></Yes>
-                <Yes>Powiadomienia push na Androidzie <small>Aplikacja: kończymy poprawki, zanim zalecimy instalację.</small></Yes>
+                <Yes>Powiadomienia push na Androidzie <small>Aplikacja: plik APK na GitHubie.</small></Yes>
               </ul>
             </div>
             <div>

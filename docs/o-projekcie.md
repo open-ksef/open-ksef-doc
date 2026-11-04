@@ -6,7 +6,7 @@ title: O projekcie
 # O projekcie
 
 :::caution[Status: Beta]
-OpenKSeF jest w fazie **beta**. Aktywnie rozwijamy projekt -- nowe funkcjonalności pojawiają się regularnie, ale mogą wystąpić zmiany w API, strukturze danych i konfiguracji między wersjami. Zalecamy śledzenie [release notes na GitHub](https://github.com/open-ksef).
+OpenKSeF jest w fazie **beta**. Aktywnie rozwijamy projekt -- nowe funkcjonalności pojawiają się regularnie, ale mogą wystąpić zmiany w API, strukturze danych i konfiguracji między wersjami. Zalecamy śledzenie [informacji o wydaniach na GitHubie](https://github.com/open-ksef/open-ksef/releases).
 :::
 
 ## Czym jest OpenKSeF?

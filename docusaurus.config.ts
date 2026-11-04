@@ -24,6 +24,8 @@ const config: Config = {
   projectName: 'open-ksef-doc',
 
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
+  markdown: {hooks: {onBrokenMarkdownLinks: 'throw'}},
 
   i18n: {
     defaultLocale: 'pl',

@@ -35,31 +35,31 @@ Przykłady:
 
 ## Rejestracja użytkowników
 
-Endpoint rejestracji wymaga service account Keycloak z uprawnieniem `manage-users`.
+Formularz rejestracji działa dopiero po poniższych krokach. Kreator ich nie wykonuje, celowo: `manage-users` pozwala temu, kto ma secret klienta `openksef-api`, zresetować hasło każdego użytkownika, a kreator trzyma ten secret w bazie i jej kopiach. Na instalacji z kreatora z włączoną rejestracją formularz zwraca `503`. Użyj logowania Google albo utwórz konto w konsoli Keycloak.
 
-Jeśli użyłeś [kreatora konfiguracji](admin-setup), jest to skonfigurowane automatycznie.
+Każde żądanie czyta realm: rejestracja wyłączona zwraca `403`, a nieudany odczyt `503`. W obu przypadkach konto nie powstaje.
 
 ### Konfiguracja ręczna
 
 1. Otwórz konsolę Keycloak: http://localhost:8082/auth/admin (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`)
 2. Przejdź do **Clients > openksef-api > Credentials**
-3. Skopiuj **Client Secret**
+3. Skopiuj **Client Secret**. Nie generuj go ponownie na instalacji z kreatora
 4. Ustaw w `.env`:
 
 ```bash
 API_CLIENT_SECRET=<wklej-secret>
 ```
 
-5. Upewnij się, że service account ma uprawnienie `manage-users`:
-   - **Clients > openksef-api > Service Account Roles**
-   - Przypisz `realm-management` > `manage-users`
+5. Upewnij się, że service account ma uprawnienia:
+   - **Clients > openksef-api > Service accounts roles**
+   - Przypisz `realm-management` > `manage-users` i `view-realm`
 
 6. Zrestartuj API:
 
 ```bash
-docker compose restart api
+docker compose up -d api
 ```
 
 :::info
-Bez `API_CLIENT_SECRET` rejestracja zwraca `503 Service Unavailable`. Logowanie i Google sign-in działają niezależnie.
+Bez `API_CLIENT_SECRET` lub tych uprawnień rejestracja zwraca `503 Service Unavailable`. Logowanie i Google sign-in działają niezależnie.
 :::

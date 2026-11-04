@@ -9,12 +9,11 @@ title: Wymagania systemowe
 
 | Komponent | Wymaganie |
 |-----------|-----------|
-| **System operacyjny** | Linux, macOS lub Windows z Docker Desktop |
-| **Docker** | Docker Engine 24+ lub Docker Desktop 4.x |
+| **Docker** | Docker Engine lub Docker Desktop. Obrazy są dostępne dla `linux/amd64` |
 | **Docker Compose** | v2 (wbudowany w Docker Desktop) |
-| **RAM** | minimum 4 GB (zalecane 8 GB) |
-| **Dysk** | minimum 2 GB wolnego miejsca |
-| **Port** | 8080 (gateway) -- jedyny wymagany port |
+| **RAM** | Sześć kontenerów bez ruchu zajmuje około 1,1 GB. Zaplanuj zapas na synchronizację i system |
+| **Dysk** | Obrazy zajmują około 2,5 GB. Do tego rośnie baza faktur |
+| **Porty** | 8080 (gateway), a także 8081, 8082, 8083 i 5432, patrz niżej |
 
 :::info[Nie potrzebujesz git, curl ani żadnych dodatkowych narzędzi]
 Wystarczy Docker i przeglądarka. Plik `docker-compose.yml` skopiujesz z [Szybkiego startu](szybki-start).
@@ -22,15 +21,15 @@ Wystarczy Docker i przeglądarka. Plik `docker-compose.yml` skopiujesz z [Szybki
 
 ## Porty
 
-Gateway nasłuchuje na porcie **8080** i udostępnia wszystkie usługi pod jednym adresem. Pozostałe porty są opcjonalne (bezpośredni dostęp do poszczególnych usług):
+Gateway nasłuchuje na porcie **8080** i udostępnia wszystkie usługi pod jednym adresem. Pozostałe porty dają bezpośredni dostęp do poszczególnych usług. `docker-compose.yml` publikuje je wszystkie, na wszystkich interfejsach, więc każdy musi być wolny. Zajęty port zmień w `.env`:
 
-| Port | Usługa | Wymagany? | Zmienna `.env` |
-|------|--------|-----------|----------------|
-| 8080 | Gateway (portal + API + Keycloak) | **tak** | `APP_HOST_PORT` |
-| 8081 | API (bezpośredni dostęp, health check `/health`) | nie | `API_HOST_PORT` |
-| 8082 | Keycloak (konsola admina) | nie | `KEYCLOAK_HOST_PORT` |
-| 8083 | Portal Web (bezpośredni dostęp) | nie | `PORTAL_WEB_HOST_PORT` |
-| 5432 | PostgreSQL | nie | `POSTGRES_HOST_PORT` |
+| Port | Usługa | Zmienna `.env` |
+|------|--------|----------------|
+| 8080 | Gateway (portal + API + Keycloak) | `APP_HOST_PORT` |
+| 8081 | API (bezpośredni dostęp, health check `/health`) | `API_HOST_PORT` |
+| 8082 | Keycloak (konsola admina) | `KEYCLOAK_HOST_PORT` |
+| 8083 | Portal Web (bezpośredni dostęp) | `PORTAL_WEB_HOST_PORT` |
+| 5432 | PostgreSQL | `POSTGRES_HOST_PORT` |
 
 Porty można zmienić w pliku `.env` -- szczegóły w [Konfiguracja zaawansowana](szybki-start#konfiguracja-zaawansowana).
 
@@ -43,7 +42,7 @@ Jeśli chcesz udostępnić OpenKSeF w sieci lokalnej lub przez internet:
 3. Dla HTTPS -- użyj reverse proxy (nginx, Traefik, Caddy) przed gatewayem
 
 :::tip[Aplikacja mobilna]
-Aplikacja mobilna na Androidzie wymaga HTTPS do logowania (OIDC). Dla testów lokalnych użyj [ngrok](https://ngrok.com/) -- skrypt `dev-env-up.ps1` konfiguruje to automatycznie.
+Aplikacja mobilna na Androidzie wymaga HTTPS do logowania (OIDC). Programiści do testów lokalnych mogą użyć [ngrok](https://ngrok.com/): [szczegóły](../aplikacja-mobilna#wymagania-dla-android).
 :::
 
 ## Następny krok

@@ -14,7 +14,7 @@ Przejdź do [Szybki start](instalacja/szybki-start).
 ## Wymagania wstępne
 
 - Stack Docker uruchomiony (`docker compose up -d`) z ustawionym `ENCRYPTION_KEY`, patrz [Klucz szyfrowania](#klucz-szyfrowania)
-- Port 8080 dostępny (gateway)
+- Wolne porty 8080, 8081, 8082, 8083 i 5432 albo inne ustawione w `.env`: `docker-compose.yml` publikuje wszystkie
 
 Tylko nowe instalacje. Na istniejącej instalacji nie uruchamiaj `docker compose up -d`: wykonaj [procedurę aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej).
 
@@ -33,7 +33,7 @@ Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PAS
 | Pole | Opis | Domyślnie |
 |------|------|-----------|
 | Zewnętrzny URL | Publiczny adres systemu | Bieżący adres przeglądarki |
-| Środowisko KSeF | Test lub Produkcja | Test (`ksef-test.mf.gov.pl`) |
+| Środowisko KSeF | Test lub Produkcja | Test (`https://api-test.ksef.mf.gov.pl/v2`) |
 | Email admina | Email pierwszego użytkownika | *(wymagany)* |
 | Hasło admina | Hasło pierwszego użytkownika | *(wymagane, min. 8 znaków)* |
 | Imię / Nazwisko | Opcjonalne dane użytkownika | Admin |
