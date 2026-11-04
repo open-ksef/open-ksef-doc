@@ -26,7 +26,7 @@ OpenKSeF jest przeznaczony dla:
 
 | Funkcja | Opis |
 |---------|------|
-| **Synchronizacja faktur** | Automatyczne pobieranie faktur z KSeF w tle, ręczna i pełna resynchronizacja |
+| **Synchronizacja faktur** | Automatyczne pobieranie faktur otrzymanych i sprzedażowych z KSeF w tle, ręczna i pełna resynchronizacja |
 | **Otrzymane faktury** | Termin płatności, filtr Nieopłacone, szczegóły z pozycjami, status płatności, dane do przelewu i kod QR -- zobacz [Otrzymane faktury](faktury) |
 | **Wystawianie faktur** | Faktury VAT wysyłane do KSeF z portalu, XML, UPO i PDF z kodem KOD I. Zobacz [Wystawianie faktur](wystawianie-faktur) |
 | **Portal webowy** | React SPA ze stroną Start, listami otrzymanych i wystawionych faktur, zarządzaniem firmami |

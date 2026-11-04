@@ -7,7 +7,7 @@ title: Otrzymane faktury
 
 OpenKSeF pobiera z KSeF faktury, w których Twoja firma jest nabywcą (faktury kosztowe). W portalu znajdziesz je w menu **Otrzymane**, a w aplikacji mobilnej na ekranie **Faktury**.
 
-Faktury sprzedażowe opisuje strona [Wystawianie faktur](wystawianie-faktur).
+Faktury sprzedażowe, także [wystawione w innym programie](wystawianie-faktur#faktury-spoza-openksef), opisuje strona [Wystawianie faktur](wystawianie-faktur).
 
 ## Lista faktur
 
@@ -34,6 +34,8 @@ Na stronie **Start** karta **Nieopłacone, od najbliższego terminu** pokazuje p
 Kliknij fakturę na liście, aby zobaczyć jej szczegóły: numery, sprzedawcę i nabywcę, daty, kwoty netto / VAT / brutto oraz status płatności.
 
 ![Szczegóły faktury](/img/screenshots/portal/invoice-detail.png)
+
+Przy fakturze w walucie obcej wiersz VAT nazywa się **VAT w przeliczeniu na PLN**. Netto i brutto są w walucie faktury, więc netto plus VAT nie daje brutto.
 
 ### Pozycje faktury
 
@@ -68,14 +70,14 @@ Tytuł przelewu to sam numer faktury sprzedawcy, np. `FV/2026/10/0042`; w kodzie
 
 ## Synchronizacja z KSeF
 
-Worker pobiera nowe faktury automatycznie w tle, domyślnie co 4 godziny. Pierwsza synchronizacja nowej firmy pobiera faktury z ostatnich 6 miesięcy. Synchronizację uruchomisz też ręcznie przyciskiem **Pobierz z KSeF** na stronach **Start**, **Otrzymane** i **Firma** > **Token KSeF i pobieranie**. Na tej ostatniej, w sekcji **Działania ryzykowne**, jest też **Pełna resynchronizacja**.
+Worker pobiera nowe faktury automatycznie w tle, domyślnie co 4 godziny. Pierwsza synchronizacja nowej firmy pobiera faktury otrzymane z ostatnich 6 miesięcy, a [sprzedaż z innych programów](wystawianie-faktur#faktury-spoza-openksef) z ostatnich 12 miesięcy. Synchronizację uruchomisz też ręcznie przyciskiem **Pobierz z KSeF** na stronach **Start**, **Otrzymane** i **Firma** > **Token KSeF i pobieranie**. Na tej ostatniej, w sekcji **Działania ryzykowne**, jest też **Pełna resynchronizacja**.
 
 ![Synchronizacja z KSeF](/img/screenshots/portal/credentials-resync.png)
 
 | Przycisk | Co robi | Kiedy użyć |
 |----------|---------|------------|
 | **Pobierz z KSeF** | Pobiera faktury, które pojawiły się w KSeF od ostatniej synchronizacji | Nie chcesz czekać na automatyczną synchronizację |
-| **Pełna resynchronizacja** | Sprawdza wszystkie faktury firmy w KSeF i nadpisuje ich dane (w tym pozycje, numer rachunku i termin płatności) dla plików XML, które zmieszczą się w limicie KSeF | Brakuje pozycji, numeru rachunku lub terminu płatności na starszych fakturach |
+| **Pełna resynchronizacja** | Sprawdza wszystkie otrzymane faktury firmy w KSeF i nadpisuje ich dane (w tym pozycje, numer rachunku i termin płatności) dla plików XML, które zmieszczą się w limicie KSeF | Brakuje pozycji, numeru rachunku lub terminu płatności na starszych fakturach |
 
 ### Pełna resynchronizacja
 
@@ -83,7 +85,7 @@ Przed uruchomieniem portal prosi o potwierdzenie.
 
 ![Potwierdzenie pełnej resynchronizacji](/img/screenshots/portal/credentials-resync-confirm.png)
 
-- Obejmuje całą historię firmy: od najstarszej faktury zapisanej w OpenKSeF, a nie tylko z okresu synchronizacji początkowej.
+- Obejmuje całą historię faktur otrzymanych: od najstarszej zapisanej w OpenKSeF, a nie tylko z okresu synchronizacji początkowej. Sprzedaży z innych programów nie pobiera od nowa, dochodzą tylko nowe faktury.
 - Trwa dłużej niż zwykła synchronizacja, bo OpenKSeF próbuje pobrać plik XML każdej faktury od nowa.
 - Faktury są zapisywane partiami. Jeśli resynchronizacja przerwie się w trakcie, część faktur może być już zaktualizowana, a część nie.
 - Jeśli OpenKSeF nie odczyta pliku XML którejś faktury, jej pozycje mogą zniknąć. Kolejna pełna resynchronizacja może je przywrócić, jeśli plik da się odczytać i zmieści się w limicie KSeF.
