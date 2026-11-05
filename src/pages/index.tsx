@@ -227,7 +227,7 @@ export default function Home(): ReactNode {
         <section className={`${styles.section} ${styles.alt}`}>
           <h2>Jak zacząć</h2>
           <p className={styles.secLead}>
-            Potrzebujesz komputera lub serwera z Dockerem (minimum 4 GB RAM), a do dostępu spoza sieci domowej także własnego HTTPS.
+            Potrzebujesz komputera lub serwera z Dockerem, a do dostępu spoza sieci domowej także własnego HTTPS.
           </p>
           <ol className={styles.steps}>
             <li>
