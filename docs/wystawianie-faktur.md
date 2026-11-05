@@ -5,7 +5,7 @@ title: Wystawianie faktur
 
 # Wystawianie faktur
 
-OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Firma**, na karcie **Dane do faktur**. Wystawianie jest też w aplikacji na Androida, od wersji 1.0.5, ale [kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna).
+OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Firma**, na karcie **Dane do faktur**. Wystawianie jest też w [aplikacji na Androida](aplikacja-mobilna), od wersji 1.0.5.
 
 Faktury, które otrzymujesz od dostawców, opisuje strona [Otrzymane faktury](faktury). Sprzedaż wystawioną w innym programie opisuje sekcja [Faktury spoza OpenKSeF](#faktury-spoza-openksef).
 
@@ -213,9 +213,9 @@ Wydruk zawsze pokazuje `Paid` / `Zapłacono` 0 i całą kwotę do zapłaty. Zawi
 
 ### Aplikacja mobilna a faktury zagraniczne
 
-Faktury dla firmy zagranicznej nie wystawisz w aplikacji mobilnej. Obecna wersja aplikacji (1.0.5) pokazuje taką fakturę błędnie do czasu kolejnego wydania aplikacji: cena pozycji i podsumowanie szkicu mają oznaczenie PLN, stawka wygląda jak `np I%`, nie ma kraju ani numeru nabywcy. Właściwe dane są w portalu i w KSeF.
+Faktury dla firmy zagranicznej nie wystawisz w aplikacji mobilnej. Od wersji 1.0.6 aplikacja pokazuje taką fakturę tylko do podglądu: z walutą, krajem nabywcy i stawką np. Zamiast edycji szczegóły proponują **Edytuj w portalu**.
 
-Szkicu tej faktury nie edytuj w aplikacji. Zapis się nie uda albo wystawienie zostanie zablokowane. Szkic w PLN po zmianie nabywcy na Osobę prywatną stanie się zwykłą fakturą krajową. Popraw szkic w portalu.
+Wersja 1.0.5 pokazuje taką fakturę błędnie. Nie edytuj w niej szkicu tej faktury: zainstaluj nowszą wersję albo popraw szkic w portalu.
 
 ### Zapytaj księgowego
 
@@ -257,7 +257,7 @@ Usunięcie firmy usuwa te faktury tylko z OpenKSeF. W KSeF zostają.
 
 ## Aplikacja mobilna
 
-Wystawianie faktur jest też w aplikacji na Androida, od wersji 1.0.5. [Kończymy poprawki, zanim zalecimy jej instalację](aplikacja-mobilna). Faktury dla firm zagranicznych wystawisz tylko w portalu: [szczegóły](#aplikacja-mobilna-a-faktury-zagraniczne).
+Wystawianie faktur jest też w [aplikacji na Androida](aplikacja-mobilna), od wersji 1.0.5. Faktury dla firm zagranicznych wystawisz tylko w portalu: [szczegóły](#aplikacja-mobilna-a-faktury-zagraniczne).
 
 ## Ograniczenia
 

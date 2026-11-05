@@ -24,6 +24,8 @@ const config: Config = {
   projectName: 'open-ksef-doc',
 
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
+  markdown: {hooks: {onBrokenMarkdownLinks: 'throw'}},
 
   i18n: {
     defaultLocale: 'pl',
@@ -51,7 +53,7 @@ const config: Config = {
     image: 'img/og-image.png',
     announcementBar: {
       id: 'beta',
-      content: 'OpenKSeF jest w fazie <strong>beta</strong>. Zgłaszaj błędy i pomysły na <a href="https://github.com/open-ksef">GitHub</a>.',
+      content: 'OpenKSeF jest w fazie <strong>beta</strong>. Zgłaszaj błędy i pomysły na adres <a href="mailto:openksef@proton.me">openksef@proton.me</a>.',
       backgroundColor: 'var(--ifm-color-primary-lightest)',
       textColor: 'var(--ifm-color-primary-darkest)',
       isCloseable: false,

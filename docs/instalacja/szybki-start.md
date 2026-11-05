@@ -185,7 +185,7 @@ Docker pobierze obrazy z GitHub Container Registry i uruchomi 6 kontenerów:
 | **gateway** | Nginx reverse proxy (konfiguracja wbudowana w obraz) |
 
 :::info[Pierwsze uruchomienie]
-Pierwsze uruchomienie może potrwać kilka minut -- Docker pobiera ~2 GB obrazów. Kolejne starty trwają sekundy.
+Pierwsze uruchomienie może potrwać kilka minut, bo Docker pobiera obrazy. Na dysku zajmują około 2,5 GB. Kolejne starty są szybsze.
 :::
 
 ## Krok 3: Skonfiguruj
@@ -253,8 +253,8 @@ Jeśli chcesz zmienić inne ustawienia **przed** uruchomieniem (np. porty, URL),
 # PORTAL_WEB_HOST_PORT=8083
 # POSTGRES_HOST_PORT=5432
 
-# Środowisko KSeF (domyślnie test)
-# KSEF_BASE_URL=https://ksef-test.mf.gov.pl/api
+# Środowisko KSeF: test (domyślnie), demo albo production
+# KSEF_BASE_URL=test
 
 # Firebase push notifications (opcjonalne)
 # FIREBASE_CREDENTIALS_JSON={"type":"service_account",...}

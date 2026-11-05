@@ -91,7 +91,7 @@ npm run serve   # podgląd buildu lokalnie
 
 ### Ważne zasady
 
-1. Cała treść po **polsku** (polski odbiorca)
+1. Cała treść po **polsku** (polski odbiorca), poza `README.md`
 2. Dokumentacja musi być **spójna** z aktualnym stanem kodu w `open-ksef` i `open-ksef-mobile`
 3. Design musi **nawiązywać** do portalu (paleta indigo, Inter font, karty)
 4. Sekcja "O projekcie" zawiera **disclaimer**: projekt stworzony z pomocą AI, self-hosting = odpowiedzialność użytkownika

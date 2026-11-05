@@ -39,7 +39,7 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 | `ENCRYPTION_KEY_FILE` | Ścieżka do pliku z kluczem, czytana gdy `ENCRYPTION_KEY` jest pusty. Wymaga własnego pliku compose: dostarczony `docker-compose.yml` przekazuje tylko `ENCRYPTION_KEY` i odmawia działania bez niego, a sam plik override tego nie zmienia | *(brak)* |
 | `ASPNETCORE_ENVIRONMENT` | Środowisko API. `Production` wyłącza Swaggera | `Production` |
 | `Auth__RequireHttpsMetadata` | Czy API wymaga HTTPS przy pobieraniu metadanych OIDC z `Auth__Authority`. Compose ustawia `"false"`, bo API łączy się z Keycloak w sieci Docker po HTTP (`http://keycloak:8080`). Domyślnie (bez zmiennej) `true` -- wtedy API odrzuca adres `http://` | `"false"` |
-| `KSeF__BaseUrl` | Adres API KSeF | `https://ksef-test.mf.gov.pl/api` |
+| `KSeF__BaseUrl` | Środowisko KSeF, w `.env` jako `KSEF_BASE_URL`: `test` albo `production`, zobacz [Środowiska KSeF](#środowiska-ksef) | środowisko test |
 
 ## Wymagane zmienne (Portal Web)
 
@@ -75,23 +75,16 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 
 ## Środowiska KSeF
 
-| Środowisko | URL | Zastosowanie |
-|------------|-----|-------------|
-| **Test** | `https://ksef-test.mf.gov.pl/api` | Rozwój i testowanie |
-| **Produkcja** | `https://ksef.mf.gov.pl/api` | Prawdziwe faktury |
+| Środowisko | `KSEF_BASE_URL` | Adres API KSeF | Zastosowanie |
+|------------|-----------------|----------------|-------------|
+| **Test** | `test` | `https://api-test.ksef.mf.gov.pl/v2` | Rozwój i testowanie |
+| **Produkcja** | `production` | `https://api.ksef.mf.gov.pl/v2` | Prawdziwe faktury |
+
+Wartość, której program nie rozpozna, oznacza środowisko test. Po kreatorze zmiana KSEF_BASE_URL nic nie daje: środowisko zmienisz w Ustawienia > Administracja instancji.
 
 :::warning[Uwaga]
 Środowisko produkcyjne KSeF operuje na rzeczywistych danych podatkowych. Upewnij się, że instancja jest odpowiednio zabezpieczona przed przełączeniem na produkcję.
 :::
-
-## Tryb uwierzytelniania KSeF
-
-Zmienna `KSeF__AuthMode` obsługuje dwa tryby:
-
-| Tryb | Opis |
-|------|------|
-| `Token` | Uwierzytelnianie tokenem (domyślnie) |
-| `Certificate` | Uwierzytelnianie certyfikatem |
 
 ## Porty
 

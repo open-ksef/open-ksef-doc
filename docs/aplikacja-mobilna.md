@@ -8,7 +8,7 @@ title: Aplikacja mobilna
 OpenKSeF Mobile to aplikacja .NET MAUI na Androida. Umożliwia przeglądanie faktur, zarządzanie firmami i otrzymywanie powiadomień push o nowych fakturach z KSeF.
 
 :::note[Dostępność]
-Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Play i iPhone jeszcze nie.
+Android: [plik APK na GitHubie](https://github.com/open-ksef/open-ksef-mobile/releases/latest), Google Play i iPhone jeszcze nie.
 :::
 
 ## Funkcje
@@ -18,13 +18,13 @@ Aplikacja na Androida: kończymy poprawki, zanim zalecimy instalację. Google Pl
 - Zarządzanie firmami (tenantami)
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie przez Keycloak (OIDC)
-- Kod QR do przelewu z aplikacji bankowej; w wersji 1.0.5 bez numeru rachunku. W portalu kod QR zawiera numer rachunku, jeśli jest na fakturze
+- Kod QR do przelewu z aplikacji bankowej, od wersji 1.0.6 z numerem rachunku, jeśli jest na fakturze
 - [Wystawianie faktur](wystawianie-faktur), od wersji 1.0.5
 - Skanowanie QR do szybkiego połączenia z serwerem
 
 ## Podłączenie do self-hosted serwera
 
-1. Zainstaluj aplikację OpenKSeF na urządzeniu
+1. Pobierz plik APK z [najnowszego wydania](https://github.com/open-ksef/open-ksef-mobile/releases/latest) i zainstaluj aplikację na urządzeniu
 2. Na ekranie logowania wprowadź adres serwera (np. `https://twoj-serwer.pl`)
 3. Zaloguj się danymi z Keycloak
 
@@ -34,9 +34,9 @@ W portalu webowym przejdź do strony **Telefon** -- znajdziesz tam kod QR, któr
 
 ## Wymagania dla Android
 
-Android wymaga **HTTPS** do uwierzytelniania OIDC (WebAuthenticator). Dla testów lokalnych:
+Android wymaga **HTTPS** do uwierzytelniania OIDC (WebAuthenticator). Dla programistów, do testów lokalnych, w repozytorium [open-ksef](https://github.com/open-ksef/open-ksef):
 
-1. Użyj [ngrok](https://ngrok.com/) do stworzenia tunelu HTTPS
+1. Użyj [ngrok](https://ngrok.com/) do stworzenia tunelu HTTPS. Tunel udostępnia Twój stack publicznie
 2. Skrypt `dev-env-up.ps1` konfiguruje to automatycznie
 3. Adres ngrok zmienia się przy każdym uruchomieniu (darmowy plan)
 

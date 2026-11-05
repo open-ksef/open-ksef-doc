@@ -9,23 +9,7 @@ Powiadomienia push informują aplikację mobilną o nowych fakturach z KSeF.
 
 ## Jak to działa
 
-```mermaid
-graph LR
-  subgraph instance ["Twoja instancja OpenKSeF"]
-    API["API / Worker"]
-  end
-
-  subgraph mobile ["Aplikacja mobilna"]
-    App["OpenKSeF Mobile"]
-  end
-
-  SignalR["SignalR (WebSocket)"]
-  Relay["push.open-ksef.pl"]
-  FCM["FCM / APNs"]
-
-  API -->|"1. lokalne"| SignalR --> App
-  API -->|"2. zdalne"| Relay --> FCM --> App
-```
+Instancja wysyła powiadomienie dwiema drogami: lokalnie przez SignalR (WebSocket) i zdalnie przez `push.open-ksef.pl`, który przekazuje je do FCM lub APNs.
 
 | Warstwa | Kiedy działa | Konfiguracja |
 |---------|--------------|--------------|
