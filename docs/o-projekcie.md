@@ -77,4 +77,4 @@ Jeśli uruchamiasz OpenKSeF z dostępem z internetu:
 - Backend + Portal: [github.com/open-ksef/open-ksef](https://github.com/open-ksef/open-ksef)
 - Aplikacja mobilna: [github.com/open-ksef/open-ksef-mobile](https://github.com/open-ksef/open-ksef-mobile)
 - Dokumentacja: [github.com/open-ksef/open-ksef-doc](https://github.com/open-ksef/open-ksef-doc)
-- Issues: [github.com/open-ksef/open-ksef/issues](https://github.com/open-ksef/open-ksef/issues)
+- Błędy i pomysły: [openksef@proton.me](mailto:openksef@proton.me)
