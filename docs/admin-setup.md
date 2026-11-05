@@ -14,7 +14,7 @@ Przejdź do [Szybki start](instalacja/szybki-start).
 ## Wymagania wstępne
 
 - Stack Docker uruchomiony (`docker compose up -d`) z ustawionym `ENCRYPTION_KEY`, patrz [Klucz szyfrowania](#klucz-szyfrowania)
-- Wolne porty 8080, 8081, 8082, 8083 i 5432 albo inne ustawione w `.env`: `docker-compose.yml` publikuje wszystkie
+- Wolny port 8080 albo inny ustawiony w `APP_HOST_PORT` w `.env`: `docker-compose.yml` publikuje tylko gateway
 
 Tylko nowe instalacje. Na istniejącej instalacji nie uruchamiaj `docker compose up -d`: wykonaj [procedurę aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej).
 
@@ -129,7 +129,7 @@ Polecenia w procedurach poniżej są napisane dla powłoki bash. Na Windows uży
 
 ### Co się stanie, jeśli tylko pobierzesz nowe obrazy
 
-Obrazy `:latest` dostajesz przy zwykłym `docker compose pull`. Do wersji v0.0.7 włącznie klucz leży w bazie obok zaszyfrowanych danych, więc każdy zrzut bazy pozwala je odszyfrować. Nowa wersja to zmienia, ale tylko gdy podasz klucz:
+Nowe obrazy dostajesz przy zwykłym `docker compose pull`. Do wersji v0.0.7 włącznie klucz leży w bazie obok zaszyfrowanych danych, więc każdy zrzut bazy pozwala je odszyfrować. Nowa wersja to zmienia, ale tylko gdy podasz klucz:
 
 | Stan po aktualizacji | Efekt |
 |---|---|
@@ -232,6 +232,102 @@ Polecenie kończy się kodem 1 i niczego nie zapisuje, gdy:
 
 Rotację wycofuje `before-rotation.dump`. Przywróć go tym samym poleceniem co w procedurze aktualizacji, po zatrzymaniu obu usług. `before-key-move.dump` wraca do stanu sprzed przeniesienia klucza i nie służy do wycofania rotacji.
 
+## Środowisko KSeF: aktualizacja
+
+`KSEF_BASE_URL` przyjmuje `test`, `demo` albo `production`. Jest czytany tylko do przejścia kreatora: potem wygrywa wiersz `ksef_environment` w tabeli `SystemConfigs`.
+
+Stare adresy test i demo (`ksef-test.mf.gov.pl`, `ksef-demo.mf.gov.pl`, `api-test.ksef.mf.gov.pl`, `api-demo.ksef.mf.gov.pl`) oraz stare adresy produkcji (`ksef.podatki.gov.pl`, `api.ksef.mf.gov.pl`) nadal działają. Nic nie musisz robić.
+
+Przy każdej innej wartości API lub Worker zatrzymuje się przy starcie z błędem `Unknown KSeF environment`, więc nic nie trafia do KSeF na zgadniętym środowisku. Dotyczy to też `https://ksef.mf.gov.pl/api`, który we wcześniejszych wersjach działał jako TEST.
+
+Jeśli kreator nie był uruchamiany, popraw `KSEF_BASE_URL` w `.env` i uruchom `docker compose up -d`. W przeciwnym razie uruchom poniższe SQL ze środowiskiem, na którym działała instalacja: `production`, jeśli stara wartość zawiera `ksef.podatki.gov.pl` lub `api.ksef.mf.gov.pl`, w przeciwnym razie `demo`, jeśli zawiera `demo`, a w pozostałych przypadkach `test`. Wybór `production` wymaga produkcyjnego tokenu KSeF.
+
+```bash
+docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef' <<'SQL'
+INSERT INTO "SystemConfigs" ("Key", "Value", "UpdatedAt")
+VALUES ('ksef_environment', 'test', now())
+ON CONFLICT ("Key") DO UPDATE SET "Value" = EXCLUDED."Value", "UpdatedAt" = EXCLUDED."UpdatedAt";
+SQL
+docker compose restart api worker
+```
+
+Wiersz, który zepsuje się w trakcie pracy, nie zatrzymuje działających usług. Worker działa dalej, ale nic nie wysyła do KSeF: każdy cykl synchronizacji loguje błąd i pomija firmy, a pętla wysyłki loguje ten sam błąd najwyżej co 15 minut. API trzyma zapamiętaną wartość do zapisu ustawień. Obie usługi zatrzymają się z `Unknown KSeF environment` przy następnym restarcie. Popraw wiersz powyższym SQL.
+
+API zatrzymuje się przy starcie także wtedy, gdy po 5 próbach nie może odczytać `SystemConfigs`, zamiast działać na `KSEF_BASE_URL`. Sprawdź PostgreSQL i uruchom API ponownie.
+
+## Aktualizacja: porty i konsola Keycloak
+
+Przeczytaj to przed pobraniem wydania, którego `docker-compose.yml` publikuje tylko gateway. Nic nie jest usuwane: wolumen bazy i wszystkie dane zostają. Zmienia się sposób, w jaki docierasz do usług spoza Dockera.
+
+| Wcześniej | Teraz |
+|---|---|
+| Gateway na `APP_HOST_PORT` (8080) | Bez zmian |
+| API na 8081, Keycloak na 8082, portal na 8083, PostgreSQL na 5432 (`API_HOST_PORT`, `KEYCLOAK_HOST_PORT`, `PORTAL_WEB_HOST_PORT`, `POSTGRES_HOST_PORT`) | Nie są publikowane. Zmienne są ignorowane |
+| `/auth/admin` otwarty przez gateway | 403, chyba że `KEYCLOAK_ADMIN_ALLOW` zawiera adres klienta |
+| Obrazy `:latest` | Obrazy `:${OPENKSEF_VERSION}`. `docker-compose.yml` z wydania domyślnie używa wersji tego wydania |
+| Brak polityki restartu | `restart: unless-stopped` dla każdej usługi. Worker startuje, gdy API jest zdrowe |
+
+Portal, API i logowanie działają dalej przez gateway, tak samo kreator konfiguracji: łączy się z Keycloak wewnątrz sieci Docker. Przed aktualizacją sprawdź, co korzystało z pozostałych portów: skrypt kopii zapasowej łączący się z `localhost:5432`, monitoring wywołujący `:8081/health`, zakładka do `:8082/auth/admin`.
+
+**PostgreSQL.** Używaj `docker exec`, jak we wszystkich procedurach na tej stronie: `docker exec -it openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef'`, a do kopii zapasowej `docker exec openksef-postgres sh -c 'pg_dump -U "$POSTGRES_USER" -d openksef' > openksef.sql`. Narzędzie, które potrzebuje portu TCP, dostanie go tylko na adresie loopback hosta (`127.0.0.1`), przez plik `docker-compose.override.yml` obok `docker-compose.yml` (`docker compose` czyta go sam):
+
+```yaml
+services:
+  postgres:
+    ports:
+      - "127.0.0.1:5432:5432"
+  keycloak:
+    ports:
+      - "127.0.0.1:8082:8080"
+```
+
+Potem uruchom `docker compose up -d`.
+
+**Konsola admina Keycloak, tunel SSH (zalecane).** Z wpisem `keycloak` z powyższego pliku uruchom na swoim komputerze `ssh -L 8082:127.0.0.1:8082 user@twoj-serwer` i otwórz [http://localhost:8082/auth/admin](http://localhost:8082/auth/admin). Konsola nie jest dostępna z żadnej sieci, a gateway nadal zwraca 403.
+
+**Konsola admina Keycloak, lista dozwolonych adresów.** Ustaw w `.env` `KEYCLOAK_ADMIN_ALLOW` na adresy, które mogą otworzyć `/auth/admin` przez gateway, po przecinku, IP lub CIDR, np. `KEYCLOAK_ADMIN_ALLOW=192.168.88.0/24,10.8.0.5`. Potem uruchom `docker compose up -d`. Puste lub nieustawione oznacza 403 dla wszystkich.
+
+:::warning[Reverse proxy lub Cloudflare]
+Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse proxy lub Cloudflare to adres proxy, a nie przeglądarki. Wpisanie go otwiera konsolę każdemu odwiedzającemu, więc w takiej instalacji użyj tunelu SSH. To samo dotyczy portu przekazywanego przez userland proxy Dockera: w Docker Desktop (Windows, macOS) dla każdego klienta, a w Linuksie dla połączeń na `localhost` i dla wszystkich klientów, gdy w `daemon.json` jest `"iptables": false`. Gateway widzi wtedy adres bramy sieci Docker, np. `172.18.0.1`, a wpisanie go otwiera konsolę każdemu, kto dotrze do portu. Adres widziany przez gateway pokaże `docker compose logs gateway`. Nieprawidłowy wpis gateway pomija, zapisuje w logu `KEYCLOAK_ADMIN_ALLOW entry '<wpis>' is not a valid nginx allow address, skipped` i zachowuje pozostałe wpisy.
+:::
+
+**Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web` i `gateway`, np. `OPENKSEF_VERSION=v1.2.3`. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
+
+## Reverse proxy i publiczny adres
+
+Keycloak buduje wystawcę tokenu (`iss`) i każdy bezwzględny link (przekierowania logowania, weryfikacja e-maila, reset hasła) z tego, co wysyła mu gateway. Gateway bierze host i port z nagłówka `Host`. Schemat (`http` lub `https`) bierze z `APP_EXTERNAL_BASE_URL`, jeśli jest ustawiony w `.env`, w przeciwnym razie z `X-Forwarded-Proto`. Ignoruje `X-Forwarded-Host` i `X-Forwarded-Port` od klienta. `Host`, a gdy `APP_EXTERNAL_BASE_URL` nie jest ustawiony także `X-Forwarded-Proto`, musi przychodzić od proxy, które je nadpisuje. Przy dostępie bezpośrednim albo przez proxy, które przekazuje wartość klienta, żądanie nadal może zmienić host lub port we własnych linkach, a bez `APP_EXTERNAL_BASE_URL` także schemat. Wystawca musi być równy `APP_EXTERNAL_BASE_URL/auth/realms/openksef` (albo adresowi zapisanemu przez kreator), inaczej API odpowiada 401.
+
+| Konfiguracja | Czego potrzebuje gateway | Wystawca |
+|---|---|---|
+| Bezpośrednio, `APP_HOST_PORT=18480` | Nic | `http://<host>:18480/auth/realms/openksef` |
+| Nginx Proxy Manager, HTTPS na 443 | `APP_EXTERNAL_BASE_URL=https://<domena>`. NPM przekazuje dalej `X-Forwarded-Proto` od klienta, zobacz niżej | `https://<domena>/auth/realms/openksef` |
+| ngrok, Cloudflare Tunnel, Caddy, Traefik | Nic: zachowują publiczny `Host` i wysyłają `X-Forwarded-Proto` | `https://<publiczny host>/auth/realms/openksef` |
+| nginx z własnym `location` | `proxy_set_header Host $host:$server_port;` i `proxy_set_header X-Forwarded-Proto $scheme;` | publiczny host i port |
+| Apache | `ProxyPreserveHost On`, `RequestHeader set Host "<domena>"` i `RequestHeader set X-Forwarded-Proto https` | publiczny host |
+| Publiczny HTTPS na porcie innym niż 443 | Proxy musi wysłać ten port w `Host`, np. `Host: example.com:8443` (nginx `$host:$server_port`) | `https://example.com:8443/auth/realms/openksef` |
+
+Proxy, które jako `Host` wysyła nazwę upstreamu (np. `gateway:8080`), a publiczną nazwę tylko w `X-Forwarded-Host`, już nie działa: ustaw `Host` jak wyżej. Proxy musi nadpisywać `X-Forwarded-Proto`. Nginx Proxy Manager przekazuje wartość klienta, więc bez `APP_EXTERNAL_BASE_URL` żądanie może dostać linki `http://`. Gdy `APP_EXTERNAL_BASE_URL` jest ustawiony, każdy dostęp przez gateway dostaje jego schemat, także tunel taki jak ngrok, więc zwykła wartość `http://` daje linki `http://` na tunelu HTTPS. Gateway czyta `APP_EXTERNAL_BASE_URL` tylko z `docker-compose.yml`, który przekazuje go usłudze `gateway`. Starszy plik pobiera nowy obraz bez tej zmiennej i schemat nadal pochodzi z `X-Forwarded-Proto`. Wynik sprawdzisz poleceniem `curl -s https://<domena>/auth/realms/openksef/.well-known/openid-configuration`: porównaj `issuer` z `APP_EXTERNAL_BASE_URL`.
+
+## Błędy startu i pętle restartów
+
+Każda usługa ma `restart: unless-stopped`. Gdy API lub Worker kończy pracę przy starcie, Docker uruchamia go ponownie po krótkiej, rosnącej przerwie, bez końca. Widzisz pętlę, a nie zatrzymany kontener. Przyczyny zatrzymania przy starcie:
+
+- nieprawidłowy wiersz `ksef_environment` lub `KSEF_BASE_URL` (`Unknown KSeF environment`), zobacz [Środowisko KSeF: aktualizacja](#środowisko-ksef-aktualizacja)
+- `KSeF:ForbidProduction` ustawione w instalacji, której środowisko to produkcja
+- `SystemConfigs` nieczytelne po 5 próbach (PostgreSQL nie działa lub jest uszkodzony)
+
+API i Worker zapisują w logu jedną linię `FTL` z przyczyną. Jak zobaczyć pętlę i przyczynę:
+
+```bash
+docker compose ps                     # STATUS "Restarting (1) ..." przy usłudze w pętli
+docker inspect -f '{{.RestartCount}} {{.State.ExitCode}}' openksef-api
+docker compose logs --tail 50 api     # przyczyna; dla Workera użyj worker
+```
+
+`docker compose up -d` czeka na test zdrowia API, zanim uruchomi Workera. Jeśli API jest w pętli, `up -d` kończy się komunikatem `dependency failed to start: container openksef-api is unhealthy`, a Worker nie startuje. To oczekiwane.
+
+Usuń przyczynę. Po poprawieniu wiersza w bazie działający kontener nie wymaga nic więcej: następny automatyczny restart uruchomi go normalnie. Potem uruchom raz `docker compose up -d`, żeby wystartował także Worker, którego nieudane `up -d` nie uruchomiło. Poprawiona wartość w `.env` wymaga `docker compose up -d`, bo restart zachowuje stare zmienne. Pętlę zatrzymasz na czas naprawy poleceniem `docker compose stop api worker`.
+
 ## Architektura
 
 ### Przechowywanie konfiguracji
@@ -271,6 +367,7 @@ Dopóki klucz jest w bazie, wiersz `encryption_key` to jedyna jego kopia. Jeśli
 | Pętla przekierowań po setup | Wyczyść cache/cookies przeglądarki. Portal cachuje status setup na 60 sekund. |
 | Chcę uruchomić wizard ponownie | Tylko jeśli zapytanie z [kroku 1 aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej) zwraca 0: usuń wszystkie wiersze z tabeli `SystemConfigs` i zrestartuj kontener API. |
 | Wizard zgłasza brak prawidłowego klucza szyfrowania | Wygeneruj klucz, ustaw `ENCRYPTION_KEY`, zapisz kopię poza bazą i uruchom `docker compose up -d`. Potem kliknij **Dalej** i przejdź wizard jeszcze raz. Wprowadzone dane zostają zachowane. |
-| `docker compose` zgłasza brak `ENCRYPTION_KEY`, `POSTGRES_USER` lub innej wymaganej zmiennej | Nowy `docker-compose.yml` wymaga klucza. Na istniejącej instalacji najpierw uruchom zapytanie o wiersz klucza w wersji `docker exec` z [aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej). Wynik 1: wykonaj aktualizację, bo sam wpis klucza pomija zatrzymanie usług i kopię zapasową. Wynik 0: klucz jest już przeniesiony, więc przywróć poprzednią wartość `ENCRYPTION_KEY` i nie generuj nowej, bo nowy klucz nie odszyfruje zapisanych danych. Jeśli nie masz kopii, nadal trzymają ją kontenery: `docker inspect openksef-api \| grep '"ENCRYPTION_KEY='`. To polecenie wypisuje sekret w terminalu. Brak wartości: zobacz krok 1 aktualizacji. Nie uruchamiaj wcześniej `docker compose up -d`. Inne zmienne: przed `up -d` przywróć je ze starego `.env`. `docker inspect openksef-postgres \| grep POSTGRES_` i `docker inspect openksef-keycloak \| grep -E 'KEYCLOAK_ADMIN\|KC_DB_'` wypisują je, także sekrety. Tak samo postąp z wartościami opcjonalnymi, bo `up -d` usuwa tę kopię: `docker inspect openksef-api --format '{{range .Config.Env}}{{println .}}{{end}}' \| grep -E 'Auth__PublicAuthority\|KSeF__BaseUrl\|Auth__ServiceAccount__ClientSecret\|Firebase__CredentialsJson'`. To polecenie też wypisuje sekrety. W `.env` to `APP_EXTERNAL_BASE_URL` (`Auth__PublicAuthority` bez `/auth/realms/openksef`), `KSEF_BASE_URL`, `API_CLIENT_SECRET` i `FIREBASE_CREDENTIALS_JSON`. `docker ps` pokazuje własne porty hosta. W `.env` to `APP_HOST_PORT`, `API_HOST_PORT`, `KEYCLOAK_HOST_PORT`, `PORTAL_WEB_HOST_PORT` i `POSTGRES_HOST_PORT`. |
+| `docker compose` zgłasza brak `ENCRYPTION_KEY`, `POSTGRES_USER` lub innej wymaganej zmiennej | Nowy `docker-compose.yml` wymaga klucza. Na istniejącej instalacji najpierw uruchom zapytanie o wiersz klucza w wersji `docker exec` z [aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej). Wynik 1: wykonaj aktualizację, bo sam wpis klucza pomija zatrzymanie usług i kopię zapasową. Wynik 0: klucz jest już przeniesiony, więc przywróć poprzednią wartość `ENCRYPTION_KEY` i nie generuj nowej, bo nowy klucz nie odszyfruje zapisanych danych. Jeśli nie masz kopii, nadal trzymają ją kontenery: `docker inspect openksef-api \| grep '"ENCRYPTION_KEY='`. To polecenie wypisuje sekret w terminalu. Brak wartości: zobacz krok 1 aktualizacji. Nie uruchamiaj wcześniej `docker compose up -d`. Inne zmienne: przed `up -d` przywróć je ze starego `.env`. `docker inspect openksef-postgres \| grep POSTGRES_` i `docker inspect openksef-keycloak \| grep -E 'KEYCLOAK_ADMIN\|KC_DB_'` wypisują je, także sekrety. Tak samo postąp z wartościami opcjonalnymi, bo `up -d` usuwa tę kopię: `docker inspect openksef-api --format '{{range .Config.Env}}{{println .}}{{end}}' \| grep -E 'Auth__PublicAuthority\|KSeF__BaseUrl\|Auth__ServiceAccount__ClientSecret\|Firebase__CredentialsJson'`. To polecenie też wypisuje sekrety. W `.env` to `APP_EXTERNAL_BASE_URL` (`Auth__PublicAuthority` bez `/auth/realms/openksef`), `KSEF_BASE_URL`, `API_CLIENT_SECRET` i `FIREBASE_CREDENTIALS_JSON`. `docker ps` pokazuje własne porty hosta. Czytany jest już tylko `APP_HOST_PORT`, pozostałe opisuje [Aktualizacja: porty i konsola Keycloak](#aktualizacja-porty-i-konsola-keycloak). |
+| Kontener ma stan `Restarting` | Zobacz [Błędy startu i pętle restartów](#błędy-startu-i-pętle-restartów). |
 | Critical: `The configured encryption key does not decrypt` | Ustawiony klucz nie pasuje do danych w bazie. Przywróć klucz, którym je zaszyfrowano. |
 | Critical: `The configured encryption key cannot be used` | Klucza nie ma już w bazie, a `ENCRYPTION_KEY` jest pusty lub nieprawidłowy. Logowanie i odczyt faktur działają. Dodawanie danych logowania, synchronizacja i wysyłka nie. Przywróć klucz. |

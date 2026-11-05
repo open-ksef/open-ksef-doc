@@ -11,127 +11,15 @@ Potrzebujesz Dockera, pliku `.env` i przeglądarki. Pierwsze pobranie obrazów m
 Masz już działającą instalację? **Nie podmieniaj `docker-compose.yml` i nie dopisuj klucza od razu.** Pierwszy start z kluczem przenosi go z bazy i szyfruje dane ponownie, więc najpierw zatrzymaj API i Workera i zrób kopię zapasową. Dotyczy to także klucza, który już masz w `.env`. Wykonaj [procedurę aktualizacji](../admin-setup#aktualizacja-z-wersji-v007-lub-starszej). Nowy plik `docker-compose.yml` bez `ENCRYPTION_KEY` odmówi działania, a działające kontenery pozostaną nietknięte.
 :::
 
-## Krok 1: Utwórz `docker-compose.yml`
+## Krok 1: Pobierz `docker-compose.yml`
 
-Utwórz nowy katalog i zapisz w nim plik `docker-compose.yml` z poniższą zawartością:
+Utwórz nowy katalog i pobierz do niego plik `docker-compose.yml` z [najnowszego wydania](https://github.com/open-ksef/open-ksef/releases/latest) (plik jest załączony do wydania):
 
-```yaml
-services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: openksef-postgres
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
-    entrypoint:
-      - sh
-      - -c
-      - |
-        echo "CREATE DATABASE keycloak;" > /docker-entrypoint-initdb.d/01-keycloak.sql
-        exec docker-entrypoint.sh postgres
-    ports:
-      - "${POSTGRES_HOST_PORT:-5432}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
-      interval: 5s
-      timeout: 5s
-      retries: 20
-
-  keycloak:
-    image: quay.io/keycloak/keycloak:26.0
-    container_name: openksef-keycloak
-    command: start --features=token-exchange,admin-fine-grained-authz
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
-      KC_DB_USERNAME: ${KC_DB_USERNAME:-${POSTGRES_USER}}
-      KC_DB_PASSWORD: ${KC_DB_PASSWORD:-${POSTGRES_PASSWORD}}
-
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:?KEYCLOAK_ADMIN is required}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?KEYCLOAK_ADMIN_PASSWORD is required}
-
-      KC_HTTP_ENABLED: "true"
-      KC_HTTP_RELATIVE_PATH: /auth
-      KC_PROXY_HEADERS: xforwarded
-      KC_HOSTNAME_STRICT: "false"
-      KC_HOSTNAME_STRICT_HTTPS: "false"
-    ports:
-      - "${KEYCLOAK_HOST_PORT:-8082}:8080"
-
-  api:
-    image: ghcr.io/open-ksef/openksef-api:latest
-    container_name: openksef-api
-    depends_on:
-      postgres:
-        condition: service_healthy
-      keycloak:
-        condition: service_started
-    environment:
-      ASPNETCORE_ENVIRONMENT: Production
-      Auth__RequireHttpsMetadata: "false"
-      ASPNETCORE_URLS: http://0.0.0.0:8081
-      ConnectionStrings__Db: Host=postgres;Port=5432;Database=openksef;Username=${POSTGRES_USER:?POSTGRES_USER is required};Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
-      Auth__Authority: http://keycloak:8080/auth/realms/openksef
-      Auth__PublicAuthority: ${APP_EXTERNAL_BASE_URL:-http://localhost:8080}/auth/realms/openksef
-      ENCRYPTION_KEY: "${ENCRYPTION_KEY:?Existing installation: do not generate a key, follow docs/admin-setup.md. New installation: openssl rand -base64 32}"
-      Auth__ServiceAccount__ClientId: openksef-api
-      Auth__ServiceAccount__ClientSecret: ${API_CLIENT_SECRET:-}
-      KSeF__BaseUrl: ${KSEF_BASE_URL:-https://ksef-test.mf.gov.pl/api}
-      Firebase__CredentialsJson: ${FIREBASE_CREDENTIALS_JSON:-}
-    ports:
-      - "${API_HOST_PORT:-8081}:8081"
-
-  worker:
-    image: ghcr.io/open-ksef/openksef-worker:latest
-    container_name: openksef-worker
-    depends_on:
-      postgres:
-        condition: service_healthy
-      keycloak:
-        condition: service_started
-    environment:
-      ConnectionStrings__Db: Host=postgres;Port=5432;Database=openksef;Username=${POSTGRES_USER:?POSTGRES_USER is required};Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
-      Auth__Authority: http://keycloak:8080/auth/realms/openksef
-      ENCRYPTION_KEY: "${ENCRYPTION_KEY:?Existing installation: do not generate a key, follow docs/admin-setup.md. New installation: openssl rand -base64 32}"
-      KSeF__BaseUrl: ${KSEF_BASE_URL:-https://ksef-test.mf.gov.pl/api}
-      Firebase__CredentialsJson: ${FIREBASE_CREDENTIALS_JSON:-}
-
-  portal-web:
-    image: ghcr.io/open-ksef/openksef-portal-web:latest
-    container_name: openksef-portal-web
-    depends_on:
-      keycloak:
-        condition: service_started
-    environment:
-      VITE_API_BASE_URL: /api
-      VITE_AUTH_AUTHORITY: /auth/realms/openksef
-      VITE_AUTH_CLIENT_ID: openksef-portal-web
-    ports:
-      - "${PORTAL_WEB_HOST_PORT:-8083}:80"
-
-  gateway:
-    image: ghcr.io/open-ksef/openksef-gateway:latest
-    container_name: openksef-gateway
-    depends_on:
-      keycloak:
-        condition: service_started
-      portal-web:
-        condition: service_started
-    ports:
-      - "${APP_HOST_PORT:-8080}:8080"
-
-volumes:
-  postgres_data:
+```bash
+curl -LO https://github.com/open-ksef/open-ksef/releases/latest/download/docker-compose.yml
 ```
 
-:::tip[Kopiowanie]
-Kliknij ikonę kopiowania w prawym górnym rogu bloku kodu, żeby skopiować całą zawartość. Wklej ją do nowego pliku `docker-compose.yml`.
-:::
+Bez `curl` otwórz w przeglądarce [ten link](https://github.com/open-ksef/open-ksef/releases/latest/download/docker-compose.yml) i zapisz plik pod nazwą `docker-compose.yml`. Plik z wydania używa obrazów tej samej wersji i publikuje na zewnątrz tylko jeden port: gateway (8080).
 
 Wygeneruj klucz szyfrowania tokenów KSeF. Wystarczy Docker, a jeśli masz `openssl`, możesz użyć `openssl rand -base64 32`:
 
@@ -162,7 +50,7 @@ Jeśli uruchamiałeś wcześniej starszą wersję tego pliku (bez `.env`), wolum
 
 1. Wpisz do `.env` stare wartości: `POSTGRES_USER=openksef`, `POSTGRES_PASSWORD=openksef_dev_password`, `KEYCLOAK_ADMIN=admin`, `KEYCLOAK_ADMIN_PASSWORD=admin` i uruchom `docker compose up -d`.
 2. Zmień hasło bazy: `docker compose exec postgres psql -U openksef -c "ALTER USER openksef WITH PASSWORD 'nowe_haslo';"`, wpisz je do `POSTGRES_PASSWORD` w `.env` i ponownie uruchom `docker compose up -d`.
-3. Zmień hasło admina Keycloak w konsoli (http://localhost:8082/auth/admin, realm `master` > **Users** > `admin` > **Credentials** > **Reset password**) i wpisz je do `KEYCLOAK_ADMIN_PASSWORD` w `.env`.
+3. Zmień hasło admina Keycloak w konsoli (realm `master` > **Users** > `admin` > **Credentials** > **Reset password**) i wpisz je do `KEYCLOAK_ADMIN_PASSWORD` w `.env`. Gateway blokuje konsolę (`/auth/admin` zwraca 403). Jak ją otworzyć: [Dostęp do bazy i konsoli Keycloak](../admin-setup#aktualizacja-porty-i-konsola-keycloak).
 :::
 
 ## Krok 2: Uruchom
@@ -219,10 +107,12 @@ Klucz czytany jest ze zmiennej `ENCRYPTION_KEY` usług API i Worker. Kreator go 
 
 | Usługa | URL |
 |--------|-----|
-| Portal (przez gateway) | http://localhost:8080 |
-| API health check | http://localhost:8081/health |
-| Keycloak (konsola admina) | http://localhost:8082/auth/admin |
-| Portal (bezpośrednio) | http://localhost:8083 |
+| Portal | http://localhost:8080 |
+| API | http://localhost:8080/api/ |
+| Keycloak (logowanie) | http://localhost:8080/auth/ |
+| Keycloak (konsola admina) | http://localhost:8080/auth/admin zwraca 403, zobacz [Dostęp do bazy i konsoli Keycloak](../admin-setup#aktualizacja-porty-i-konsola-keycloak) |
+
+Wszystko idzie przez gateway na jednym porcie. API, Keycloak, portal i PostgreSQL nie mają własnych portów na hoście. Stan kontenerów, także test zdrowia API, pokazuje `docker compose ps`.
 
 ## Zatrzymywanie
 
@@ -246,12 +136,15 @@ Jeśli chcesz zmienić inne ustawienia **przed** uruchomieniem (np. porty, URL),
 # Publiczny URL (ustaw jeśli dostęp spoza localhost)
 # APP_EXTERNAL_BASE_URL=http://192.168.1.50:8080
 
-# Porty (opcjonalne, domyślne wartości poniżej)
+# Port gateway na hoście (opcjonalny, domyślnie 8080)
 # APP_HOST_PORT=8080
-# API_HOST_PORT=8081
-# KEYCLOAK_HOST_PORT=8082
-# PORTAL_WEB_HOST_PORT=8083
-# POSTGRES_HOST_PORT=5432
+
+# Adresy, z których gateway otwiera konsolę Keycloak /auth/admin (IP lub CIDR, po przecinku).
+# Puste: 403 dla wszystkich
+# KEYCLOAK_ADMIN_ALLOW=192.168.88.0/24
+
+# Wersja obrazów, np. v1.2.3. Puste: wersja wydania, z którego pochodzi docker-compose.yml
+# OPENKSEF_VERSION=
 
 # Środowisko KSeF: test (domyślnie), demo albo production
 # KSEF_BASE_URL=test
