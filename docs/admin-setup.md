@@ -288,10 +288,25 @@ Potem uruchom `docker compose up -d`.
 **Konsola admina Keycloak, lista dozwolonych adresów.** Ustaw w `.env` `KEYCLOAK_ADMIN_ALLOW` na adresy, które mogą otworzyć `/auth/admin` przez gateway, po przecinku, IP lub CIDR, np. `KEYCLOAK_ADMIN_ALLOW=192.168.88.0/24,10.8.0.5`. Potem uruchom `docker compose up -d`. Puste lub nieustawione oznacza 403 dla wszystkich.
 
 :::warning[Reverse proxy lub Cloudflare]
-Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse proxy lub Cloudflare to adres proxy, a nie przeglądarki. Wpisanie go otwiera konsolę każdemu odwiedzającemu, więc w takiej instalacji użyj tunelu SSH. Nieprawidłowy wpis zatrzymuje gateway przy starcie: zobacz [Błędy startu i pętle restartów](#błędy-startu-i-pętle-restartów).
+Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse proxy lub Cloudflare to adres proxy, a nie przeglądarki. Wpisanie go otwiera konsolę każdemu odwiedzającemu, więc w takiej instalacji użyj tunelu SSH. To samo dotyczy portu przekazywanego przez userland proxy Dockera: w Docker Desktop (Windows, macOS) dla każdego klienta, a w Linuksie dla połączeń na `localhost` i dla wszystkich klientów, gdy w `daemon.json` jest `"iptables": false`. Gateway widzi wtedy adres bramy sieci Docker, np. `172.18.0.1`, a wpisanie go otwiera konsolę każdemu, kto dotrze do portu. Adres widziany przez gateway pokaże `docker compose logs gateway`. Nieprawidłowy wpis gateway pomija, zapisuje w logu `KEYCLOAK_ADMIN_ALLOW entry '<wpis>' is not a valid nginx allow address, skipped` i zachowuje pozostałe wpisy.
 :::
 
 **Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web` i `gateway`, np. `OPENKSEF_VERSION=v1.2.3`. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
+
+## Reverse proxy i publiczny adres
+
+Keycloak buduje wystawcę tokenu (`iss`) i każdy bezwzględny link (przekierowania logowania, weryfikacja e-maila, reset hasła) z tego, co wysyła mu gateway. Gateway bierze host i port z nagłówka `Host`. Schemat (`http` lub `https`) bierze z `APP_EXTERNAL_BASE_URL`, jeśli jest ustawiony w `.env`, w przeciwnym razie z `X-Forwarded-Proto`. Ignoruje `X-Forwarded-Host` i `X-Forwarded-Port` od klienta. `Host`, a gdy `APP_EXTERNAL_BASE_URL` nie jest ustawiony także `X-Forwarded-Proto`, musi przychodzić od proxy, które je nadpisuje. Przy dostępie bezpośrednim albo przez proxy, które przekazuje wartość klienta, żądanie nadal może zmienić host lub port we własnych linkach, a bez `APP_EXTERNAL_BASE_URL` także schemat. Wystawca musi być równy `APP_EXTERNAL_BASE_URL/auth/realms/openksef` (albo adresowi zapisanemu przez kreator), inaczej API odpowiada 401.
+
+| Konfiguracja | Czego potrzebuje gateway | Wystawca |
+|---|---|---|
+| Bezpośrednio, `APP_HOST_PORT=18480` | Nic | `http://<host>:18480/auth/realms/openksef` |
+| Nginx Proxy Manager, HTTPS na 443 | `APP_EXTERNAL_BASE_URL=https://<domena>`. NPM przekazuje dalej `X-Forwarded-Proto` od klienta, zobacz niżej | `https://<domena>/auth/realms/openksef` |
+| ngrok, Cloudflare Tunnel, Caddy, Traefik | Nic: zachowują publiczny `Host` i wysyłają `X-Forwarded-Proto` | `https://<publiczny host>/auth/realms/openksef` |
+| nginx z własnym `location` | `proxy_set_header Host $host:$server_port;` i `proxy_set_header X-Forwarded-Proto $scheme;` | publiczny host i port |
+| Apache | `ProxyPreserveHost On`, `RequestHeader set Host "<domena>"` i `RequestHeader set X-Forwarded-Proto https` | publiczny host |
+| Publiczny HTTPS na porcie innym niż 443 | Proxy musi wysłać ten port w `Host`, np. `Host: example.com:8443` (nginx `$host:$server_port`) | `https://example.com:8443/auth/realms/openksef` |
+
+Proxy, które jako `Host` wysyła nazwę upstreamu (np. `gateway:8080`), a publiczną nazwę tylko w `X-Forwarded-Host`, już nie działa: ustaw `Host` jak wyżej. Proxy musi nadpisywać `X-Forwarded-Proto`. Nginx Proxy Manager przekazuje wartość klienta, więc bez `APP_EXTERNAL_BASE_URL` żądanie może dostać linki `http://`. Gdy `APP_EXTERNAL_BASE_URL` jest ustawiony, każdy dostęp przez gateway dostaje jego schemat, także tunel taki jak ngrok, więc zwykła wartość `http://` daje linki `http://` na tunelu HTTPS. Gateway czyta `APP_EXTERNAL_BASE_URL` tylko z `docker-compose.yml`, który przekazuje go usłudze `gateway`. Starszy plik pobiera nowy obraz bez tej zmiennej i schemat nadal pochodzi z `X-Forwarded-Proto`. Wynik sprawdzisz poleceniem `curl -s https://<domena>/auth/realms/openksef/.well-known/openid-configuration`: porównaj `issuer` z `APP_EXTERNAL_BASE_URL`.
 
 ## Błędy startu i pętle restartów
 
@@ -300,14 +315,13 @@ Każda usługa ma `restart: unless-stopped`. Gdy API lub Worker kończy pracę p
 - nieprawidłowy wiersz `ksef_environment` lub `KSEF_BASE_URL` (`Unknown KSeF environment`), zobacz [Środowisko KSeF: aktualizacja](#środowisko-ksef-aktualizacja)
 - `KSeF:ForbidProduction` ustawione w instalacji, której środowisko to produkcja
 - `SystemConfigs` nieczytelne po 5 próbach (PostgreSQL nie działa lub jest uszkodzony)
-- gateway z nieprawidłowym wpisem w `KEYCLOAK_ADMIN_ALLOW`
 
 API i Worker zapisują w logu jedną linię `FTL` z przyczyną. Jak zobaczyć pętlę i przyczynę:
 
 ```bash
 docker compose ps                     # STATUS "Restarting (1) ..." przy usłudze w pętli
 docker inspect -f '{{.RestartCount}} {{.State.ExitCode}}' openksef-api
-docker compose logs --tail 50 api     # przyczyna; dla pozostałych użyj worker lub gateway
+docker compose logs --tail 50 api     # przyczyna; dla Workera użyj worker
 ```
 
 `docker compose up -d` czeka na test zdrowia API, zanim uruchomi Workera. Jeśli API jest w pętli, `up -d` kończy się komunikatem `dependency failed to start: container openksef-api is unhealthy`, a Worker nie startuje. To oczekiwane.
