@@ -54,7 +54,7 @@ Jeśli uruchamiasz OpenKSeF z dostępem z internetu:
 2. **Regularnie aktualizuj** kontenery Docker
 3. **Rób backupy** bazy PostgreSQL
 4. **Używaj silnych haseł** w `.env` (PostgreSQL, admin Keycloak)
-5. **Ogranicz dostęp** do portów 8081, 8082, 5432 (tylko gateway 8080 powinien być publiczny)
+5. **Udostępniaj tylko gateway** (port 8080, jedyny publikowany przez `docker-compose.yml`). Nie wpisuj adresu reverse proxy do `KEYCLOAK_ADMIN_ALLOW`
 6. **Monitoruj logi** pod kątem nieautoryzowanych prób dostępu
 
 ## Technologie

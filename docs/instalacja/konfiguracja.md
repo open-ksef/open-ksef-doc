@@ -39,7 +39,7 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 | `ENCRYPTION_KEY_FILE` | Ścieżka do pliku z kluczem, czytana gdy `ENCRYPTION_KEY` jest pusty. Wymaga własnego pliku compose: dostarczony `docker-compose.yml` przekazuje tylko `ENCRYPTION_KEY` i odmawia działania bez niego, a sam plik override tego nie zmienia | *(brak)* |
 | `ASPNETCORE_ENVIRONMENT` | Środowisko API. `Production` wyłącza Swaggera | `Production` |
 | `Auth__RequireHttpsMetadata` | Czy API wymaga HTTPS przy pobieraniu metadanych OIDC z `Auth__Authority`. Compose ustawia `"false"`, bo API łączy się z Keycloak w sieci Docker po HTTP (`http://keycloak:8080`). Domyślnie (bez zmiennej) `true` -- wtedy API odrzuca adres `http://` | `"false"` |
-| `KSeF__BaseUrl` | Środowisko KSeF, w `.env` jako `KSEF_BASE_URL`: `test` albo `production`, zobacz [Środowiska KSeF](#środowiska-ksef) | środowisko test |
+| `KSeF__BaseUrl` | Środowisko KSeF, w `.env` jako `KSEF_BASE_URL`: `test`, `demo` albo `production`, zobacz [Środowiska KSeF](#środowiska-ksef) | środowisko test |
 
 ## Wymagane zmienne (Portal Web)
 
@@ -78,22 +78,25 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 | Środowisko | `KSEF_BASE_URL` | Adres API KSeF | Zastosowanie |
 |------------|-----------------|----------------|-------------|
 | **Test** | `test` | `https://api-test.ksef.mf.gov.pl/v2` | Rozwój i testowanie |
+| **Demo** | `demo` | `https://api-demo.ksef.mf.gov.pl/v2` | Testy na środowisku przedprodukcyjnym |
 | **Produkcja** | `production` | `https://api.ksef.mf.gov.pl/v2` | Prawdziwe faktury |
 
-Wartość, której program nie rozpozna, oznacza środowisko test. Po kreatorze zmiana KSEF_BASE_URL nic nie daje: środowisko zmienisz w Ustawienia > Administracja instancji.
+Puste `KSEF_BASE_URL` oznacza środowisko test. Większość pełnych adresów z wcześniejszych wersji nadal działa. Każda inna wartość, której program nie rozpozna, zatrzymuje API i Workera przy starcie z błędem `Unknown KSeF environment`, więc nic nie trafia do KSeF na zgadniętym środowisku. Dotyczy to także wartości `ksef_environment` zapisanej przez kreator. Które adresy działają i co zrobić: [Środowisko KSeF: aktualizacja](../admin-setup#środowisko-ksef-aktualizacja).
+
+Po kreatorze zmiana `KSEF_BASE_URL` nic nie daje: środowisko zmienisz w Ustawienia > Administracja instancji.
 
 :::warning[Uwaga]
 Środowisko produkcyjne KSeF operuje na rzeczywistych danych podatkowych. Upewnij się, że instancja jest odpowiednio zabezpieczona przed przełączeniem na produkcję.
 :::
 
-## Porty
+## Porty i dostęp z zewnątrz
 
-Porty można dostosować w `.env`:
+`docker-compose.yml` publikuje na hoście tylko gateway.
 
-```bash
-APP_HOST_PORT=8080
-API_HOST_PORT=8081
-KEYCLOAK_HOST_PORT=8082
-PORTAL_WEB_HOST_PORT=8083
-POSTGRES_HOST_PORT=5432
-```
+| Zmienna | Opis | Domyślnie |
+|---------|------|-----------|
+| `APP_HOST_PORT` | Port gateway na hoście | `8080` |
+| `KEYCLOAK_ADMIN_ALLOW` | Adresy, z których gateway otwiera konsolę Keycloak `/auth/admin`, po przecinku, IP lub CIDR (np. `192.168.88.0/24,10.8.0.5`). Puste: 403 dla wszystkich. Za reverse proxy przeczytaj [zastrzeżenie](../admin-setup#aktualizacja-porty-i-konsola-keycloak) | *(puste)* |
+| `OPENKSEF_VERSION` | Wersja obrazów `api`, `worker`, `portal-web` i `gateway`, np. `v1.2.3` | wersja wydania, z którego pochodzi `docker-compose.yml` |
+
+`API_HOST_PORT`, `KEYCLOAK_HOST_PORT`, `PORTAL_WEB_HOST_PORT` i `POSTGRES_HOST_PORT` nie są już czytane. Dostęp do PostgreSQL i konsoli Keycloak z hosta opisuje [Aktualizacja: porty i konsola Keycloak](../admin-setup#aktualizacja-porty-i-konsola-keycloak).
