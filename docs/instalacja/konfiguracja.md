@@ -71,7 +71,20 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 | `APP_EXTERNAL_BASE_URL` | Publiczny URL instancji (np. `http://192.168.1.50:8080`) |
 | `API_CLIENT_SECRET` | Secret klienta `openksef-api` w Keycloak *(generowany przez kreator)* |
 | `FIREBASE_CREDENTIALS_JSON` | Firebase service account JSON (dla direct push) |
-| `Email__Enabled`, `Email__SmtpHost`, `Email__SmtpPort`, `Email__UseSsl`, `Email__Username`, `Email__Password`, `Email__FromAddress` | E-mail o nowej fakturze, tylko przy ręcznej synchronizacji. Domyślnie wyłączony. Dopisz te zmienne w `environment` usługi `api` w `docker-compose.yml`: sam plik `.env` ich nie przekaże |
+
+## E-mail o nowych fakturach
+
+Najwyżej 10 e-maili na firmę w jednej synchronizacji, o pozostałych jedno podsumowanie. E-maile o nowych fakturach zakupowych trafiają na adres do powiadomień ustawiony w danych firmy. Wysyła go Worker (automatyczna synchronizacja) i API (ręczna synchronizacja). Ustaw zmienne w `.env`: `docker-compose.yml` od v0.0.12 przekazuje je usługom `api` i `worker`. SMTP z kreatora dotyczy tylko Keycloak i tu nie działa. Więcej: [Powiadomienia push](../powiadomienia-push).
+
+| Zmienna | Opis | Domyślnie |
+|---------|------|-----------|
+| `EMAIL_ENABLED` | `true` włącza e-mail | `false` |
+| `EMAIL_SMTP_HOST` | Serwer SMTP | *(puste)* |
+| `EMAIL_SMTP_PORT` | `587`: STARTTLS, `465`: SSL od połączenia | `587` |
+| `EMAIL_USE_SSL` | `false`: zwykły SMTP bez TLS | `true` |
+| `EMAIL_USERNAME`, `EMAIL_PASSWORD` | Login SMTP. Pusty login: bez logowania | *(puste)* |
+| `EMAIL_FROM_ADDRESS` | Adres nadawcy | `noreply@openksef.local` |
+| `EMAIL_FROM_NAME` | Nazwa nadawcy | `OpenKSeF` |
 
 ## Środowiska KSeF
 
@@ -97,6 +110,8 @@ Po kreatorze zmiana `KSEF_BASE_URL` nic nie daje: środowisko zmienisz w Ustawie
 |---------|------|-----------|
 | `APP_HOST_PORT` | Port gateway na hoście | `8080` |
 | `KEYCLOAK_ADMIN_ALLOW` | Adresy, z których gateway otwiera konsolę Keycloak `/auth/admin`, po przecinku, IP lub CIDR (np. `192.168.88.0/24,10.8.0.5`). Puste: 403 dla wszystkich. Za reverse proxy przeczytaj [zastrzeżenie](../admin-setup#aktualizacja-porty-i-konsola-keycloak) | *(puste)* |
+| `FORWARD_LIMIT` | Liczba proxy, które dopisują się do `X-Forwarded-For`, łącznie z gateway: sam gateway `1`, Nginx Proxy Manager przed nim `2`, Cloudflare i Nginx Proxy Manager `3`. Zła wartość psuje limity zapytań, zobacz [Adres klienta za proxy](../admin-setup#adres-klienta-za-proxy) | `1` |
+| `TRUSTED_PROXY_NETWORKS` | Sieci (CIDR po przecinku), od których API przyjmuje `X-Forwarded-For`. Puste: loopback i sieci prywatne. Nigdy `0.0.0.0/0` | *(puste)* |
 | `OPENKSEF_VERSION` | Wersja obrazów `api`, `worker`, `portal-web` i `gateway`, np. `v1.2.3` | wersja wydania, z którego pochodzi `docker-compose.yml` |
 
 `API_HOST_PORT`, `KEYCLOAK_HOST_PORT`, `PORTAL_WEB_HOST_PORT` i `POSTGRES_HOST_PORT` nie są już czytane. Dostęp do PostgreSQL i konsoli Keycloak z hosta opisuje [Aktualizacja: porty i konsola Keycloak](../admin-setup#aktualizacja-porty-i-konsola-keycloak).
