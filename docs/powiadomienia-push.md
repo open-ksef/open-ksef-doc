@@ -15,17 +15,18 @@ Instancja wysyła powiadomienie dwiema drogami: lokalnie przez SignalR (WebSocke
 |---------|--------------|--------------|
 | **SignalR** | Aplikacja jest połączona z serwerem; tylko ręczna synchronizacja | Brak -- zawsze włączone |
 | **Relay** | Aplikacja w tle | Wybierz w kreatorze (domyślnie) |
-| **Email** | Tylko ręczna synchronizacja | Domyślnie wyłączony. Ustaw zmienne `Email__*` ([Konfiguracja](instalacja/konfiguracja)) i adres e-mail do powiadomień w firmie. SMTP z kreatora dotyczy tylko Keycloak |
+| **Email** | Każda nowa faktura zakupowa, automatyczna i ręczna synchronizacja | Domyślnie wyłączony. Ustaw zmienne `EMAIL_*` ([Konfiguracja](instalacja/konfiguracja#e-mail-o-nowych-fakturach)) i adres e-mail do powiadomień w firmie. SMTP z kreatora dotyczy tylko Keycloak |
 
 Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konfiguracji Firebase.
 
 ## Kto dostaje powiadomienie
 
-- **Automatyczna synchronizacja** (Worker, domyślnie co 4 godziny) wysyła tylko powiadomienia zdalne: relay albo własny Firebase/APNs.
-- **Ręczna synchronizacja** (przycisk w portalu lub w aplikacji mobilnej) wysyła dodatkowo powiadomienie SignalR i e-mail.
+- **Automatyczna synchronizacja** (Worker, domyślnie co 4 godziny) wysyła powiadomienia zdalne (relay albo własny Firebase/APNs) i e-mail.
+- **Ręczna synchronizacja** (przycisk w portalu lub w aplikacji mobilnej) wysyła dodatkowo powiadomienie SignalR.
 - Powiadomienie push trafia na urządzenia użytkownika, do którego należy firma. Inni użytkownicy instancji go nie dostają.
 - E-mail trafia na adres do powiadomień ustawiony w danych firmy. Może to być dowolny adres, także osoby spoza instancji.
 - Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika, chyba że przypisano je do jednej firmy. Przypisanie widać w portalu: **Telefon** > **Moje urządzenia**, kolumna **Powiadomienia**.
+- Jedna synchronizacja wysyła najwyżej 10 powiadomień na firmę, a o pozostałych fakturach jedno podsumowanie.
 - Pierwsza synchronizacja nowej firmy i [pełna resynchronizacja](faktury#pełna-resynchronizacja) nie wysyłają powiadomień, nawet jeśli pobiorą wiele faktur.
 - Powiadomienie może przyjść kilka sekund przed pozycjami i numerem rachunku, bo OpenKSeF pobiera je z KSeF [po zapisaniu faktury](faktury#uzupełnianie-pozycji-rachunku-i-terminu). Gdy czeka dużo starszych faktur, może to potrwać kilka minut, a po limicie KSeF do kolejnej automatycznej synchronizacji. Otwórz fakturę ponownie.
 

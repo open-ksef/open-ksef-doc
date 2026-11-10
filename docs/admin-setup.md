@@ -293,6 +293,39 @@ Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse prox
 
 **Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web` i `gateway`, np. `OPENKSEF_VERSION=v1.2.3`. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
 
+## Aktualizacja do v0.0.12
+
+Z wersji v0.0.11, przed pobraniem obrazów:
+
+1. **Zrób kopię zapasową bazy:** `docker exec openksef-postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-v0.0.12.dump`. Przy starcie API wykonuje cztery migracje. Jedna usuwa zduplikowane tokeny urządzeń i nie da się jej cofnąć.
+2. **Rola `openksef-admin`.** Bez niej **Ustawienia** zwracają 403 dla wszystkich. Endpointy ustawień przyjmują tylko użytkowników z rolą realmu `openksef-admin`, sprawdzaną przed hasłem admina Keycloak. Nowe instalacje dostają ją z kreatora.
+   1. Otwórz konsolę admina Keycloak (zobacz [Aktualizacja: porty i konsola Keycloak](#aktualizacja-porty-i-konsola-keycloak)), realm `openksef`.
+   2. **Realm roles** > **Create role**, nazwa `openksef-admin`.
+   3. **Users** > twój użytkownik admin > **Role mapping** > **Assign role** > `openksef-admin`.
+   4. Wyloguj się z portalu i zaloguj ponownie, żeby token zawierał rolę.
+3. **Za reverse proxy** ustaw `FORWARD_LIMIT` w tym samym wdrożeniu, zobacz [Adres klienta za proxy](#adres-klienta-za-proxy).
+4. `docker compose pull && docker compose up -d`.
+5. **Flaga rejestracji.** Otwórz **Ustawienia** i zapisz je raz. To zapisuje flagę rejestracji w `SystemConfigs` (`registration_allowed`). Do tego czasu strona logowania pokazuje link rejestracji, a rejestracja bez sekretu konta serwisowego zwraca 503. Rejestrację włączasz i wyłączasz tylko w **Ustawieniach**: API nie widzi zmian zrobionych w konsoli Keycloak.
+
+Endpointy ustawień przyjmują 10 zapytań na 15 minut z jednego adresu klienta. Powyżej limitu zwracają 429. Nieznana wartość `KSEF_BASE_URL` zatrzymuje API i Workera przy starcie, zobacz [Środowisko KSeF: aktualizacja](#środowisko-ksef-aktualizacja).
+
+Po aktualizacji nieopłacone faktury zakupowe pokazują kod QR przelewu z kwotą `000000` i informacją, że faktura nie jest jeszcze odczytana, dopóki OpenKSeF nie pobierze ponownie ich XML (do 60 na firmę w cyklu synchronizacji).
+
+**Powrót do v0.0.11.** Tylko przez wersję obrazów: ustaw `OPENKSEF_VERSION=v0.0.11` w `.env` (zostaw `docker-compose.yml` z v0.0.12) i uruchom `docker compose pull && docker compose up -d`. Nie uruchamiaj `Down` migracji. Jeśli dane są uszkodzone, zatrzymaj API i Workera i przywróć `before-v0.0.12.dump`: `docker exec -i openksef-postgres sh -c 'pg_restore -U "$POSTGRES_USER" -d openksef --clean --if-exists' < before-v0.0.12.dump`.
+
+**Faktury wystawione: powrót do v0.0.8 lub starszej.** Synchronizacja faktur wystawionych działa od v0.0.9. Starszy obraz nie odróżnia kierunku i pokazałby faktury wystawione jako nieopłacone zakupowe. Zatrzymaj API i Workera, uruchom poniższe SQL, potem uruchom starszą wersję:
+
+```bash
+docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef' <<'SQL'
+BEGIN;
+DELETE FROM "InvoiceHeaders" WHERE "Direction" = 'Issued';
+UPDATE "SyncStates" SET "IssuedContinuationAt" = NULL;
+COMMIT;
+SQL
+```
+
+Skrypt usuwa tylko faktury wystawione i ich pozycje. Nie ma w nich danych użytkownika, a synchronizacja pobierze je ponownie po następnej aktualizacji.
+
 ## Reverse proxy i publiczny adres
 
 Keycloak buduje wystawcę tokenu (`iss`) i każdy bezwzględny link (przekierowania logowania, weryfikacja e-maila, reset hasła) z tego, co wysyła mu gateway. Gateway bierze host i port z nagłówka `Host`. Schemat (`http` lub `https`) bierze z `APP_EXTERNAL_BASE_URL`, jeśli jest ustawiony w `.env`, w przeciwnym razie z `X-Forwarded-Proto`. Ignoruje `X-Forwarded-Host` i `X-Forwarded-Port` od klienta. `Host`, a gdy `APP_EXTERNAL_BASE_URL` nie jest ustawiony także `X-Forwarded-Proto`, musi przychodzić od proxy, które je nadpisuje. Przy dostępie bezpośrednim albo przez proxy, które przekazuje wartość klienta, żądanie nadal może zmienić host lub port we własnych linkach, a bez `APP_EXTERNAL_BASE_URL` także schemat. Wystawca musi być równy `APP_EXTERNAL_BASE_URL/auth/realms/openksef` (albo adresowi zapisanemu przez kreator), inaczej API odpowiada 401.
@@ -307,6 +340,14 @@ Keycloak buduje wystawcę tokenu (`iss`) i każdy bezwzględny link (przekierowa
 | Publiczny HTTPS na porcie innym niż 443 | Proxy musi wysłać ten port w `Host`, np. `Host: example.com:8443` (nginx `$host:$server_port`) | `https://example.com:8443/auth/realms/openksef` |
 
 Proxy, które jako `Host` wysyła nazwę upstreamu (np. `gateway:8080`), a publiczną nazwę tylko w `X-Forwarded-Host`, już nie działa: ustaw `Host` jak wyżej. Proxy musi nadpisywać `X-Forwarded-Proto`. Nginx Proxy Manager przekazuje wartość klienta, więc bez `APP_EXTERNAL_BASE_URL` żądanie może dostać linki `http://`. Gdy `APP_EXTERNAL_BASE_URL` jest ustawiony, każdy dostęp przez gateway dostaje jego schemat, także tunel taki jak ngrok, więc zwykła wartość `http://` daje linki `http://` na tunelu HTTPS. Gateway czyta `APP_EXTERNAL_BASE_URL` tylko z `docker-compose.yml`, który przekazuje go usłudze `gateway`. Starszy plik pobiera nowy obraz bez tej zmiennej i schemat nadal pochodzi z `X-Forwarded-Proto`. Wynik sprawdzisz poleceniem `curl -s https://<domena>/auth/realms/openksef/.well-known/openid-configuration`: porównaj `issuer` z `APP_EXTERNAL_BASE_URL`.
+
+### Adres klienta za proxy
+
+API bierze adres klienta z `X-Forwarded-For` do limitów zapytań i logów. `FORWARD_LIMIT` to liczba proxy, które dopisują się do tego nagłówka, łącznie z gateway: sam gateway `1` (domyślnie), Nginx Proxy Manager przed nim `2`, Cloudflare i Nginx Proxy Manager `3`. Wartość wyższa niż rzeczywista liczba proxy pozwala klientowi wybrać własny adres. Niższa wrzuca wszystkich klientów za proxy do jednego limitu.
+
+API przyjmuje nagłówek tylko od adresów z `TRUSTED_PROXY_NETWORKS` (CIDR po przecinku). Puste oznacza loopback i sieci prywatne (`127.0.0.0/8, ::1/128, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16`). Każde proxy musi być na liście i nic poza nimi: API czyta nagłówek od prawej i zatrzymuje się na pierwszym adresie spoza listy, ten adres jest klientem. Nigdy nie ustawiaj `0.0.0.0/0` ani `::/0`. Przy `FORWARD_LIMIT` powyżej 1 klient, który dotrze bezpośrednio do portu gateway, mógłby wtedy wysłać własny `X-Forwarded-For` i ominąć każdy limit na adres IP. Za Cloudflare wpisz [zakresy Cloudflare](https://www.cloudflare.com/ips/) i powyższe zakresy prywatne, np. `TRUSTED_PROXY_NETWORKS=127.0.0.0/8,::1/128,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,173.245.48.0/20,...`, i aktualizuj listę, gdy Cloudflare ją zmieni. Klient z zaufanej sieci prywatnej nadal może podrobić nagłówek, więc przypisz gateway do adresu, którego używa proxy (`APP_HOST_PORT=127.0.0.1:8080` albo adres LAN), i zablokuj port w firewallu dla wszystkich poza proxy.
+
+Ustaw `FORWARD_LIMIT` w tym samym wdrożeniu co v0.0.12, nie później: limit działa przed logowaniem, więc przy złej wartości wszyscy klienci dzielą jeden limit, a 10 zapytań od kogokolwiek blokuje **Ustawienia** na 15 minut. `X-Forwarded-Host` nie jest używany. Liczbę proxy sprawdzisz poleceniem `docker compose logs --tail 50 gateway`: ostatnie pole każdej linii to `X-Forwarded-For`, który dotarł do gateway, a liczba proxy to liczba jego wpisów plus jeden.
 
 ## Błędy startu i pętle restartów
 
