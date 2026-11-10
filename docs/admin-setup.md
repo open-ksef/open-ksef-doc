@@ -304,14 +304,14 @@ Z wersji v0.0.11, przed pobraniem obrazów:
    3. **Users** > twój użytkownik admin > **Role mapping** > **Assign role** > `openksef-admin`.
    4. Wyloguj się z portalu i zaloguj ponownie, żeby token zawierał rolę.
 3. **Za reverse proxy** ustaw `FORWARD_LIMIT` w tym samym wdrożeniu, zobacz [Adres klienta za proxy](#adres-klienta-za-proxy).
-4. `docker compose pull && docker compose up -d`.
+4. Pobierz `docker-compose.yml` z wydania v0.0.12 i zastąp nim stary plik (najpierw przeczytaj [Aktualizacja: porty i konsola Keycloak](#aktualizacja-porty-i-konsola-keycloak)). Plik z v0.0.11 nie przekazuje `FORWARD_LIMIT`, `TRUSTED_PROXY_NETWORKS` ani `EMAIL_*` i nie czyta `OPENKSEF_VERSION`. Potem `docker compose pull && docker compose up -d`.
 5. **Flaga rejestracji.** Otwórz **Ustawienia** i zapisz je raz. To zapisuje flagę rejestracji w `SystemConfigs` (`registration_allowed`). Do tego czasu strona logowania pokazuje link rejestracji, a rejestracja bez sekretu konta serwisowego zwraca 503. Rejestrację włączasz i wyłączasz tylko w **Ustawieniach**: API nie widzi zmian zrobionych w konsoli Keycloak.
 
 Endpointy ustawień przyjmują 10 zapytań na 15 minut z jednego adresu klienta. Powyżej limitu zwracają 429. Nieznana wartość `KSEF_BASE_URL` zatrzymuje API i Workera przy starcie, zobacz [Środowisko KSeF: aktualizacja](#środowisko-ksef-aktualizacja).
 
 Po aktualizacji nieopłacone faktury zakupowe pokazują kod QR przelewu z kwotą `000000` i informacją, że faktura nie jest jeszcze odczytana, dopóki OpenKSeF nie pobierze ponownie ich XML (do 60 na firmę w cyklu synchronizacji).
 
-**Powrót do v0.0.11.** Tylko przez wersję obrazów: ustaw `OPENKSEF_VERSION=v0.0.11` w `.env` (zostaw `docker-compose.yml` z v0.0.12) i uruchom `docker compose pull && docker compose up -d`. Nie uruchamiaj `Down` migracji. Jeśli dane są uszkodzone, zatrzymaj API i Workera i przywróć `before-v0.0.12.dump`: `docker exec -i openksef-postgres sh -c 'pg_restore -U "$POSTGRES_USER" -d openksef --clean --if-exists' < before-v0.0.12.dump`.
+**Powrót do v0.0.11.** Tylko przez wersję obrazów: ustaw `OPENKSEF_VERSION=v0.0.11` w `.env` (zostaw `docker-compose.yml` z v0.0.12) i uruchom `docker compose pull && docker compose up -d`. Nie uruchamiaj `Down` migracji. Na v0.0.11 ponowna rejestracja tego samego urządzenia przez innego użytkownika zwraca błąd 500. Jeśli dane są uszkodzone, zatrzymaj API i Workera i przywróć `before-v0.0.12.dump`: `docker exec -i openksef-postgres sh -c 'pg_restore -U "$POSTGRES_USER" -d openksef --clean --if-exists' < before-v0.0.12.dump`.
 
 **Faktury wystawione: powrót do v0.0.8 lub starszej.** Synchronizacja faktur wystawionych działa od v0.0.9. Starszy obraz nie odróżnia kierunku i pokazałby faktury wystawione jako nieopłacone zakupowe. Zatrzymaj API i Workera, uruchom poniższe SQL, potem uruchom starszą wersję:
 

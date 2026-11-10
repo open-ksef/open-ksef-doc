@@ -74,7 +74,7 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 
 ## E-mail o nowych fakturach
 
-Jeden e-mail o każdej nowej fakturze zakupowej, na adres do powiadomień ustawiony w danych firmy. Wysyła go Worker (automatyczna synchronizacja) i API (ręczna synchronizacja). Ustaw zmienne w `.env`: `docker-compose.yml` przekazuje je usługom `api` i `worker`. SMTP z kreatora dotyczy tylko Keycloak i tu nie działa. Więcej: [Powiadomienia push](../powiadomienia-push).
+Najwyżej 10 e-maili na firmę w jednej synchronizacji, o pozostałych jedno podsumowanie. E-maile o nowych fakturach zakupowych trafiają na adres do powiadomień ustawiony w danych firmy. Wysyła go Worker (automatyczna synchronizacja) i API (ręczna synchronizacja). Ustaw zmienne w `.env`: `docker-compose.yml` od v0.0.12 przekazuje je usługom `api` i `worker`. SMTP z kreatora dotyczy tylko Keycloak i tu nie działa. Więcej: [Powiadomienia push](../powiadomienia-push).
 
 | Zmienna | Opis | Domyślnie |
 |---------|------|-----------|
