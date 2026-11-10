@@ -50,7 +50,7 @@ Jeśli uruchamiałeś wcześniej starszą wersję tego pliku (bez `.env`), wolum
 
 1. Wpisz do `.env` stare wartości: `POSTGRES_USER=openksef`, `POSTGRES_PASSWORD=openksef_dev_password`, `KEYCLOAK_ADMIN=admin`, `KEYCLOAK_ADMIN_PASSWORD=admin` i uruchom `docker compose up -d`.
 2. Zmień hasło bazy: `docker compose exec postgres psql -U openksef -c "ALTER USER openksef WITH PASSWORD 'nowe_haslo';"`, wpisz je do `POSTGRES_PASSWORD` w `.env` i ponownie uruchom `docker compose up -d`.
-3. Zmień hasło admina Keycloak w konsoli (realm `master` > **Users** > `admin` > **Credentials** > **Reset password**) i wpisz je do `KEYCLOAK_ADMIN_PASSWORD` w `.env`. Gateway blokuje konsolę (`/auth/admin` zwraca 403). Jak ją otworzyć: [Dostęp do bazy i konsoli Keycloak](../admin-setup#aktualizacja-porty-i-konsola-keycloak).
+3. Zmień hasło admina Keycloak w konsoli (realm `master` > **Users** > `admin` > **Credentials** > **Reset password**) i wpisz je do `KEYCLOAK_ADMIN_PASSWORD` w `.env`. Gateway blokuje konsolę (`/auth/admin` zwraca 403). Jak ją otworzyć: [Aktualizacja: porty i konsola Keycloak](../admin-setup#aktualizacja-porty-i-konsola-keycloak).
 :::
 
 ## Krok 2: Uruchom
@@ -110,7 +110,7 @@ Klucz czytany jest ze zmiennej `ENCRYPTION_KEY` usług API i Worker. Kreator go 
 | Portal | http://localhost:8080 |
 | API | http://localhost:8080/api/ |
 | Keycloak (logowanie) | http://localhost:8080/auth/ |
-| Keycloak (konsola admina) | http://localhost:8080/auth/admin zwraca 403, zobacz [Dostęp do bazy i konsoli Keycloak](../admin-setup#aktualizacja-porty-i-konsola-keycloak) |
+| Keycloak (konsola admina) | http://localhost:8080/auth/admin zwraca 403, zobacz [Aktualizacja: porty i konsola Keycloak](../admin-setup#aktualizacja-porty-i-konsola-keycloak) |
 
 Wszystko idzie przez gateway na jednym porcie. API, Keycloak, portal i PostgreSQL nie mają własnych portów na hoście. Stan kontenerów, także test zdrowia API, pokazuje `docker compose ps`.
 
