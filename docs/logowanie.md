@@ -41,7 +41,7 @@ Każde żądanie czyta realm: rejestracja wyłączona zwraca `403`, a nieudany o
 
 ### Konfiguracja ręczna
 
-1. Otwórz konsolę Keycloak: http://localhost:8082/auth/admin (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`)
+1. Otwórz konsolę Keycloak `/auth/admin` (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`). Gateway ją blokuje. Jak ją otworzyć: [Aktualizacja: porty i konsola Keycloak](admin-setup#aktualizacja-porty-i-konsola-keycloak)
 2. Przejdź do **Clients > openksef-api > Credentials**
 3. Skopiuj **Client Secret**. Nie generuj go ponownie na instalacji z kreatora
 4. Ustaw w `.env`:
