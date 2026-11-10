@@ -14,6 +14,7 @@ const sidebars: SidebarsConfig = {
     },
     'admin-setup',
     'logowanie',
+    'token-ksef',
     'faktury',
     'wystawianie-faktur',
     'powiadomienia-push',

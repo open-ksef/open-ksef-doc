@@ -32,7 +32,7 @@ Sam odczyt wystarczy do przeglądania faktur, ale nie do ich wystawiania. Wysył
 Jeśli firma ma token tylko do odczytu, wygeneruj nowy w Aplikacji Podatnika KSeF i podmień go w ustawieniach firmy.
 
 :::note[Ważność tokenu]
-Token nie jest wieczny. Logowanie tokenem jest dopuszczone do 31 grudnia 2026 r. (Dz.U. 2025 poz. 1815, § 13), chyba że przepisy zostaną zmienione. Sprawdź aktualny stan w [materiałach Ministerstwa Finansów](https://ksef.podatki.gov.pl/).
+Logowanie tokenem jest dopuszczone do 31 grudnia 2026 r. (Dz.U. 2025 poz. 1815, § 13), chyba że przepisy zostaną zmienione. Sprawdź aktualny stan w [materiałach Ministerstwa Finansów](https://ksef.podatki.gov.pl/).
 :::
 
 ## Dane do faktur
