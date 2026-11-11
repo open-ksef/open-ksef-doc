@@ -10,17 +10,18 @@ Logowanie certyfikatem KSeF działa od następnego wydania po v0.0.12. W v0.0.12
 
 OpenKSeF może logować się do KSeF certyfikatem KSeF zamiast tokenem. Token zostaje domyślnym sposobem. Certyfikat to zapasowa droga, gdy nie masz tokenu albo token przestanie działać.
 
-Dlaczego teraz: według Ministerstwa Finansów Aplikacja Podatnika KSeF 2.0 obsługuje „generowanie i obsługę tokenów (do 31 grudnia 2026 r.)”. Obowiązujące rozporządzenie dopuszcza logowanie tokenem do 31 grudnia 2026 r. Projekt zmiany, który przedłuża tokeny, nie jest jeszcze prawem. Certyfikat KSeF jest stałą metodą logowania i nie zależy od tej zmiany. Możesz go przygotować już teraz, póki token działa.
+Dlaczego teraz: według Ministerstwa Finansów Aplikacja Podatnika KSeF 2.0 obsługuje „generowanie i obsługę tokenów (do 31 grudnia 2026 r.)”. Obowiązujące rozporządzenie dopuszcza logowanie tokenem do 31 grudnia 2026 r. Certyfikat KSeF jest stałą metodą logowania i nie zależy od tej zmiany. Możesz go przygotować już teraz, póki token działa.
 
 ## Wygeneruj certyfikat
 
 1. Otwórz Aplikację Podatnika KSeF 2.0 w tym samym środowisku, w którym działa Twoja instancja ([Środowiska KSeF](instalacja/konfiguracja#środowiska-ksef)):
    - produkcja: [ap.ksef.mf.gov.pl](https://ap.ksef.mf.gov.pl),
+   - demo: [ap-demo.ksef.mf.gov.pl](https://ap-demo.ksef.mf.gov.pl),
    - test: [ap-test.ksef.mf.gov.pl](https://ap-test.ksef.mf.gov.pl).
 2. Zaloguj się Węzłem krajowym (Profil Zaufany, e-dowód, mObywatel), podpisem kwalifikowanym albo pieczęcią kwalifikowaną firmy. Tokenem nie złożysz wniosku o certyfikat.
 3. Złóż wniosek o certyfikat typu **Uwierzytelnianie** (w dokumentacji MF: typ 1, w API: `Authentication`). Nie wybieraj typu **Offline**: nie pozwala się zalogować.
-4. Podczas wniosku nadaj nazwę i hasło. Aplikacja zapisze na Twoim komputerze klucz prywatny jako plik `.key`. Klucz prywatny nie trafia do Ministerstwa Finansów, więc zachowaj plik i hasło.
-5. Po wydaniu certyfikatu pobierz go w Aplikacji Podatnika jako plik `.crt`.
+4. Podczas wniosku Aplikacja Podatnika wygeneruje klucz prywatny i zapisze go na Twoim komputerze. Zachowaj plik klucza i jego hasło: bez nich certyfikatu nie użyjesz.
+5. Po wydaniu certyfikatu pobierz go w Aplikacji Podatnika.
 
 Wniosek o certyfikat składasz tylko we własnym imieniu: certyfikat zawiera dane osoby albo firmy, która się zalogowała. Certyfikatu wydanego na osobę fizyczną nie wolno przekazywać innej osobie.
 
@@ -73,7 +74,7 @@ Certyfikat typu Offline albo certyfikat bez uprawnień do firmy portal przyjmie,
 
 ## Ważność i odnowienie
 
-Certyfikat KSeF jest ważny nie dłużej niż 2 lata od daty podanej we wniosku albo, gdy jej nie podano, od daty wydania. Nowy certyfikat możesz dostać na miesiąc przed upływem ważności najstarszego aktywnego certyfikatu.
+Certyfikat KSeF jest ważny nie dłużej niż 2 lata od daty podanej we wniosku albo, gdy jej nie podano, od daty wydania. Kolejny certyfikat możesz wygenerować w dowolnym momencie, w ramach limitu aktywnych certyfikatów. Gdy limit jest wyczerpany, nowy certyfikat dostaniesz na miesiąc przed upływem ważności najstarszego aktywnego certyfikatu.
 
 Portal pokazuje ważność w karcie **Dostęp do KSeF**:
 
