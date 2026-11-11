@@ -6,7 +6,7 @@ title: Token KSeF
 
 OpenKSeF łączy się z KSeF tokenem KSeF. Token generuje podatnik w narzędziu Ministerstwa Finansów, a potem wkleja go w OpenKSeF. Bez tokenu firma nie pobiera ani nie wystawia faktur.
 
-W OpenKSeF nie dodasz certyfikatu KSeF. Firmy z certyfikatem z wcześniejszych wersji: [Firma z certyfikatem](#firma-z-certyfikatem).
+Token zostaje domyślnym sposobem logowania. Od następnego wydania po v0.0.12 możesz zamiast tokenu wgrać certyfikat KSeF: [Certyfikat KSeF](certyfikat-ksef). W v0.0.12 i starszych nowego certyfikatu nie dodasz. Firmy z certyfikatem z wcześniejszych wersji: [Firma z certyfikatem](#firma-z-certyfikatem).
 
 ## Wygeneruj token
 
@@ -35,11 +35,11 @@ Po zapisaniu uruchom **Pobierz z KSeF**, aby sprawdzić, czy token działa.
 
 ## Firma z certyfikatem
 
-Jeśli firma ma zapisany certyfikat z wcześniejszych wersji, pobieranie faktur działa dalej, ale wysyłka faktur do KSeF wymaga tokenu. Wklej token w **Firma** > **Token KSeF i pobieranie**. Token zastąpi certyfikat na stałe.
+Jeśli firma ma zapisany certyfikat z wcześniejszych wersji, pobieranie faktur działa dalej, ale wysyłka faktur do KSeF wymaga tokenu. Wklej token w **Firma** > **Token KSeF i pobieranie**. Token zastąpi certyfikat na stałe. Od następnego wydania po v0.0.12 taki certyfikat trzeba wgrać ponownie albo zastąpić tokenem: [Certyfikat z wcześniejszych wersji](certyfikat-ksef#certyfikat-z-wcześniejszych-wersji).
 
 ## Ważność
 
-Token ma termin ważności w przepisach: [Ważność tokenu](wystawianie-faktur#token-ksef).
+Token ma termin ważności w przepisach: [Ważność tokenu](wystawianie-faktur#token-ksef). Zapasowa droga, niezależna od tego terminu: [Certyfikat KSeF](certyfikat-ksef#ważność-i-odnowienie).
 
 Token przestaje działać, gdy unieważnisz go w Aplikacji Podatnika. Wtedy wygeneruj nowy i podmień go w OpenKSeF.
 

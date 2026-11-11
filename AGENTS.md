@@ -47,6 +47,7 @@ docs/
   admin-setup.md              # Kreator konfiguracji (wizard krok po kroku)
   logowanie.md                # Strona logowania, Google OAuth, rejestracja
   token-ksef.md               # Jak uzyskać token KSeF i gdzie go wkleić
+  certyfikat-ksef.md          # Certyfikat KSeF (Uwierzytelnianie) zamiast tokenu, ważność, odnowienie
   faktury.md                  # Lista, szczegóły, pozycje, status płatności, przelew/QR, resynchronizacja
   wystawianie-faktur.md       # Dane do faktur, numeracja, wystawianie, statusy, XML/UPO/PDF, odrzucona faktura, ograniczenia
   powiadomienia-push.md       # Push notifications (SignalR, relay, Firebase, email)
