@@ -69,9 +69,10 @@ docs/
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (login, admin-setup, faktury, token KSeF i pobieranie), tylko jasny motyw
-`static/img/screenshots/home/` -- screeny na stronę główną, jasny i ciemny motyw
-`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (obecnie brak)
+`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (login, dashboard, admin-setup kroki 1-3, 5, 6, lista faktur, szczegóły, pozycje, opłacona, QR), tylko jasny motyw
+`static/img/screenshots/home/` -- screeny na stronę główną (start, start na telefonie, lista, płatność), jasny i ciemny motyw
+
+Screenów aplikacji mobilnej brak (nie ma folderu `mobile/`).
 
 Screeny zawierają wyłącznie dane fikcyjne (np. NIP 1111111111, nazwy "Przykład"). Żadnych prawdziwych NIP-ów, numerów KSeF, nazw firm ani adresów serwerów.
 
