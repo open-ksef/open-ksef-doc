@@ -50,11 +50,11 @@ Gdy kod QR byłby błędny, strona pokazuje komunikat z powodem, dane do przelew
 - faktura z mechanizmem podzielonej płatności (MPP): zapłać przelewem MPP w banku, komunikat podaje kwotę VAT, NIP sprzedawcy i numer faktury,
 - sprzedawca oznaczył fakturę jako zapłaconą albo faktura wykazuje nadpłatę.
 
-Gdy kod QR jest, komunikat nad nim może poprosić o wpisanie kwoty w banku (np. zaliczka, faktura opłacona w części) albo przypomnieć: `Sprawdź, czy faktura nie wymaga podzielonej płatności (MPP).` przy kwocie brutto powyżej 15 000 zł. Pełna lista sytuacji i komunikatów: [Otrzymane faktury, Zapłać tę fakturę](faktury#zapłać-tę-fakturę).
+Gdy kod QR jest, komunikat nad nim może poprosić o wpisanie kwoty w banku (np. zaliczka, faktura opłacona w części) albo przypomnieć: `Sprawdź, czy faktura nie wymaga podzielonej płatności (MPP).` przy kwocie brutto powyżej 15 000 zł, gdy OpenKSeF nie odczytał jeszcze oznaczenia MPP z faktury. Pełna lista sytuacji i komunikatów: [Otrzymane faktury, Zapłać tę fakturę](faktury#zapłać-tę-fakturę).
 
 Tytuł przelewu w kodzie QR to numer faktury skrócony do 32 znaków. Gdy numer jest dłuższy, komunikat podaje pełny numer: sprawdź tytuł w banku przed wysłaniem.
 
-Z serwerem starszym niż wymagany aplikacja nie pokazuje kodu QR, tylko komunikat `Kod QR wymaga nowszej wersji serwera. Skopiuj dane przelewu.`
+Z serwerem OpenKSeF starszym niż 0.0.8 aplikacja (od wersji 1.0.6) nie pokazuje kodu QR, tylko komunikat `Kod QR wymaga nowszej wersji serwera. Skopiuj dane przelewu.`
 
 ## Podłączenie do self-hosted serwera
 

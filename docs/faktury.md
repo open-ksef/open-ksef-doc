@@ -76,7 +76,7 @@ Dane do przelewu i kod QR przygotowuje serwer OpenKSeF, według tych samych zasa
 
 #### Kiedy nie ma kodu QR
 
-Kod QR zawsze wypełnia przelew w złotych na konkretną kwotę albo prosi o wpisanie kwoty. Gdy taki przelew byłby błędny, karta pokazuje tylko dane do przelewu i komunikat z powodem. **Kopiuj dane przelewu** działa w każdym przypadku.
+Kod QR zawsze wypełnia przelew w złotych na konkretną kwotę albo prosi o wpisanie kwoty. Gdy taki przelew byłby błędny, karta nazywa się **Dane do przelewu** i pokazuje tylko dane do przelewu i komunikat z powodem. **Kopiuj dane przelewu** działa w każdym przypadku.
 
 | Sytuacja | Komunikat |
 |----------|-----------|
@@ -108,9 +108,9 @@ Czasem kod QR wypełnia odbiorcę, rachunek i tytuł, ale nie kwotę. Kwotę wpi
 | Faktura zaliczkowa lub rozliczeniowa | `Zaliczka/rozliczenie: wpisz kwotę ręcznie.` |
 | Faktura opłacona w części | `Faktura opłacona w części: wpisz pozostałą kwotę ręcznie, sprawdź ją na fakturze.` |
 | OpenKSeF nie odczytał jeszcze rozliczeń z pliku XML faktury | `Nie odczytano jeszcze rozliczeń z tej faktury: wpisz kwotę ręcznie, sprawdź ją na fakturze. Aby uzyskać kwotę w kodzie QR, uruchom pełną resynchronizację (portal: Firma, zakładka Token KSeF i pobieranie).` |
-| Faktura ma dodatkowe obciążenia lub odliczenia, a kwota do zapłaty się z nimi nie zgadza | `Faktura zawiera dodatkowe rozliczenia i nie można potwierdzić kwoty do zapłaty: wpisz kwotę ręcznie, sprawdź ją na fakturze.` |
+| Faktura ma dodatkowe obciążenia lub odliczenia, a kwoty do zapłaty nie da się z nimi potwierdzić | `Faktura zawiera dodatkowe rozliczenia i nie można potwierdzić kwoty do zapłaty: wpisz kwotę ręcznie, sprawdź ją na fakturze.` |
 
-W dwóch ostatnich przypadkach dane do przelewu podają `Kwota brutto z faktury: ... (sprawdź kwotę do zapłaty na fakturze)` zamiast `Kwota:`.
+Gdy rozliczenia nie są odczytane lub potwierdzone, dane do przelewu podają `Kwota brutto z faktury: ... (sprawdź kwotę do zapłaty na fakturze)` zamiast `Kwota:`, także na fakturach bez kodu QR.
 
 #### Inne komunikaty przy kodzie QR
 
