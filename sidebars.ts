@@ -15,6 +15,7 @@ const sidebars: SidebarsConfig = {
     'admin-setup',
     'logowanie',
     'token-ksef',
+    'certyfikat-ksef',
     'faktury',
     'wystawianie-faktur',
     'powiadomienia-push',
