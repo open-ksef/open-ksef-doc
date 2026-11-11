@@ -18,9 +18,43 @@ Android: [plik APK na GitHubie](https://github.com/open-ksef/open-ksef-mobile/re
 - Zarządzanie firmami (tenantami)
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie przez Keycloak (OIDC)
-- Kod QR do przelewu z aplikacji bankowej, od wersji 1.0.6 z numerem rachunku, jeśli jest na fakturze
+- Przycisk **Zapłać**: kod QR przelewu do zeskanowania w aplikacji bankowej, zobacz [Zapłać](#zapłać)
 - [Wystawianie faktur](wystawianie-faktur), od wersji 1.0.5
 - Skanowanie QR do szybkiego połączenia z serwerem
+
+## Zapłać
+
+Szczegóły otrzymanej faktury mają dwa przyciski:
+
+- **Zapłać** otwiera stronę **Kod QR przelewu** z kodem QR w standardzie ZBP. Nad kodem jest odbiorca i kwota.
+- **Kopiuj dane przelewu** kopiuje do schowka odbiorcę, NIP, numer rachunku, kwotę i tytuł.
+
+Oba przyciski pobierają dane z serwera OpenKSeF, więc wymagają połączenia z internetem. Kod QR i komunikaty są takie same jak w portalu.
+
+### Płatność na tym samym telefonie
+
+Kod QR zeskanujesz aparatem w aplikacji bankowej na innym telefonie. Jeśli bank masz na tym samym telefonie:
+
+1. Na stronie **Kod QR przelewu** naciśnij **Udostępnij / zapisz kod QR** i zapisz obraz, np. w galerii lub plikach.
+2. W aplikacji bankowej otwórz płatność kodem QR i wczytaj kod z galerii zamiast skanować aparatem.
+
+OpenKSeF nie otwiera aplikacji bankowej bezpośrednio: banki nie udostępniają takiej możliwości.
+
+### Kiedy nie ma kodu QR
+
+Gdy kod QR byłby błędny, strona pokazuje komunikat z powodem, dane do przelewu i przycisk **Kopiuj dane przelewu**. Najczęstsze powody:
+
+- faktura w innej walucie niż PLN,
+- faktura korygująca (korekta), bo jej kwota to różnica,
+- brak poprawnego numeru rachunku na fakturze albo numer jeszcze nie został pobrany z KSeF,
+- faktura z mechanizmem podzielonej płatności (MPP): zapłać przelewem MPP w banku, komunikat podaje kwotę VAT, NIP sprzedawcy i numer faktury,
+- sprzedawca oznaczył fakturę jako zapłaconą albo faktura wykazuje nadpłatę.
+
+Gdy kod QR jest, komunikat nad nim może poprosić o wpisanie kwoty w banku (np. zaliczka, faktura opłacona w części) albo przypomnieć: `Sprawdź, czy faktura nie wymaga podzielonej płatności (MPP).` przy kwocie brutto powyżej 15 000 zł. Pełna lista sytuacji i komunikatów: [Otrzymane faktury, Zapłać tę fakturę](faktury#zapłać-tę-fakturę).
+
+Tytuł przelewu w kodzie QR to numer faktury skrócony do 32 znaków. Gdy numer jest dłuższy, komunikat podaje pełny numer: sprawdź tytuł w banku przed wysłaniem.
+
+Z serwerem starszym niż wymagany aplikacja nie pokazuje kodu QR, tylko komunikat `Kod QR wymaga nowszej wersji serwera. Skopiuj dane przelewu.`
 
 ## Podłączenie do self-hosted serwera
 

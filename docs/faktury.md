@@ -70,10 +70,54 @@ Karta **Zapłać tę fakturę** zawiera kwotę, termin płatności, odbiorcę, t
 
 ![Zapłać tę fakturę: dane do przelewu i kod QR](/img/screenshots/portal/invoice-qr.png)
 
-Tytuł przelewu to sam numer faktury sprzedawcy, np. `FV/2026/10/0042`; w kodzie QR jest skrócony do 32 znaków. Jeśli faktura nie ma numeru sprzedawcy, tytułem jest numer KSeF. Gdy nie ma numeru rachunku, pole **Rachunek odbiorcy** pokazuje `brak`, a powód podaje komunikat:
+Tytuł przelewu to sam numer faktury sprzedawcy, np. `FV/2026/10/0042`. Jeśli faktura nie ma numeru sprzedawcy, tytułem jest numer KSeF. W kodzie QR tytuł ma najwyżej 32 znaki: dłuższy numer jest skracany, a komunikat podaje pełny numer. Sprawdź wtedy tytuł w banku przed wysłaniem przelewu. Gdy nie ma numeru rachunku, pole **Rachunek odbiorcy** pokazuje `brak`.
 
-- `Numer rachunku pobieramy jeszcze z KSeF. Sprawdź ponownie za kilka minut.`: OpenKSeF nie ma jeszcze pliku XML tej faktury. Przy dużej liczbie faktur lub po limicie KSeF potrwa to dłużej niż kilka minut, zobacz [uzupełnianie](#uzupełnianie-pozycji-rachunku-i-terminu). Opłacona faktura z pozycjami, ale bez terminu, czeka na pełną resynchronizację. Komunikat nie zniknie, jeśli pliku nie da się odczytać.
-- `Brak poprawnego numeru rachunku na fakturze.`: OpenKSeF odczytał fakturę, a poprawnego numeru rachunku na niej nie ma.
+Dane do przelewu i kod QR przygotowuje serwer OpenKSeF, według tych samych zasad dla portalu i aplikacji mobilnej. Numer rachunku pochodzi z faktury. OpenKSeF nie sprawdza go na białej liście podatników VAT.
+
+#### Kiedy nie ma kodu QR
+
+Kod QR zawsze wypełnia przelew w złotych na konkretną kwotę albo prosi o wpisanie kwoty. Gdy taki przelew byłby błędny, karta pokazuje tylko dane do przelewu i komunikat z powodem. **Kopiuj dane przelewu** działa w każdym przypadku.
+
+| Sytuacja | Komunikat |
+|----------|-----------|
+| Faktura w innej walucie niż PLN | `Faktura w walucie EUR: kod QR obsługuje tylko przelew w PLN.` |
+| Faktura korygująca (korekta): jej kwota to różnica, nie kwota do zapłaty | `Faktura korygująca: kwota to różnica. Sprawdź, czy jest coś do zapłaty.` |
+| Nie wiadomo, jakiego rodzaju jest faktura (faktury pobrane przez starsze wersje OpenKSeF) | `Nie można ustalić rodzaju faktury. Sprawdź kwotę na fakturze. Aby uzyskać kod QR, uruchom pełną resynchronizację (portal: Firma, zakładka Token KSeF i pobieranie).` Portal pokazuje też link **Przejdź do pobierania**. |
+| Faktura VAT RR | `Faktura VAT RR: kod QR nie jest dostępny dla tego rodzaju faktury. Sprawdź dane do zapłaty na fakturze.` |
+| Faktura PEF | `Faktura PEF: kod QR nie jest dostępny dla tego rodzaju faktury. Sprawdź dane do zapłaty na fakturze.` |
+| Inny, nieznany rodzaj faktury | `Nieznany rodzaj faktury (...): kod QR nie jest dostępny. Sprawdź dane do zapłaty na fakturze.` |
+| Faktura wykazuje nadpłatę do rozliczenia lub zwrotu | `Faktura wykazuje nadpłatę 300,00 PLN do rozliczenia lub zwrotu: nie ma kwoty do zapłaty.` |
+| Kwota do zapłaty wynosi zero lub mniej | `Brak kwoty do zapłaty.` |
+| Faktura z mechanizmem podzielonej płatności (MPP) | `Faktura z mechanizmem podzielonej płatności: zapłać przelewem MPP w banku. Kwota VAT: ... PLN, NIP sprzedawcy: ..., numer faktury: ....` |
+| Sprzedawca oznaczył fakturę jako zapłaconą | `Sprzedawca oznaczył fakturę jako zapłaconą (05.03.2026).` Bez daty na fakturze: `Sprzedawca oznaczył fakturę jako zapłaconą.` |
+| Sprzedawca oznaczył fakturę jako zapłaconą w całości, w częściach | `Sprzedawca oznaczył fakturę jako zapłaconą w całości, w częściach.` |
+| OpenKSeF nie ma jeszcze pliku XML faktury, więc nie zna numeru rachunku | `Numer rachunku pobieramy jeszcze z KSeF. Sprawdź ponownie za kilka minut.` Przy dużej liczbie faktur lub po limicie KSeF potrwa to dłużej niż kilka minut, zobacz [uzupełnianie](#uzupełnianie-pozycji-rachunku-i-terminu). Opłacona faktura z pozycjami, ale bez terminu, czeka na pełną resynchronizację. |
+| Pliku XML faktury nie udało się odczytać 5 razy | `Nie udało się odczytać tej faktury z KSeF, więc nie znamy numeru rachunku. Sprawdź dane do zapłaty na fakturze w KSeF. Ponowimy próbę automatycznie w ciągu 7 dni. Możesz też uruchomić pełną resynchronizację (portal: Firma, zakładka Token KSeF i pobieranie).` |
+| Na fakturze nie ma poprawnego polskiego numeru rachunku | `Brak poprawnego numeru rachunku na fakturze.` |
+| Płatność na rachunek faktora, ale faktura nie podaje nazwy faktora | `Płatność na rachunek faktora, ale faktura nie podaje nazwy faktora: nie można utworzyć kodu QR. Sprawdź odbiorcę przelewu na fakturze.` |
+| Brak czytelnej nazwy sprzedawcy lub numeru faktury | `Nie można utworzyć kodu QR: brak czytelnej nazwy sprzedawcy lub numeru faktury.` |
+
+Na fakturach sprzedaży wystawionych przez Twoją firmę nie ma karty płatności.
+
+#### Kod QR bez kwoty
+
+Czasem kod QR wypełnia odbiorcę, rachunek i tytuł, ale nie kwotę. Kwotę wpisujesz wtedy w banku sam, sprawdzając ją na fakturze. Komunikat mówi dlaczego:
+
+| Sytuacja | Komunikat |
+|----------|-----------|
+| Faktura zaliczkowa lub rozliczeniowa | `Zaliczka/rozliczenie: wpisz kwotę ręcznie.` |
+| Faktura opłacona w części | `Faktura opłacona w części: wpisz pozostałą kwotę ręcznie, sprawdź ją na fakturze.` |
+| OpenKSeF nie odczytał jeszcze rozliczeń z pliku XML faktury | `Nie odczytano jeszcze rozliczeń z tej faktury: wpisz kwotę ręcznie, sprawdź ją na fakturze. Aby uzyskać kwotę w kodzie QR, uruchom pełną resynchronizację (portal: Firma, zakładka Token KSeF i pobieranie).` |
+| Faktura ma dodatkowe obciążenia lub odliczenia, a kwota do zapłaty się z nimi nie zgadza | `Faktura zawiera dodatkowe rozliczenia i nie można potwierdzić kwoty do zapłaty: wpisz kwotę ręcznie, sprawdź ją na fakturze.` |
+
+W dwóch ostatnich przypadkach dane do przelewu podają `Kwota brutto z faktury: ... (sprawdź kwotę do zapłaty na fakturze)` zamiast `Kwota:`.
+
+#### Inne komunikaty przy kodzie QR
+
+- `Kwota w kodzie QR to kwota do zapłaty z faktury, po uwzględnieniu dodatkowych rozliczeń.`: kwota do zapłaty na fakturze różni się od kwoty brutto, np. po odliczeniu wcześniejszej wpłaty.
+- `Płatność na rachunek faktora.`: sprzedawca przekazał należność faktorowi. Kod QR zawiera rachunek, NIP i nazwę faktora z faktury.
+- `Sprawdź, czy faktura nie wymaga podzielonej płatności (MPP).`: kwota brutto przekracza 15 000 zł, a OpenKSeF nie odczytał jeszcze z pliku XML, czy faktura ma oznaczenie MPP. Po odczytaniu tego oznaczenia faktura MPP nie ma kodu QR (zobacz tabelę wyżej).
+- Gdy faktura ma kilka rachunków, kod QR używa pierwszego poprawnego polskiego numeru rachunku.
 
 ## Synchronizacja z KSeF
 
@@ -131,6 +175,7 @@ W aplikacji mobilnej (Android, od wersji 1.0.4):
 
 - lista faktur pokazuje numer faktury sprzedawcy, a gdy go brak -- numer KSeF,
 - szczegóły faktury zawierają **Numer faktury**, **Numer KSeF** i kartę **Pozycje faktury** (nazwa, ilość × jednostka, cena netto, kwoty netto / VAT / brutto),
-- tytuł przelewu przy kopiowaniu danych i w kodzie QR to sam numer faktury (w kodzie QR skrócony do 32 znaków).
+- tytuł przelewu przy kopiowaniu danych i w kodzie QR to sam numer faktury (w kodzie QR skrócony do 32 znaków),
+- przycisk **Zapłać** pokazuje kod QR przelewu według tych samych zasad co portal, zobacz [Zapłać](aplikacja-mobilna#zapłać).
 
 Więcej o aplikacji: [Aplikacja mobilna](aplikacja-mobilna).
