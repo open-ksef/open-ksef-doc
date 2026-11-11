@@ -100,7 +100,7 @@ Po konfiguracji dodaj do firmy token KSeF. Token musi mieć uprawnienia do **odc
 :::
 
 :::info[Klucz szyfrowania]
-Klucz czytany jest ze zmiennej `ENCRYPTION_KEY` usług API i Worker. Kreator go nie generuje ani nie zapisuje, a bez prawidłowego klucza nie zastosuje konfiguracji. Po przeniesieniu klucza nie ma go w kopii zapasowej wolumenu `postgres_data`, więc do odtworzenia danych potrzebujesz i kopii, i klucza. Kopię nadal chroń jak hasło: zawiera inne sekrety z kreatora. Aktualizacja i rotacja klucza: [Klucz szyfrowania](../admin-setup#klucz-szyfrowania).
+Klucz czytany jest ze zmiennej `ENCRYPTION_KEY` usług API i Worker. Kreator go nie generuje ani nie zapisuje. Od wersji 0.0.15 bez prawidłowego klucza kreator zatrzymuje się na kroku 1, po zalogowaniu do Keycloak: ustaw klucz, uruchom ponownie API i Worker, potem zaloguj się ponownie. Po przeniesieniu klucza nie ma go w kopii zapasowej wolumenu `postgres_data`, więc do odtworzenia danych potrzebujesz i kopii, i klucza. Kopię nadal chroń jak hasło: zawiera inne sekrety z kreatora. Aktualizacja i rotacja klucza: [Klucz szyfrowania](../admin-setup#klucz-szyfrowania).
 :::
 
 ## Adresy usług

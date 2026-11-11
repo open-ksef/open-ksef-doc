@@ -72,7 +72,7 @@ Gmail wymaga **Hasła aplikacji** (nie zwykłego hasła). Wygeneruj je w ustawie
 
 Wizard pobiera **secret klienta API** z klienta Keycloak `openksef-api` i zapisuje go w bazie.
 
-**Klucz szyfrowania AES-256** nie jest częścią wizarda. Ustaw `ENCRYPTION_KEY` dla API i Workera przed uruchomieniem stacku i przechowuj kopię poza bazą danych. Bez prawidłowego klucza wizard nie zastosuje konfiguracji i nie zmieni niczego w Keycloak. Szczegóły w sekcji [Klucz szyfrowania](#klucz-szyfrowania).
+**Klucz szyfrowania AES-256** nie jest częścią wizarda. Ustaw `ENCRYPTION_KEY` dla API i Workera przed uruchomieniem stacku i przechowuj kopię poza bazą danych. Od wersji 0.0.15 bez prawidłowego klucza wizard zatrzymuje się na kroku 1, po zalogowaniu do Keycloak, i nie zmienia niczego. Szczegóły w sekcji [Klucz szyfrowania](#klucz-szyfrowania).
 
 ### Krok 5: Integracje (opcjonalne)
 
@@ -129,16 +129,14 @@ Polecenia w procedurach poniżej są napisane dla powłoki bash. Na Windows uży
 
 ### Co się stanie, jeśli tylko pobierzesz nowe obrazy
 
-Nowe obrazy dostajesz przy zwykłym `docker compose pull`. Do wersji v0.0.7 włącznie klucz leży w bazie obok zaszyfrowanych danych, więc każdy zrzut bazy pozwala je odszyfrować. Nowa wersja to zmienia, ale tylko gdy podasz klucz:
+Nowe obrazy dostajesz przy zwykłym `docker compose pull`. Do wersji v0.0.7 włącznie klucz leży w bazie obok zaszyfrowanych danych, więc każdy zrzut bazy pozwala je odszyfrować. Od wersji 0.0.15 API i Worker nigdy nie używają klucza z bazy. Odczytują wiersz tylko po to, żeby przenieść klucz, a to wymaga klucza w `ENCRYPTION_KEY`:
 
 | Stan po aktualizacji | Efekt |
 |---|---|
-| Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` pusty | **Tryb przejściowy.** System działa bez zmian, nic nie ginie. Klucz zostaje w bazie, bezpieczeństwo jest takie jak dotąd. Każdy start loguje Error |
-| Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` nieprawidłowy (np. zły format lub długość) | Tak samo: tryb przejściowy i Error przy każdym starcie |
+| Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` pusty | API i Worker odmawiają startu (kod wyjścia 1, [pętla restartów](#błędy-startu-i-pętle-restartów)). Nic się nie zmienia. Log Critical `no longer reads the key from the database` podaje rozwiązanie: wykonaj [procedurę aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej) albo do tego czasu [wróć do v0.0.14](#wycofanie-aktualizacji) |
+| Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` nieprawidłowy (np. zły format lub długość) | Tak samo: API i Worker odmawiają startu, nic się nie zmienia |
 | Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` prawidłowy | Klucz jest przenoszony od razu przy pierwszym starcie, właśnie na tę wartość. Upewnij się, że masz ją zapisaną poza bazą, i wykonaj procedurę poniżej **przed** pobraniem obrazów |
 | Nowy `docker-compose.yml` bez `ENCRYPTION_KEY` | `docker compose` odmawia działania. Komunikat kieruje istniejącą instalację do tej strony, a dla nowej podaje polecenie generujące klucz. `stop`, `exec`, `ps`, `logs` odmawiają, chyba że ustawiono nazwę projektu. `up`, `pull`, `run` odmawiają zawsze. Działające kontenery pozostają nietknięte |
-
-Tryb przejściowy to rozwiązanie tymczasowe: planujemy, że kolejne wydania przestaną czytać klucz z bazy. Przenieś klucz, gdy tylko możesz.
 
 ### Aktualizacja z wersji v0.0.7 lub starszej
 
@@ -181,11 +179,25 @@ docker exec -i openksef-postgres pg_restore -l < before-key-move.dump > /dev/nul
 
 Zrzut z kroku 3 to teraz jedyna kopia starego klucza. Zachowaj go co najmniej do udanej synchronizacji. Zrzuty sprzed przeniesienia klucza pozwalają odszyfrować tokeny, dopóki ich nie usuniesz.
 
-Log Critical `Moving the encryption key out of the database failed`, a w następnym wierszu `Credential <id> cannot be decrypted`, oznacza, że tych danych logowania nie da się odszyfrować i nic się nie zmieniło. Usuń je lub wprowadź ponownie w portalu i uruchom usługi ponownie. Jeśli log mówi `does not decrypt`, przywróć klucz i niczego nie usuwaj. Ten sam Critical bez wiersza z danymi logowania oznacza, że nic się nie zmieniło: uruchom usługi ponownie. Dla `cannot be used` zobacz [Rozwiązywanie problemów](#rozwiązywanie-problemów).
+Log Critical `Moving the encryption key out of the database failed`, a w następnym wierszu `Credential <id> cannot be decrypted`, oznacza, że tych danych logowania nie da się odszyfrować i nic się nie zmieniło. Usuń je lub wprowadź ponownie w portalu i uruchom usługi ponownie. Jeśli log mówi `does not decrypt`, przywróć klucz i niczego nie usuwaj. Ten sam Critical bez wiersza z danymi logowania oznacza, że nic się nie zmieniło: uruchom usługi ponownie. W obu przypadkach API i Worker dalej działają na `ENCRYPTION_KEY`, a dane logowania zaszyfrowane starym kluczem pozostają bezużyteczne, dopóki kolejny start nie przeniesie klucza. Dla `cannot be used` zobacz [Rozwiązywanie problemów](#rozwiązywanie-problemów).
 
-**Wycofanie zmian**
+### Blokada przy przenoszeniu klucza
 
-Poprzednie obrazy mają tag wydania, np. `:v0.0.7`. Ustaw go w czterech liniach `image:` z `ghcr.io/open-ksef/openksef-*` w `docker-compose.yml`, potem uruchom `docker compose up -d`.
+Log Critical `Another database client holds the encryption_key row` oznacza, że podczas przenoszenia klucza inny klient bazy trzymał blokadę na `SystemConfigs`. Nic się nie zmieniło. Dane logowania pozostają bezużyteczne, dopóki klucz nie zostanie przeniesiony. Znajdź tego klienta:
+
+```bash
+docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef' <<'SQL'
+SELECT a.pid, a.application_name, a.client_addr, a.state, a.xact_start, a.query
+FROM pg_locks l JOIN pg_stat_activity a USING (pid)
+WHERE l.relation = '"SystemConfigs"'::regclass AND l.granted AND a.pid <> pg_backend_pid() AND l.database = (SELECT oid FROM pg_database WHERE datname = current_database());
+SQL
+```
+
+Zamknij tego klienta, np. narzędzie bazodanowe z otwartą transakcją. `pg_terminate_backend(pid)` używaj tylko na własnej sesji. Potem uruchom ponownie API i Workera: `docker compose restart api worker`. Sprawdź logi jak w kroku 7.
+
+### Wycofanie aktualizacji
+
+Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` z `ghcr.io/open-ksef/openksef-*` w `docker-compose.yml`, potem uruchom `docker compose up -d`.
 
 | Sytuacja | Efekt |
 |---|---|
@@ -356,8 +368,9 @@ Każda usługa ma `restart: unless-stopped`. Gdy API lub Worker kończy pracę p
 - nieprawidłowy wiersz `ksef_environment` lub `KSEF_BASE_URL` (`Unknown KSeF environment`), zobacz [Środowisko KSeF: aktualizacja](#środowisko-ksef-aktualizacja)
 - `KSeF:ForbidProduction` ustawione w instalacji, której środowisko to produkcja
 - `SystemConfigs` nieczytelne po 5 próbach (PostgreSQL nie działa lub jest uszkodzony)
+- od wersji 0.0.15: klucz nadal w bazie, a `ENCRYPTION_KEY` pusty lub nieprawidłowy (`no longer reads the key from the database`), zobacz [Co się stanie, jeśli tylko pobierzesz nowe obrazy](#co-się-stanie-jeśli-tylko-pobierzesz-nowe-obrazy)
 
-API i Worker zapisują w logu jedną linię `FTL` z przyczyną. Jak zobaczyć pętlę i przyczynę:
+API i Worker zapisują w logu jedną linię `FTL` z przyczyną. Odmowa z powodu środowiska KSeF i klucza kończy proces kodem 1. Jak zobaczyć pętlę i przyczynę:
 
 ```bash
 docker compose ps                     # STATUS "Restarting (1) ..." przy usłudze w pętli
@@ -395,7 +408,7 @@ Portal sprawdza `/api/system/setup-status` przy każdym ładowaniu chronionej st
 
 ## Rozwiązywanie problemów
 
-:::danger[Tryb przejściowy a usuwanie wierszy]
+:::danger[Klucz w bazie a usuwanie wierszy]
 Dopóki klucz jest w bazie, wiersz `encryption_key` to jedyna jego kopia. Jeśli usuniesz wiersze z `SystemConfigs` przed [przeniesieniem klucza](#aktualizacja-z-wersji-v007-lub-starszej), stracisz zapisane tokeny i certyfikaty KSeF. Po przeniesieniu klucza kreator musi działać z tym samym `ENCRYPTION_KEY`, inaczej danych logowania nie da się odszyfrować.
 :::
 
@@ -407,8 +420,10 @@ Dopóki klucz jest w bazie, wiersz `encryption_key` to jedyna jego kopia. Jeśli
 | Test email SMTP nie działa | Zweryfikuj dane SMTP. Gmail wymaga Hasła aplikacji. |
 | Pętla przekierowań po setup | Wyczyść cache/cookies przeglądarki. Portal cachuje status setup na 60 sekund. |
 | Chcę uruchomić wizard ponownie | Tylko jeśli zapytanie z [kroku 1 aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej) zwraca 0: usuń wszystkie wiersze z tabeli `SystemConfigs` i zrestartuj kontener API. |
-| Wizard zgłasza brak prawidłowego klucza szyfrowania | Wygeneruj klucz, ustaw `ENCRYPTION_KEY`, zapisz kopię poza bazą i uruchom `docker compose up -d`. Potem kliknij **Dalej** i przejdź wizard jeszcze raz. Wprowadzone dane zostają zachowane. |
+| Wizard zgłasza brak prawidłowego klucza szyfrowania | Od wersji 0.0.15 wizard zatrzymuje się na kroku 1, po zalogowaniu do Keycloak. Wygeneruj klucz (`openssl rand -base64 32`), ustaw `ENCRYPTION_KEY` usług API i Worker, zapisz kopię poza bazą i uruchom `docker compose up -d`. Następnie zaloguj się ponownie w kroku 1. |
 | `docker compose` zgłasza brak `ENCRYPTION_KEY`, `POSTGRES_USER` lub innej wymaganej zmiennej | Nowy `docker-compose.yml` wymaga klucza. Na istniejącej instalacji najpierw uruchom zapytanie o wiersz klucza w wersji `docker exec` z [aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej). Wynik 1: wykonaj aktualizację, bo sam wpis klucza pomija zatrzymanie usług i kopię zapasową. Wynik 0: klucz jest już przeniesiony, więc przywróć poprzednią wartość `ENCRYPTION_KEY` i nie generuj nowej, bo nowy klucz nie odszyfruje zapisanych danych. Jeśli nie masz kopii, nadal trzymają ją kontenery: `docker inspect openksef-api \| grep '"ENCRYPTION_KEY='`. To polecenie wypisuje sekret w terminalu. Brak wartości: zobacz krok 1 aktualizacji. Nie uruchamiaj wcześniej `docker compose up -d`. Inne zmienne: przed `up -d` przywróć je ze starego `.env`. `docker inspect openksef-postgres \| grep POSTGRES_` i `docker inspect openksef-keycloak \| grep -E 'KEYCLOAK_ADMIN\|KC_DB_'` wypisują je, także sekrety. Tak samo postąp z wartościami opcjonalnymi, bo `up -d` usuwa tę kopię: `docker inspect openksef-api --format '{{range .Config.Env}}{{println .}}{{end}}' \| grep -E 'Auth__PublicAuthority\|KSeF__BaseUrl\|Auth__ServiceAccount__ClientSecret\|Firebase__CredentialsJson'`. To polecenie też wypisuje sekrety. W `.env` to `APP_EXTERNAL_BASE_URL` (`Auth__PublicAuthority` bez `/auth/realms/openksef`), `KSEF_BASE_URL`, `API_CLIENT_SECRET` i `FIREBASE_CREDENTIALS_JSON`. `docker ps` pokazuje własne porty hosta. Czytany jest już tylko `APP_HOST_PORT`, pozostałe opisuje [Aktualizacja: porty i konsola Keycloak](#aktualizacja-porty-i-konsola-keycloak). |
 | Kontener ma stan `Restarting` | Zobacz [Błędy startu i pętle restartów](#błędy-startu-i-pętle-restartów). |
 | Critical: `The configured encryption key does not decrypt` | Ustawiony klucz nie pasuje do danych w bazie. Przywróć klucz, którym je zaszyfrowano. |
 | Critical: `The configured encryption key cannot be used` | Klucza nie ma już w bazie, a `ENCRYPTION_KEY` jest pusty lub nieprawidłowy. Logowanie i odczyt faktur działają. Dodawanie danych logowania, synchronizacja i wysyłka nie. Przywróć klucz. |
+| Portal lub aplikacja: `Serwer nie ma prawidłowego klucza szyfrowania` | API nie ma użytecznego `ENCRYPTION_KEY`. Przywróć klucz, którym zaszyfrowano dane logowania, i uruchom ponownie API i Workera. |
+| Od wersji 0.0.15 API i Worker kończą pracę przy starcie z Critical: `This version no longer reads the key from the database` | Klucz jest nadal w bazie, a `ENCRYPTION_KEY` jest pusty lub nieprawidłowy. Nic się nie zmieniło. Wykonaj [procedurę aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej) albo do tego czasu [wróć do v0.0.14](#wycofanie-aktualizacji). |
