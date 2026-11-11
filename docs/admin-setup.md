@@ -137,6 +137,7 @@ Nowe obrazy dostajesz przy zwykłym `docker compose pull`. Do wersji v0.0.7 wł�
 | Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` nieprawidłowy (np. zły format lub długość) | Tak samo: API i Worker odmawiają startu, nic się nie zmienia |
 | Nowe obrazy, klucz w bazie, `ENCRYPTION_KEY` prawidłowy | Klucz jest przenoszony od razu przy pierwszym starcie, właśnie na tę wartość. Upewnij się, że masz ją zapisaną poza bazą, i wykonaj procedurę poniżej **przed** pobraniem obrazów |
 | Nowy `docker-compose.yml` bez `ENCRYPTION_KEY` | `docker compose` odmawia działania. Komunikat kieruje istniejącą instalację do tej strony, a dla nowej podaje polecenie generujące klucz. `stop`, `exec`, `ps`, `logs` odmawiają, chyba że ustawiono nazwę projektu. `up`, `pull`, `run` odmawiają zawsze. Działające kontenery pozostają nietknięte |
+
 ### Aktualizacja z wersji v0.0.7 lub starszej
 
 Pierwszy start z prawidłowym kluczem w konfiguracji szyfruje ponownie wszystkie dane logowania i usuwa wiersz klucza z bazy, w jednej transakcji.
@@ -188,7 +189,7 @@ Log Critical `Another database client holds the encryption_key row` oznacza, że
 docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef' <<'SQL'
 SELECT a.pid, a.application_name, a.client_addr, a.state, a.xact_start, a.query
 FROM pg_locks l JOIN pg_stat_activity a USING (pid)
-WHERE l.relation = '"SystemConfigs"'::regclass AND l.granted AND a.pid <> pg_backend_pid();
+WHERE l.relation = '"SystemConfigs"'::regclass AND l.granted AND a.pid <> pg_backend_pid() AND l.database = (SELECT oid FROM pg_database WHERE datname = current_database());
 SQL
 ```
 
@@ -196,7 +197,7 @@ Zamknij tego klienta, np. narzędzie bazodanowe z otwartą transakcją. `pg_term
 
 ### Wycofanie aktualizacji
 
-Poprzednie obrazy mają tag wydania, np. `:v0.0.7`. Ustaw go w czterech liniach `image:` z `ghcr.io/open-ksef/openksef-*` w `docker-compose.yml`, potem uruchom `docker compose up -d`.
+Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` z `ghcr.io/open-ksef/openksef-*` w `docker-compose.yml`, potem uruchom `docker compose up -d`.
 
 | Sytuacja | Efekt |
 |---|---|
@@ -369,7 +370,7 @@ Każda usługa ma `restart: unless-stopped`. Gdy API lub Worker kończy pracę p
 - `SystemConfigs` nieczytelne po 5 próbach (PostgreSQL nie działa lub jest uszkodzony)
 - od wersji 0.0.15: klucz nadal w bazie, a `ENCRYPTION_KEY` pusty lub nieprawidłowy (`no longer reads the key from the database`), zobacz [Co się stanie, jeśli tylko pobierzesz nowe obrazy](#co-się-stanie-jeśli-tylko-pobierzesz-nowe-obrazy)
 
-API i Worker zapisują w logu jedną linię `FTL` z przyczyną albo jedną linię `CRT` przy odmowie z powodu klucza. Odmowa z powodu środowiska KSeF i klucza kończy proces kodem 1. Jak zobaczyć pętlę i przyczynę:
+API i Worker zapisują w logu jedną linię `FTL` z przyczyną. Odmowa z powodu środowiska KSeF i klucza kończy proces kodem 1. Jak zobaczyć pętlę i przyczynę:
 
 ```bash
 docker compose ps                     # STATUS "Restarting (1) ..." przy usłudze w pętli
