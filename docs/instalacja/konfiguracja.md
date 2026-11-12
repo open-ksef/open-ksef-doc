@@ -70,7 +70,9 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 |---------|------|
 | `APP_EXTERNAL_BASE_URL` | Publiczny URL instancji (np. `http://192.168.1.50:8080`) |
 | `API_CLIENT_SECRET` | Secret klienta `openksef-api` w Keycloak *(generowany przez kreator)* |
-| `FIREBASE_CREDENTIALS_JSON` | Firebase service account JSON (dla direct push) |
+| `FIREBASE_CREDENTIALS_JSON` | Firebase service account JSON (dla direct push). JSON z kreatora ma pierwszeństwo, zobacz [Powiadomienia push](../powiadomienia-push#konfiguracja) |
+| `FORWARD_LIMIT` | Liczba proxy dopisujących się do `X-Forwarded-For`, łącznie z gateway. Domyślnie `1` (sam gateway), zobacz [Adres klienta za proxy](../admin-setup#adres-klienta-za-proxy) |
+| `TRUSTED_PROXY_NETWORKS` | CIDR proxy, od których API przyjmuje `X-Forwarded-For`, po przecinku. Puste: `127.0.0.0/8,::1/128,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16`. Nigdy `0.0.0.0/0` |
 
 ## E-mail o nowych fakturach
 
