@@ -40,7 +40,7 @@ Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konf
 W [kreatorze konfiguracji](admin-setup) (Krok 5 -- Integracje):
 
 - **Relay OpenKSeF** (domyślna) -- URL `https://push.open-ksef.pl` jest uzupełniony automatycznie. Instancja rejestruje się automatycznie i otrzymuje unikalny klucz API. Gotowe.
-- **Własny Firebase** -- wklej JSON service account. Szczegóły w [Firebase Console](https://console.firebase.google.com/) > Project Settings > Service Accounts > Generate new private key.
+- **Własny Firebase** -- wklej JSON service account. Szczegóły w [Firebase Console](https://console.firebase.google.com/) > Project Settings > Service Accounts > Generate new private key. JSON z kreatora lub **Ustawień** ma pierwszeństwo przed `FIREBASE_CREDENTIALS_JSON` z `.env`. API i Worker wczytują go przy pierwszym powiadomieniu na Androida, bez restartu. Zmieniony JSON działa dopiero po restarcie obu: `docker compose restart api worker`.
 - **Tylko lokalne** -- brak zdalnych push, tylko SignalR gdy aplikacja jest aktywna.
 
 ## Bezpieczeństwo
@@ -69,4 +69,5 @@ Komunikacja z relay jest zabezpieczona trzema warstwami:
 | Relay zwraca 401 | Instancja niezarejestrowana -- przejdź do **Ustawienia** > **Administracja instancji** > **Powiadomienia push** > **Zarejestruj ponownie** |
 | Relay zwraca 403 | Instancja wyłączona przez administratora relay |
 | Relay zwraca 429 | Przekroczono limit żądań |
+| Własny Firebase: w logu `Firebase credentials cannot be used` | JSON jest nieprawidłowy. Wklej poprawny w **Ustawieniach** i uruchom `docker compose restart api worker` |
 | Relay zwraca 502 | Problem z Firebase/APNs po stronie relay |

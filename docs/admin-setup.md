@@ -100,7 +100,7 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 4. Włącza token-exchange dla service account
 5. Aktualizuje URI przekierowań z zewnętrznym URL
 6. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP)
-7. Tworzy konto admina w Keycloak
+7. Tworzy konto admina w Keycloak, rolę realmu `openksef-admin` i przypisuje ją temu kontu
 8. Konfiguruje Google IdP (jeśli podano)
 9. Zapisuje całą konfigurację w bazie danych
 10. Przekierowuje na stronę logowania
@@ -392,6 +392,8 @@ Konfiguracja jest przechowywana w tabeli `SystemConfigs` (klucz-wartość). Serw
 
 Oznacza to, że po przejściu kreatora jego ustawienia mają najwyższy priorytet. Plik `.env` nadpisuje tylko te wartości, których kreator nie ustawił. Wyjątek to [klucz szyfrowania](#klucz-szyfrowania): kreator go nie zapisuje.
 
+Sekrety z kreatora i **Ustawień** (secret klienta API, klucz relay, JSON Firebase, secret Google, klucz podpisu tokenów QR) są w `SystemConfigs` zapisane jawnym tekstem. Każdy zrzut bazy je zawiera: chroń kopie zapasowe jak hasła.
+
 ### Endpointy API
 
 | Endpoint | Autoryzacja | Cel |
@@ -422,6 +424,7 @@ Dopóki klucz jest w bazie, wiersz `encryption_key` to jedyna jego kopia. Jeśli
 | Chcę uruchomić wizard ponownie | Tylko jeśli zapytanie z [kroku 1 aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej) zwraca 0: usuń wszystkie wiersze z tabeli `SystemConfigs` i zrestartuj kontener API. |
 | Wizard zgłasza brak prawidłowego klucza szyfrowania | Od wersji 0.0.15 wizard zatrzymuje się na kroku 1, po zalogowaniu do Keycloak. Wygeneruj klucz (`openssl rand -base64 32`), ustaw `ENCRYPTION_KEY` usług API i Worker, zapisz kopię poza bazą i uruchom `docker compose up -d`. Następnie zaloguj się ponownie w kroku 1. |
 | `docker compose` zgłasza brak `ENCRYPTION_KEY`, `POSTGRES_USER` lub innej wymaganej zmiennej | Nowy `docker-compose.yml` wymaga klucza. Na istniejącej instalacji najpierw uruchom zapytanie o wiersz klucza w wersji `docker exec` z [aktualizacji](#aktualizacja-z-wersji-v007-lub-starszej). Wynik 1: wykonaj aktualizację, bo sam wpis klucza pomija zatrzymanie usług i kopię zapasową. Wynik 0: klucz jest już przeniesiony, więc przywróć poprzednią wartość `ENCRYPTION_KEY` i nie generuj nowej, bo nowy klucz nie odszyfruje zapisanych danych. Jeśli nie masz kopii, nadal trzymają ją kontenery: `docker inspect openksef-api \| grep '"ENCRYPTION_KEY='`. To polecenie wypisuje sekret w terminalu. Brak wartości: zobacz krok 1 aktualizacji. Nie uruchamiaj wcześniej `docker compose up -d`. Inne zmienne: przed `up -d` przywróć je ze starego `.env`. `docker inspect openksef-postgres \| grep POSTGRES_` i `docker inspect openksef-keycloak \| grep -E 'KEYCLOAK_ADMIN\|KC_DB_'` wypisują je, także sekrety. Tak samo postąp z wartościami opcjonalnymi, bo `up -d` usuwa tę kopię: `docker inspect openksef-api --format '{{range .Config.Env}}{{println .}}{{end}}' \| grep -E 'Auth__PublicAuthority\|KSeF__BaseUrl\|Auth__ServiceAccount__ClientSecret\|Firebase__CredentialsJson'`. To polecenie też wypisuje sekrety. W `.env` to `APP_EXTERNAL_BASE_URL` (`Auth__PublicAuthority` bez `/auth/realms/openksef`), `KSEF_BASE_URL`, `API_CLIENT_SECRET` i `FIREBASE_CREDENTIALS_JSON`. `docker ps` pokazuje własne porty hosta. Czytany jest już tylko `APP_HOST_PORT`, pozostałe opisuje [Aktualizacja: porty i konsola Keycloak](#aktualizacja-porty-i-konsola-keycloak). |
+| **Ustawienia**: `Brak uprawnień do tej operacji.` (403) | Konto nie ma roli realmu `openksef-admin`. Nadaj ją i zaloguj się ponownie, zobacz [Aktualizacja do v0.0.12](#aktualizacja-do-v0012), krok 2. |
 | Kontener ma stan `Restarting` | Zobacz [Błędy startu i pętle restartów](#błędy-startu-i-pętle-restartów). |
 | Critical: `The configured encryption key does not decrypt` | Ustawiony klucz nie pasuje do danych w bazie. Przywróć klucz, którym je zaszyfrowano. |
 | Critical: `The configured encryption key cannot be used` | Klucza nie ma już w bazie, a `ENCRYPTION_KEY` jest pusty lub nieprawidłowy. Logowanie i odczyt faktur działają. Dodawanie danych logowania, synchronizacja i wysyłka nie. Przywróć klucz. |
