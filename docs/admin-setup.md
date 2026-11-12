@@ -392,7 +392,7 @@ Konfiguracja jest przechowywana w tabeli `SystemConfigs` (klucz-wartość). Serw
 
 Oznacza to, że po przejściu kreatora jego ustawienia mają najwyższy priorytet. Plik `.env` nadpisuje tylko te wartości, których kreator nie ustawił. Wyjątek to [klucz szyfrowania](#klucz-szyfrowania): kreator go nie zapisuje.
 
-Sekrety z kreatora i **Ustawień** (secret klienta API, klucz relay, JSON Firebase, secret Google, klucz podpisu tokenów QR) są w `SystemConfigs` zapisane jawnym tekstem. Każdy zrzut bazy je zawiera: chroń kopie zapasowe jak hasła.
+Sekrety w `SystemConfigs` (secret klienta API, klucz relay, JSON Firebase, secret Google, klucz podpisu tokenów QR) są zapisane jawnym tekstem. Każdy zrzut bazy je zawiera: chroń kopie zapasowe jak hasła.
 
 ### Endpointy API
 
