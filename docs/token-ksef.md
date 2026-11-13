@@ -4,9 +4,9 @@ title: Token KSeF
 
 # Token KSeF
 
-OpenKSeF łączy się z KSeF tokenem KSeF. Token generuje podatnik w narzędziu Ministerstwa Finansów, a potem wkleja go w OpenKSeF. Bez tokenu firma nie pobiera ani nie wystawia faktur.
+OpenKSeF łączy się z KSeF tokenem KSeF albo [certyfikatem KSeF](certyfikat-ksef). Token generuje podatnik w narzędziu Ministerstwa Finansów, a potem wkleja go w OpenKSeF. Bez tokenu lub certyfikatu firma nie pobiera ani nie wystawia faktur.
 
-Token zostaje domyślnym sposobem logowania. Od następnego wydania po v0.0.12 możesz zamiast tokenu wgrać certyfikat KSeF: [Certyfikat KSeF](certyfikat-ksef). W v0.0.12 i starszych nowego certyfikatu nie dodasz. Firmy z certyfikatem z wcześniejszych wersji: [Firma z certyfikatem](#firma-z-certyfikatem).
+Token zostaje domyślnym sposobem logowania. Od v0.0.13 możesz zamiast tokenu wgrać certyfikat KSeF: [Certyfikat KSeF](certyfikat-ksef). Firmy z certyfikatem z wcześniejszych wersji: [Firma z certyfikatem](#firma-z-certyfikatem).
 
 ## Wygeneruj token
 
@@ -26,7 +26,7 @@ Sam odczyt wystarczy do przeglądania faktur, ale nie do ich [wystawiania](wysta
 ## Wklej token w OpenKSeF
 
 - **Portal, nowa firma:** krok **Połącz z KSeF** w pierwszej konfiguracji.
-- **Portal, istniejąca firma:** **Firma** > **Token KSeF i pobieranie**, przycisk **Dodaj token** albo **Zapisz token**. Nowy token zastępuje poprzedni.
+- **Portal, istniejąca firma:** **Firma** > **Dostęp do KSeF i pobieranie**, przycisk **Dodaj token** albo **Zapisz token**. Nowy token zastępuje poprzedni.
 - **Aplikacja mobilna:** krok z tokenem w pierwszej konfiguracji firmy. Token zmienisz później w portalu.
 
 Firma ma jeden token. OpenKSeF przechowuje go zaszyfrowany i nie pokazuje go ponownie: portal wyświetla tylko datę ostatniej aktualizacji.
@@ -35,7 +35,7 @@ Po zapisaniu uruchom **Pobierz z KSeF**, aby sprawdzić, czy token działa.
 
 ## Firma z certyfikatem
 
-Jeśli firma ma zapisany certyfikat z wcześniejszych wersji, pobieranie faktur działa dalej, ale wysyłka faktur do KSeF wymaga tokenu. Wklej token w **Firma** > **Token KSeF i pobieranie**. Token zastąpi certyfikat na stałe. Od następnego wydania po v0.0.12 taki certyfikat trzeba wgrać ponownie albo zastąpić tokenem: [Certyfikat z wcześniejszych wersji](certyfikat-ksef#certyfikat-z-wcześniejszych-wersji).
+Certyfikat KSeF działa zamiast tokenu przy pobieraniu i wysyłce faktur. Certyfikatu zapisanego w v0.0.12 lub starszej nie da się odczytać: pobieranie i wysyłka nie działają, dopóki nie wgrasz go ponownie albo nie zastąpisz tokenem w **Firma** > **Dostęp do KSeF i pobieranie**: [Certyfikat z wcześniejszych wersji](certyfikat-ksef#certyfikat-z-wcześniejszych-wersji). Nowy token zastępuje certyfikat.
 
 ## Ważność
 
