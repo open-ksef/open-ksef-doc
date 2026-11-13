@@ -35,7 +35,7 @@ Przykłady:
 
 ## Rejestracja użytkowników
 
-Formularz rejestracji działa dopiero po poniższych krokach. Kreator ich nie wykonuje, celowo: `manage-users` pozwala temu, kto ma secret klienta `openksef-api`, zresetować hasło każdego użytkownika, a kreator trzyma ten secret w bazie i jej kopiach. Na instalacji z kreatora z włączoną rejestracją formularz zwraca `503`. Użyj logowania Google albo utwórz konto w konsoli Keycloak.
+Kreator zapisuje secret klienta `openksef-api` tylko w bazie i nie nadaje kontu serwisowemu ról `manage-users` ani `view-realm`. Dlatego na instalacji z kreatora z włączoną rejestracją formularz zwraca `503`. Nowy użytkownik loguje się przez Google (jeśli skonfigurowano) albo dostaje konto założone w konsoli Keycloak. Formularz zadziała po [konfiguracji ręcznej](#konfiguracja-ręczna).
 
 Każde żądanie czyta realm: rejestracja wyłączona zwraca `403`, a nieudany odczyt `503`. W obu przypadkach konto nie powstaje.
 
@@ -44,7 +44,7 @@ Każde żądanie czyta realm: rejestracja wyłączona zwraca `403`, a nieudany o
 1. Otwórz konsolę Keycloak `/auth/admin` (`KEYCLOAK_ADMIN` / `KEYCLOAK_ADMIN_PASSWORD` z pliku `.env`). Gateway ją blokuje. Jak ją otworzyć: [Aktualizacja: porty i konsola Keycloak](admin-setup#aktualizacja-porty-i-konsola-keycloak)
 2. Przejdź do **Clients > openksef-api > Credentials**
 3. Skopiuj **Client Secret**. Nie generuj go ponownie na instalacji z kreatora
-4. Ustaw w `.env`:
+4. Tylko na instalacji bez kreatora ustaw w `.env` (secret z kreatora w bazie ma pierwszeństwo):
 
 ```bash
 API_CLIENT_SECRET=<wklej-secret>
@@ -54,6 +54,10 @@ API_CLIENT_SECRET=<wklej-secret>
    - **Clients > openksef-api > Service accounts roles**
    - Przypisz `realm-management` > `manage-users` i `view-realm`
 
+:::warning[manage-users]
+`manage-users` pozwala każdemu, kto zna secret klienta `openksef-api`, zresetować hasło dowolnego użytkownika, także administratora. Secret leży w bazie i w jej kopiach zapasowych. Chroń je tak jak hasło administratora. Jeśli rejestracja nie jest potrzebna, wyłącz ją w **Ustawieniach** i nie nadawaj tej roli.
+:::
+
 6. Zrestartuj API:
 
 ```bash
@@ -61,5 +65,11 @@ docker compose up -d api
 ```
 
 :::info
-Bez `API_CLIENT_SECRET` lub tych uprawnień rejestracja zwraca `503 Service Unavailable`. Logowanie i Google sign-in działają niezależnie.
+Bez secretu klienta `openksef-api` (z kreatora w bazie albo `API_CLIENT_SECRET`) lub tych uprawnień rejestracja zwraca `503 Service Unavailable`. Logowanie i Google sign-in działają niezależnie.
 :::
+
+## Blokada po nieudanych logowaniach
+
+Po 10 nieudanych próbach logowania Keycloak blokuje konto na 1 do 15 minut. Im więcej kolejnych nieudanych prób, tym dłuższa blokada. Zablokowane konto nie zaloguje się, nawet poprawnym hasłem. Po upływie czasu blokada znika sama. Licznik nieudanych prób zeruje się po udanym logowaniu albo po 12 godzinach bez nieudanej próby. Blokada nigdy nie jest stała.
+
+Instancja zainstalowana kreatorem od v0.0.7 ma blokadę od razu. Na starszej instancji włącza ją pierwszy zapis **Ustawień** przez administratora: otwórz **Ustawienia** i zapisz je raz. Jeśli ochrona była już włączona w konsoli Keycloak, zapis tylko obniża próg do 10 prób i wyłącza blokadę stałą. Pozostałe czasy zostają.
