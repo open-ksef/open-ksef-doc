@@ -82,7 +82,7 @@ Kod QR zawsze wypełnia przelew w złotych na konkretną kwotę albo prosi o wpi
 |----------|-----------|
 | Faktura w innej walucie niż PLN | `Faktura w walucie EUR: kod QR obsługuje tylko przelew w PLN.` |
 | Faktura korygująca (korekta): jej kwota to różnica, nie kwota do zapłaty | `Faktura korygująca: kwota to różnica. Sprawdź, czy jest coś do zapłaty.` |
-| Nie wiadomo, jakiego rodzaju jest faktura (faktury pobrane przez starsze wersje OpenKSeF) | `Nie można ustalić rodzaju faktury. Sprawdź kwotę na fakturze. Aby uzyskać kod QR, uruchom pełną resynchronizację (portal: Firma, zakładka Token KSeF i pobieranie).` Portal pokazuje też link **Przejdź do pobierania**. |
+| Nie wiadomo, jakiego rodzaju jest faktura (faktury pobrane przez starsze wersje OpenKSeF) | `Nie można ustalić rodzaju faktury. Sprawdź kwotę na fakturze. Aby uzyskać kod QR, uruchom pełną resynchronizację (portal: Firma, zakładka Dostęp do KSeF i pobieranie).` Portal pokazuje też link **Przejdź do pobierania**. |
 | Faktura VAT RR | `Faktura VAT RR: kod QR nie jest dostępny dla tego rodzaju faktury. Sprawdź dane do zapłaty na fakturze.` |
 | Faktura PEF | `Faktura PEF: kod QR nie jest dostępny dla tego rodzaju faktury. Sprawdź dane do zapłaty na fakturze.` |
 | Inny, nieznany rodzaj faktury | `Nieznany rodzaj faktury (...): kod QR nie jest dostępny. Sprawdź dane do zapłaty na fakturze.` |
@@ -92,7 +92,7 @@ Kod QR zawsze wypełnia przelew w złotych na konkretną kwotę albo prosi o wpi
 | Sprzedawca oznaczył fakturę jako zapłaconą | `Sprzedawca oznaczył fakturę jako zapłaconą (05.03.2026).` Bez daty na fakturze: `Sprzedawca oznaczył fakturę jako zapłaconą.` |
 | Sprzedawca oznaczył fakturę jako zapłaconą w całości, w częściach | `Sprzedawca oznaczył fakturę jako zapłaconą w całości, w częściach.` |
 | OpenKSeF nie ma jeszcze pliku XML faktury, więc nie zna numeru rachunku | `Numer rachunku pobieramy jeszcze z KSeF. Sprawdź ponownie za kilka minut.` Przy dużej liczbie faktur lub po limicie KSeF potrwa to dłużej niż kilka minut, zobacz [uzupełnianie](#uzupełnianie-pozycji-rachunku-i-terminu). Opłacona faktura z pozycjami, ale bez terminu, czeka na pełną resynchronizację. |
-| Pliku XML faktury nie udało się odczytać 5 razy | `Nie udało się odczytać tej faktury z KSeF, więc nie znamy numeru rachunku. Sprawdź dane do zapłaty na fakturze w KSeF. Ponowimy próbę automatycznie w ciągu 7 dni. Możesz też uruchomić pełną resynchronizację (portal: Firma, zakładka Token KSeF i pobieranie).` |
+| Pliku XML faktury nie udało się odczytać 5 razy | `Nie udało się odczytać tej faktury z KSeF, więc nie znamy numeru rachunku. Sprawdź dane do zapłaty na fakturze w KSeF. Ponowimy próbę automatycznie w ciągu 7 dni. Możesz też uruchomić pełną resynchronizację (portal: Firma, zakładka Dostęp do KSeF i pobieranie).` |
 | Na fakturze nie ma poprawnego polskiego numeru rachunku | `Brak poprawnego numeru rachunku na fakturze.` |
 | Płatność na rachunek faktora, ale faktura nie podaje nazwy faktora | `Płatność na rachunek faktora, ale faktura nie podaje nazwy faktora: nie można utworzyć kodu QR. Sprawdź odbiorcę przelewu na fakturze.` |
 | Brak czytelnej nazwy sprzedawcy lub numeru faktury | `Nie można utworzyć kodu QR: brak czytelnej nazwy sprzedawcy lub numeru faktury.` |
@@ -101,14 +101,16 @@ Na fakturach sprzedaży wystawionych przez Twoją firmę nie ma karty płatnośc
 
 #### Kod QR bez kwoty
 
-Czasem kod QR wypełnia odbiorcę, rachunek i tytuł, ale nie kwotę. Kwotę wpisujesz wtedy w banku sam, sprawdzając ją na fakturze. Komunikat mówi dlaczego:
+Czasem kod QR wypełnia odbiorcę, rachunek i tytuł, ale nie kwotę: w kodzie jest kwota `000000` (zero), więc bank nie wpisze kwoty za Ciebie. Kwotę wpisujesz wtedy w banku sam, sprawdzając ją na fakturze. Komunikat mówi dlaczego:
 
 | Sytuacja | Komunikat |
 |----------|-----------|
 | Faktura zaliczkowa lub rozliczeniowa | `Zaliczka/rozliczenie: wpisz kwotę ręcznie.` |
 | Faktura opłacona w części | `Faktura opłacona w części: wpisz pozostałą kwotę ręcznie, sprawdź ją na fakturze.` |
-| OpenKSeF nie odczytał jeszcze rozliczeń z pliku XML faktury | `Nie odczytano jeszcze rozliczeń z tej faktury: wpisz kwotę ręcznie, sprawdź ją na fakturze. Aby uzyskać kwotę w kodzie QR, uruchom pełną resynchronizację (portal: Firma, zakładka Token KSeF i pobieranie).` |
+| OpenKSeF nie odczytał jeszcze rozliczeń z pliku XML faktury | `Nie odczytano jeszcze rozliczeń z tej faktury: wpisz kwotę ręcznie, sprawdź ją na fakturze. Aby uzyskać kwotę w kodzie QR, uruchom pełną resynchronizację (portal: Firma, zakładka Dostęp do KSeF i pobieranie).` |
 | Faktura ma dodatkowe obciążenia lub odliczenia, a kwoty do zapłaty nie da się z nimi potwierdzić | `Faktura zawiera dodatkowe rozliczenia i nie można potwierdzić kwoty do zapłaty: wpisz kwotę ręcznie, sprawdź ją na fakturze.` |
+
+Po aktualizacji OpenKSeF starsze nieopłacone faktury otrzymane mogą pokazywać kwotę `000000` i komunikat `Nie odczytano jeszcze rozliczeń z tej faktury...`, dopóki OpenKSeF nie odczyta ponownie ich pliku XML. Dzieje się to samo, w kolejnych synchronizacjach, zobacz [uzupełnianie](#uzupełnianie-pozycji-rachunku-i-terminu). Możesz też uruchomić **Pełną resynchronizację** w **Firma** > **Dostęp do KSeF i pobieranie** (do 15 plików na uruchomienie).
 
 Gdy rozliczenia nie są odczytane lub potwierdzone, dane do przelewu podają `Kwota brutto z faktury: ... (sprawdź kwotę do zapłaty na fakturze)` zamiast `Kwota:`, także na fakturach bez kodu QR.
 

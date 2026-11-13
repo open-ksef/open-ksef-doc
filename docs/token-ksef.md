@@ -26,7 +26,7 @@ Sam odczyt wystarczy do przeglądania faktur, ale nie do ich [wystawiania](wysta
 ## Wklej token w OpenKSeF
 
 - **Portal, nowa firma:** krok **Połącz z KSeF** w pierwszej konfiguracji.
-- **Portal, istniejąca firma:** **Firma** > **Token KSeF i pobieranie**, przycisk **Dodaj token** albo **Zapisz token**. Nowy token zastępuje poprzedni.
+- **Portal, istniejąca firma:** **Firma** > **Dostęp do KSeF i pobieranie**, przycisk **Dodaj token** albo **Zapisz token**. Nowy token zastępuje poprzedni.
 - **Aplikacja mobilna:** krok z tokenem w pierwszej konfiguracji firmy. Token zmienisz później w portalu.
 
 Firma ma jeden token. OpenKSeF przechowuje go zaszyfrowany i nie pokazuje go ponownie: portal wyświetla tylko datę ostatniej aktualizacji.
@@ -35,7 +35,7 @@ Po zapisaniu uruchom **Pobierz z KSeF**, aby sprawdzić, czy token działa.
 
 ## Firma z certyfikatem
 
-Jeśli firma ma zapisany certyfikat z wcześniejszych wersji, pobieranie faktur działa dalej, ale wysyłka faktur do KSeF wymaga tokenu. Wklej token w **Firma** > **Token KSeF i pobieranie**. Token zastąpi certyfikat na stałe. Od następnego wydania po v0.0.12 taki certyfikat trzeba wgrać ponownie albo zastąpić tokenem: [Certyfikat z wcześniejszych wersji](certyfikat-ksef#certyfikat-z-wcześniejszych-wersji).
+Jeśli firma ma zapisany certyfikat z wcześniejszych wersji, pobieranie faktur działa dalej, ale wysyłka faktur do KSeF wymaga tokenu. Wklej token w **Firma** > **Dostęp do KSeF i pobieranie**. Token zastąpi certyfikat na stałe. Od następnego wydania po v0.0.12 taki certyfikat trzeba wgrać ponownie albo zastąpić tokenem: [Certyfikat z wcześniejszych wersji](certyfikat-ksef#certyfikat-z-wcześniejszych-wersji).
 
 ## Ważność
 

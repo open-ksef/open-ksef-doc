@@ -48,9 +48,10 @@ Gdy kod QR byłby błędny, strona pokazuje komunikat z powodem, dane do przelew
 - faktura korygująca (korekta), bo jej kwota to różnica,
 - brak poprawnego numeru rachunku na fakturze albo numer jeszcze nie został pobrany z KSeF,
 - faktura z mechanizmem podzielonej płatności (MPP): zapłać przelewem MPP w banku, komunikat podaje kwotę VAT, NIP sprzedawcy i numer faktury,
-- sprzedawca oznaczył fakturę jako zapłaconą albo faktura wykazuje nadpłatę.
+- sprzedawca oznaczył fakturę jako zapłaconą (także w częściach) albo faktura wykazuje nadpłatę,
+- płatność na rachunek faktora, ale faktura nie podaje nazwy faktora.
 
-Gdy kod QR jest, komunikat nad nim może poprosić o wpisanie kwoty w banku (np. zaliczka, faktura opłacona w części) albo przypomnieć: `Sprawdź, czy faktura nie wymaga podzielonej płatności (MPP).` przy kwocie brutto powyżej 15 000 zł, gdy OpenKSeF nie odczytał jeszcze oznaczenia MPP z faktury. Pełna lista sytuacji i komunikatów: [Otrzymane faktury, Zapłać tę fakturę](faktury#zapłać-tę-fakturę).
+Gdy kod QR jest, komunikat nad nim może poprosić o wpisanie kwoty w banku (np. zaliczka, rozliczenie, faktura opłacona w części). Kod ma wtedy kwotę `000000` i kwotę wpisujesz sam. Po aktualizacji serwera starsze nieopłacone faktury mogą tak wyglądać z komunikatem `Nie odczytano jeszcze rozliczeń z tej faktury...`, dopóki serwer nie odczyta ponownie ich pliku XML. Komunikat może też przypomnieć: `Sprawdź, czy faktura nie wymaga podzielonej płatności (MPP).` przy kwocie brutto powyżej 15 000 zł, gdy OpenKSeF nie odczytał jeszcze oznaczenia MPP z faktury. Pełna lista sytuacji i komunikatów: [Otrzymane faktury, Zapłać tę fakturę](faktury#zapłać-tę-fakturę).
 
 Tytuł przelewu w kodzie QR to numer faktury skrócony do 32 znaków. Gdy numer jest dłuższy, komunikat podaje pełny numer: sprawdź tytuł w banku przed wysłaniem.
 

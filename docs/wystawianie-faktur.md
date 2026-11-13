@@ -33,6 +33,15 @@ Te same dwa uprawnienia musi mieć w KSeF osoba lub firma, której [certyfikat](
 
 Jeśli firma ma token tylko do odczytu, wygeneruj nowy w Aplikacji Podatnika KSeF i podmień go w ustawieniach firmy.
 
+Gdy KSeF odmówi logowania, faktura pokaże jeden z komunikatów:
+
+| Przyczyna | Komunikat |
+|-----------|-----------|
+| Token nieprawidłowy, unieważniony, nieaktywny, nieznaleziony lub z innego kontekstu | `KSeF odrzucił token (nieprawidłowy lub unieważniony). Wygeneruj nowy token i podmień go w ustawieniach firmy.` |
+| Certyfikat nieprawidłowy, wygasły lub unieważniony | `KSeF odrzucił certyfikat (nieprawidłowy, wygasły lub unieważniony). Wgraj nowy certyfikat KSeF w ustawieniach firmy.` |
+| Brak uprawnień | komunikat o braku uprawnienia do wystawiania, jak wyżej |
+| Inna przyczyna | `KSeF odmówił logowania. Przyczynę podaje KSeF w szczegółach.` Pod komunikatem są szczegóły z KSeF. |
+
 :::note[Ważność tokenu]
 Logowanie tokenem jest dopuszczone do 31 grudnia 2026 r. (Dz.U. 2025 poz. 1815, § 13), chyba że przepisy zostaną zmienione. Sprawdź aktualny stan w [materiałach Ministerstwa Finansów](https://ksef.podatki.gov.pl/).
 :::

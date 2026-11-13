@@ -175,7 +175,7 @@ docker exec -i openksef-postgres pg_restore -l < before-key-move.dump > /dev/nul
 7. **Sprawdź:**
    - W `docker compose logs api worker` jedna usługa loguje `Encryption key moved out of the database`. Druga nic o tym nie loguje. Żadna nie loguje Critical.
    - Zapytanie z kroku 1 zwraca 0.
-   - Jedna ręczna synchronizacja kończy się sukcesem: **Firma** > **Token KSeF i pobieranie** > **Pobierz z KSeF**.
+   - Jedna ręczna synchronizacja kończy się sukcesem: **Firma** > **Dostęp do KSeF i pobieranie** > **Pobierz z KSeF**.
 
 Zrzut z kroku 3 to teraz jedyna kopia starego klucza. Zachowaj go co najmniej do udanej synchronizacji. Zrzuty sprzed przeniesienia klucza pozwalają odszyfrować tokeny, dopóki ich nie usuniesz.
 
