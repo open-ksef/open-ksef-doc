@@ -29,7 +29,7 @@ Sam odczyt wystarczy do przeglądania faktur, ale nie do ich wystawiania. Wysył
 
 > Brak uprawnienia do wystawiania faktur w KSeF. Podmień w ustawieniach firmy token lub certyfikat na taki, który ma uprawnienie do zapisu.
 
-Te same dwa uprawnienia musi mieć w KSeF osoba, której [certyfikat](certyfikat-ksef) zapiszesz zamiast tokenu.
+Te same dwa uprawnienia musi mieć w KSeF osoba lub firma, której [certyfikat](certyfikat-ksef) zapiszesz zamiast tokenu.
 
 Jeśli firma ma token tylko do odczytu, wygeneruj nowy w Aplikacji Podatnika KSeF i podmień go w ustawieniach firmy.
 
@@ -73,7 +73,7 @@ Formularz pokazuje numer, który dostanie następna faktura.
 4. Dodaj pozycje: nazwa, jednostka, ilość, cena netto, stawka VAT. Dostępne stawki to 23, 8, 5, 0 KR i zw. Przy stawce zw podaj podstawę zwolnienia. Dla firmy zagranicznej dostępne są tylko np I i np II.
 5. Wybierz płatność: **Przelew**, **Gotówka** albo **Karta**. W razie potrzeby zaznacz mechanizm podzielonej płatności. Program przypomni o nim, ale nie rozstrzygnie, czy faktura go wymaga.
 6. Kliknij **Zapisz szkic**, jeśli chcesz wrócić do faktury później. Szkic można edytować i usunąć.
-7. Kliknij **Wystaw i wyślij do KSeF**. Na środowiskach TEST i DEMO faktura wysyła się od razu. W pozostałych przypadkach potwierdź w oknie ze sprzedawcą, środowiskiem, nabywcą, datą wystawienia i kwotą.
+7. Kliknij **Wystaw i wyślij do KSeF**. Na środowiskach TEST i DEMO faktura wysyła się od razu. W pozostałych przypadkach potwierdź w oknie ze sprzedawcą, środowiskiem, numerem, nabywcą, datą wystawienia i kwotą.
 
 VAT jest liczony od sumy netto dla każdej stawki. VAT widoczny przy pozycji jest poglądowy.
 
