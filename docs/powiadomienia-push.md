@@ -5,7 +5,7 @@ title: Powiadomienia push
 
 # Powiadomienia push
 
-Powiadomienia push informują aplikację mobilną o nowych fakturach z KSeF.
+Powiadomienia push informują aplikację mobilną o nowych fakturach z KSeF. Dodatkowo instancja może wysłać e-mail o każdej nowej fakturze.
 
 ## Jak to działa
 
@@ -25,8 +25,10 @@ Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konf
 - **Ręczna synchronizacja** (przycisk w portalu lub w aplikacji mobilnej) wysyła dodatkowo powiadomienie SignalR.
 - Powiadomienie push trafia na urządzenia użytkownika, do którego należy firma. Inni użytkownicy instancji go nie dostają.
 - E-mail trafia na adres do powiadomień ustawiony w danych firmy. Może to być dowolny adres, także osoby spoza instancji.
+- E-mail idzie obok push, nie zamiast niego. Instancja wysyła go także wtedy, gdy żadne urządzenie nie jest zarejestrowane albo gdy w aplikacji wyłączysz **Powiadomienia push**. Wyłączenie push na urządzeniu zatrzymuje tylko push na tym urządzeniu. E-maile zatrzymasz, usuwając adres do powiadomień w danych firmy.
 - Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika, chyba że przypisano je do jednej firmy. Przypisanie widać w portalu: **Telefon** > **Moje urządzenia**, kolumna **Powiadomienia**.
-- Jedna synchronizacja wysyła najwyżej 10 powiadomień na firmę, a o pozostałych fakturach jedno podsumowanie.
+- Jedna synchronizacja wysyła na firmę najwyżej 10 powiadomień push i 10 e-maili, o 10 najnowszych fakturach (według daty przyjęcia w KSeF). O pozostałych fakturach przychodzi jedno podsumowanie push i jeden e-mail z ich liczbą. Wszystkie faktury są zapisywane.
+- Limit nie zależy od czasu. Po dłuższej przerwie w synchronizacji (np. awaria Workera albo wygasły token KSeF) faktury z przerwy też dostają powiadomienia, w ramach tego samego limitu 10 i podsumowania.
 - Pierwsza synchronizacja nowej firmy i [pełna resynchronizacja](faktury#pełna-resynchronizacja) nie wysyłają powiadomień, nawet jeśli pobiorą wiele faktur.
 - Powiadomienie może przyjść kilka sekund przed pozycjami i numerem rachunku, bo OpenKSeF pobiera je z KSeF [po zapisaniu faktury](faktury#uzupełnianie-pozycji-rachunku-i-terminu). Gdy czeka dużo starszych faktur, może to potrwać kilka minut, a po limicie KSeF do kolejnej automatycznej synchronizacji. Otwórz fakturę ponownie.
 
@@ -64,6 +66,7 @@ Komunikacja z relay jest zabezpieczona trzema warstwami:
 |-------|-------------|
 | Brak powiadomień | Włącz relay w kreatorze |
 | Brak powiadomień, urządzenia nie ma w portalu na liście **Telefon** > **Moje urządzenia** | W aplikacji mobilnej: **Konto** > wyłącz i włącz **Powiadomienia push**. Aplikacja zarejestruje urządzenie ponownie |
+| Brak e-maili o nowych fakturach | Sprawdź `EMAIL_ENABLED=true` i pozostałe `EMAIL_*` w `.env` ([Konfiguracja](instalacja/konfiguracja#e-mail-o-nowych-fakturach)), `docker compose up -d api worker` oraz adres do powiadomień w danych firmy. Błędy SMTP są w logach `api` i `worker` |
 | Brak powiadomień po pełnej resynchronizacji | Zamierzone -- pełna resynchronizacja nie wysyła powiadomień |
 | SignalR nie łączy | Zaloguj się ponownie w aplikacji |
 | Relay zwraca 401 | Instancja niezarejestrowana -- przejdź do **Ustawienia** > **Administracja instancji** > **Powiadomienia push** > **Zarejestruj ponownie** |

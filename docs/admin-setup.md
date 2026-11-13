@@ -45,7 +45,7 @@ Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PAS
 ![Krok 3 - autoryzacja i email](/img/screenshots/portal/admin-setup-step3.png)
 
 **Polityka logowania:**
-- Rejestracja użytkowników (domyślnie: WŁĄCZONA)
+- Rejestracja użytkowników (domyślnie: WŁĄCZONA). Kreator nie nadaje kontu serwisowemu uprawnień do zakładania kont, więc formularz rejestracji zwraca `503`, dopóki nie wykonasz [konfiguracji ręcznej](logowanie#konfiguracja-ręczna). Do tego czasu nowi użytkownicy logują się przez Google albo dostają konto z konsoli Keycloak
 - Weryfikacja email (domyślnie: WYŁĄCZONA, wymaga SMTP)
 - Logowanie emailem (domyślnie: WŁĄCZONE)
 - Reset hasła (domyślnie: WŁĄCZONY, wymaga SMTP)
@@ -56,7 +56,7 @@ Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PAS
 
 **SMTP (opcjonalnie):**
 
-Jeśli włączysz weryfikację email lub reset hasła, potrzebujesz SMTP:
+SMTP z kreatora i z **Ustawień** służy tylko Keycloak: weryfikacja e-maila i reset hasła. Jeśli włączysz którąś z nich, potrzebujesz SMTP. E-maile o nowych fakturach konfigurujesz osobno, zmiennymi `EMAIL_*` w `.env` ([E-mail o nowych fakturach](instalacja/konfiguracja#e-mail-o-nowych-fakturach)).
 
 | Dostawca | Host | Port | TLS |
 |----------|------|------|-----|
@@ -99,7 +99,7 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 3. Pobiera secret klienta API z Keycloak
 4. Włącza token-exchange dla service account
 5. Aktualizuje URI przekierowań z zewnętrznym URL
-6. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP)
+6. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP, [blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach))
 7. Tworzy konto admina w Keycloak, rolę realmu `openksef-admin` i przypisuje ją temu kontu
 8. Konfiguruje Google IdP (jeśli podano)
 9. Zapisuje całą konfigurację w bazie danych
