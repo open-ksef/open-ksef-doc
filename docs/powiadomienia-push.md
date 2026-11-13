@@ -5,7 +5,7 @@ title: Powiadomienia push
 
 # Powiadomienia push
 
-Powiadomienia push informują aplikację mobilną o nowych fakturach z KSeF. Dodatkowo instancja może wysłać e-mail o każdej nowej fakturze.
+Powiadomienia push informują aplikację mobilną o nowych fakturach z KSeF. Dodatkowo instancja może wysłać e-mail o nowych fakturach zakupowych.
 
 ## Jak to działa
 

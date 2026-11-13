@@ -45,7 +45,7 @@ Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PAS
 ![Krok 3 - autoryzacja i email](/img/screenshots/portal/admin-setup-step3.png)
 
 **Polityka logowania:**
-- Rejestracja użytkowników (domyślnie: WŁĄCZONA). Kreator nie nadaje kontu serwisowemu uprawnień do zakładania kont, więc formularz rejestracji zwraca `503`, dopóki nie wykonasz [konfiguracji ręcznej](logowanie#konfiguracja-ręczna). Do tego czasu nowi użytkownicy logują się przez Google albo dostają konto z konsoli Keycloak
+- Rejestracja użytkowników (domyślnie: WŁĄCZONA). Kreator nie nadaje kontu serwisowemu uprawnień do zakładania kont, więc formularz rejestracji zwraca `503`, dopóki nie wykonasz [konfiguracji ręcznej](logowanie#konfiguracja-ręczna). Do tego czasu nowi użytkownicy logują się przez Google (jeśli skonfigurowano) albo dostają konto z konsoli Keycloak
 - Weryfikacja email (domyślnie: WYŁĄCZONA, wymaga SMTP)
 - Logowanie emailem (domyślnie: WŁĄCZONE)
 - Reset hasła (domyślnie: WŁĄCZONY, wymaga SMTP)

@@ -35,7 +35,7 @@ Przykłady:
 
 ## Rejestracja użytkowników
 
-Kreator zapisuje secret klienta `openksef-api` tylko w bazie i nie nadaje kontu serwisowemu ról `manage-users` ani `view-realm`. Dlatego na instalacji z kreatora z włączoną rejestracją formularz zwraca `503`. Nowy użytkownik loguje się przez Google albo dostaje konto założone w konsoli Keycloak. Formularz zadziała po [konfiguracji ręcznej](#konfiguracja-ręczna).
+Kreator zapisuje secret klienta `openksef-api` tylko w bazie i nie nadaje kontu serwisowemu ról `manage-users` ani `view-realm`. Dlatego na instalacji z kreatora z włączoną rejestracją formularz zwraca `503`. Nowy użytkownik loguje się przez Google (jeśli skonfigurowano) albo dostaje konto założone w konsoli Keycloak. Formularz zadziała po [konfiguracji ręcznej](#konfiguracja-ręczna).
 
 Każde żądanie czyta realm: rejestracja wyłączona zwraca `403`, a nieudany odczyt `503`. W obu przypadkach konto nie powstaje.
 
@@ -65,11 +65,11 @@ docker compose up -d api
 ```
 
 :::info
-Bez `API_CLIENT_SECRET` lub tych uprawnień rejestracja zwraca `503 Service Unavailable`. Logowanie i Google sign-in działają niezależnie.
+Bez secretu klienta `openksef-api` (z kreatora w bazie albo `API_CLIENT_SECRET`) lub tych uprawnień rejestracja zwraca `503 Service Unavailable`. Logowanie i Google sign-in działają niezależnie.
 :::
 
 ## Blokada po nieudanych logowaniach
 
-Po 10 nieudanych próbach logowania Keycloak blokuje konto na 1 do 15 minut. Im więcej kolejnych nieudanych prób, tym dłuższa blokada. Zablokowane konto nie zaloguje się, nawet poprawnym hasłem. Po upływie czasu blokada znika sama. Licznik nieudanych prób zeruje się po 12 godzinach. Blokada nigdy nie jest stała.
+Po 10 nieudanych próbach logowania Keycloak blokuje konto na 1 do 15 minut. Im więcej kolejnych nieudanych prób, tym dłuższa blokada. Zablokowane konto nie zaloguje się, nawet poprawnym hasłem. Po upływie czasu blokada znika sama. Licznik nieudanych prób zeruje się po udanym logowaniu albo po 12 godzinach bez nieudanej próby. Blokada nigdy nie jest stała.
 
 Instancja zainstalowana kreatorem od v0.0.7 ma blokadę od razu. Na starszej instancji włącza ją pierwszy zapis **Ustawień** przez administratora: otwórz **Ustawienia** i zapisz je raz. Jeśli ochrona była już włączona w konsoli Keycloak, zapis tylko obniża próg do 10 prób i wyłącza blokadę stałą. Pozostałe czasy zostają.
