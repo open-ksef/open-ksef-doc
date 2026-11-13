@@ -38,10 +38,10 @@ Dotyczy aplikacji mobilnej od wersji 1.0.7. Telefon pokazuje jedno powiadomienie
 
 | Sytuacja | Co pokazuje telefon |
 |----------|---------------------|
-| Push włączony, instancja ma relay albo własny Firebase | Powiadomienie zdalne (FCM/APNs), także gdy aplikacja jest w tle albo zamknięta. Powiadomienia SignalR aplikacja nie pokazuje |
+| Push włączony, instancja ma relay albo własny Firebase | Powiadomienie zdalne (FCM), także gdy aplikacja jest w tle albo zamknięta. Powiadomienia SignalR aplikacja nie pokazuje |
 | Push włączony, instancja bez relay i bez Firebase (**Tylko lokalne**) | Tylko SignalR: po ręcznej synchronizacji, gdy aplikacja jest uruchomiona i połączona z serwerem. Po automatycznej synchronizacji telefon nie dostaje nic |
-| Push włączony, telefon bez tokenu FCM/APNs | Tylko SignalR, jak wyżej |
-| Push wyłączony w aplikacji | Nic z instancji. Aplikacja nie pokazuje też powiadomień SignalR |
+| Push włączony, telefon bez tokenu FCM | Tylko SignalR, jak wyżej |
+| Push wyłączony w aplikacji | Nic z instancji, gdy serwer wie już o wyłączeniu (zobacz niżej). Aplikacja nie pokazuje też powiadomień SignalR |
 
 E-mail działa w każdej z tych sytuacji, jeśli jest skonfigurowany.
 
@@ -52,7 +52,7 @@ W aplikacji mobilnej (od wersji 1.0.6): **Konto** > **Powiadomienia push**. Po w
 - Ustawienie dotyczy tego telefonu, nie konta. Inne telefony tego samego użytkownika dostają powiadomienia dalej.
 - Ustawienie zostaje po wylogowaniu. Obowiązuje każde konto, na które zalogujesz się na tym telefonie.
 - Odinstalowanie aplikacji kasuje ustawienie. Po ponownej instalacji i zalogowaniu aplikacja znów rejestruje urządzenie do powiadomień.
-- Bez dostępu do sieci aplikacja zapamięta wyłączenie, ale serwer jeszcze o nim nie wie. Aplikacja pokazuje wtedy komunikat „Powiadomienia wyłączone, ale serwer jeszcze o tym nie wie”. Serwer dowie się przy następnym uruchomieniu aplikacji z dostępem do sieci. Do tego czasu powiadomienie może dotrzeć.
+- Bez dostępu do sieci aplikacja zapamięta wyłączenie, ale serwer jeszcze o nim nie wie. Aplikacja pokazuje wtedy komunikat „Powiadomienia wyłączone, ale serwer jeszcze o tym nie wie. Powiadomienie może dotrzeć, dopóki nie uruchomisz aplikacji ponownie z dostępem do sieci.” Serwer dowie się, gdy uruchomisz aplikację od nowa (nie tylko wrócisz do niej z tła) z dostępem do sieci.
 - Przełącznik nie zmienia e-maili. E-maile zatrzymasz, usuwając adres do powiadomień w danych firmy.
 - Ponowne włączenie wymaga połączenia z serwerem.
 
@@ -90,7 +90,7 @@ Komunikacja z relay jest zabezpieczona trzema warstwami:
 |-------|-------------|
 | Brak powiadomień | Włącz relay w kreatorze |
 | Powiadomienie przychodzi tylko po ręcznej synchronizacji, gdy aplikacja jest otwarta | Instancja nie ma relay ani własnego Firebase (**Tylko lokalne**). Wtedy powiadomienia dostarcza tylko SignalR. Wybierz **Relay OpenKSeF** w **Ustawienia** > **Administracja instancji** > **Powiadomienia push** |
-| Powiadomienie przyszło po wyłączeniu push | Serwer nie wiedział jeszcze o wyłączeniu. Uruchom aplikację ponownie z dostępem do sieci |
+| Powiadomienie przyszło po wyłączeniu push | Serwer nie wiedział jeszcze o wyłączeniu. Zamknij aplikację całkowicie i uruchom ją ponownie z dostępem do sieci |
 | Brak powiadomień, urządzenia nie ma w portalu na liście **Telefon** > **Moje urządzenia** | W aplikacji mobilnej: **Konto** > wyłącz i włącz **Powiadomienia push**. Aplikacja zarejestruje urządzenie ponownie |
 | Brak e-maili o nowych fakturach | Sprawdź `EMAIL_ENABLED=true` i pozostałe `EMAIL_*` w `.env` ([Konfiguracja](instalacja/konfiguracja#e-mail-o-nowych-fakturach)), `docker compose up -d api worker` oraz adres do powiadomień w danych firmy. Błędy SMTP są w logach `api` i `worker` |
 | Brak powiadomień po pełnej resynchronizacji | Zamierzone -- pełna resynchronizacja nie wysyła powiadomień |
