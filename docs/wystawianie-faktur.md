@@ -15,7 +15,7 @@ Przy fakturze widać środowisko KSeF: **TEST**, **DEMO** albo **PRODUKCJA**. Na
 
 ## Zanim zaczniesz
 
-1. Zapisz w **Firma** > **Token KSeF i pobieranie** [token KSeF z uprawnieniem do zapisu](#token-ksef).
+1. Zapisz w **Firma** > **Dostęp do KSeF i pobieranie** [token KSeF z uprawnieniem do zapisu](#token-ksef) albo [certyfikat KSeF](certyfikat-ksef).
 2. Uzupełnij [dane do faktur](#dane-do-faktur).
 
 ## Token KSeF
@@ -27,7 +27,9 @@ Token musi mieć dwa uprawnienia:
 
 Sam odczyt wystarczy do przeglądania faktur, ale nie do ich wystawiania. Wysyłka zakończy się wtedy komunikatem:
 
-> Token KSeF nie ma uprawnienia do wystawiania faktur. Wygeneruj token z uprawnieniem do zapisu i podmień go w ustawieniach firmy.
+> Brak uprawnienia do wystawiania faktur w KSeF. Podmień w ustawieniach firmy token lub certyfikat na taki, który ma uprawnienie do zapisu.
+
+Te same dwa uprawnienia musi mieć w KSeF osoba, której [certyfikat](certyfikat-ksef) zapiszesz zamiast tokenu.
 
 Jeśli firma ma token tylko do odczytu, wygeneruj nowy w Aplikacji Podatnika KSeF i podmień go w ustawieniach firmy.
 
@@ -62,7 +64,7 @@ Formularz pokazuje numer, który dostanie następna faktura.
 
 ## Wystawienie faktury
 
-1. W menu **Wystawione** utwórz nową fakturę.
+1. Kliknij **Nowa faktura** w menu **Wystawione** albo na stronie **Start**.
 2. Wybierz nabywcę:
    - **Firma**: wymagany jest poprawny NIP. **Pobierz z NIP** uzupełni nazwę i adres.
    - **Osoba prywatna**: bez NIP, z nazwą i adresem. Po przyjęciu faktury przekaż nabywcy PDF z kodem KOD I.
@@ -71,7 +73,7 @@ Formularz pokazuje numer, który dostanie następna faktura.
 4. Dodaj pozycje: nazwa, jednostka, ilość, cena netto, stawka VAT. Dostępne stawki to 23, 8, 5, 0 KR i zw. Przy stawce zw podaj podstawę zwolnienia. Dla firmy zagranicznej dostępne są tylko np I i np II.
 5. Wybierz płatność: **Przelew**, **Gotówka** albo **Karta**. W razie potrzeby zaznacz mechanizm podzielonej płatności. Program przypomni o nim, ale nie rozstrzygnie, czy faktura go wymaga.
 6. Kliknij **Zapisz szkic**, jeśli chcesz wrócić do faktury później. Szkic można edytować i usunąć.
-7. Kliknij **Wystaw i wyślij do KSeF**. Na środowiskach TEST i DEMO faktura wysyła się od razu. W pozostałych przypadkach potwierdź w oknie z numerem, nabywcą, datą i kwotą.
+7. Kliknij **Wystaw i wyślij do KSeF**. Na środowiskach TEST i DEMO faktura wysyła się od razu. W pozostałych przypadkach potwierdź w oknie ze sprzedawcą, środowiskiem, nabywcą, datą wystawienia i kwotą.
 
 VAT jest liczony od sumy netto dla każdej stawki. VAT widoczny przy pozycji jest poglądowy.
 

@@ -5,7 +5,7 @@ title: Otrzymane faktury
 
 # Otrzymane faktury
 
-OpenKSeF pobiera z KSeF faktury, w których Twoja firma jest nabywcą (faktury kosztowe). W portalu znajdziesz je w menu **Otrzymane**, a w aplikacji mobilnej na ekranie **Faktury**.
+OpenKSeF pobiera z KSeF faktury, w których Twoja firma jest nabywcą (faktury kosztowe). W portalu znajdziesz je w menu **Otrzymane**, a w aplikacji mobilnej na karcie **Otrzymane**.
 
 Faktury sprzedażowe, także [wystawione w innym programie](wystawianie-faktur#faktury-spoza-openksef), opisuje strona [Wystawianie faktur](wystawianie-faktur).
 
@@ -121,7 +121,7 @@ Gdy rozliczenia nie są odczytane lub potwierdzone, dane do przelewu podają `Kw
 
 ## Synchronizacja z KSeF
 
-Worker pobiera nowe faktury automatycznie w tle, domyślnie co 4 godziny. Pierwsza synchronizacja nowej firmy pobiera faktury otrzymane z ostatnich 6 miesięcy, a [sprzedaż z innych programów](wystawianie-faktur#faktury-spoza-openksef) z ostatnich 12 miesięcy. Synchronizację uruchomisz też ręcznie przyciskiem **Pobierz z KSeF** na stronach **Start**, **Otrzymane** i **Firma** > **Token KSeF i pobieranie**. Na tej ostatniej, w sekcji **Działania ryzykowne**, jest też **Pełna resynchronizacja**.
+Worker pobiera nowe faktury automatycznie w tle, domyślnie co 4 godziny. Pierwsza synchronizacja nowej firmy pobiera faktury otrzymane z ostatnich 6 miesięcy, a [sprzedaż z innych programów](wystawianie-faktur#faktury-spoza-openksef) z ostatnich 12 miesięcy. Synchronizację uruchomisz też ręcznie przyciskiem **Pobierz z KSeF** na stronach **Start**, **Otrzymane** i **Firma** > **Dostęp do KSeF i pobieranie**. Na tej ostatniej, w sekcji **Działania ryzykowne**, jest też **Pełna resynchronizacja**.
 
 | Przycisk | Co robi | Kiedy użyć |
 |----------|---------|------------|
@@ -142,18 +142,19 @@ Kolejność pobierania:
 1. Nowe faktury otrzymane.
 2. Nieopłacone faktury otrzymane bez terminu, od najnowszej daty wystawienia.
 3. [Sprzedaż z innych programów](wystawianie-faktur#faktury-spoza-openksef) bez pozycji.
-4. Pozostałe faktury otrzymane bez pozycji, także opłacone.
+4. Nieopłacone faktury otrzymane, których rozliczeń nie odczytano, bo pobrała je starsza wersja OpenKSeF.
+5. Pozostałe faktury otrzymane bez pozycji, także opłacone.
 
 Opłacona faktura, która ma pozycje, ale nie ma terminu, nie trafia do tej kolejki. Uzupełni ją tylko [pełna resynchronizacja](#pełna-resynchronizacja).
 
-Odczytany plik nie jest pobierany ponownie. Po limicie KSeF pobieranie dla tej firmy zatrzymuje się, a reszta czeka na kolejną synchronizację. Plik, którego nie udało się pobrać lub odczytać, jest ponawiany po pozostałych z tego samego punktu kolejności. W obu przypadkach faktura zachowuje swoje dane i status płatności.
+Odczytany plik nie jest pobierany ponownie. Wyjątek to nieopłacona faktura, której rozliczeń starsza wersja nie odczytała (punkt 4). Po limicie KSeF pobieranie dla tej firmy zatrzymuje się, a reszta czeka na kolejną synchronizację. Plik, którego nie udało się pobrać lub odczytać, jest ponawiany po pozostałych z tego samego punktu kolejności. W obu przypadkach faktura zachowuje swoje dane i status płatności.
 
 ### Pełna resynchronizacja
 
 Przed uruchomieniem portal prosi o potwierdzenie.
 
 - Obejmuje całą historię faktur otrzymanych: od najstarszej zapisanej w OpenKSeF, a nie tylko z okresu synchronizacji początkowej. Listy sprzedaży z innych programów nie pobiera od nowa, dochodzą tylko nowe faktury. Jej brakujące pozycje są w tej samej kolejce plików XML.
-- Pobiera plik XML tylko tych faktur, których plik nie został jeszcze odczytany i które nie mają pozycji albo terminu, do 15 plików na uruchomienie. Faktur uzupełnionych nie pobiera.
+- Pobiera plik XML tylko tych faktur, których plik nie został jeszcze odczytany i które nie mają pozycji albo terminu, oraz faktur, których rozliczeń nie odczytano. Do 15 plików na uruchomienie. Faktur uzupełnionych nie pobiera.
 - Niczego nie usuwa. Pozycje zostają także wtedy, gdy pliku XML nie da się pobrać lub odczytać.
 - Każda faktura jest zapisywana zaraz po pobraniu pliku. Kolejne uruchomienie kontynuuje od faktur, które jeszcze czekają.
 - Nie wysyła powiadomień. Nowe faktury znalezione przez pełną resynchronizację nie wygenerują powiadomienia ani teraz, ani później. Tak samo działa pierwsza synchronizacja nowej firmy.
@@ -163,8 +164,8 @@ Przed uruchomieniem portal prosi o potwierdzenie.
 KSeF pozwala pobrać plik XML faktury najwyżej 8 razy na sekundę, 16 razy na minutę i 64 razy na godzinę ([limity API KSeF](https://github.com/CIRFMF/ksef-docs/blob/main/limity/limity-api.md)). Dlatego jedno uruchomienie pobiera do 15 plików. Gdy KSeF mimo to zgłosi limit, pobieranie zatrzymuje się, a reszta czeka.
 
 - Firma, której brakuje więcej plików, nie zostanie uzupełniona w jednym uruchomieniu. Uruchom resynchronizację ponownie później. Każde kolejne uruchomienie dokańcza pracę.
-- Komunikat `Pełna resynchronizacja niepełna` to nie błąd i nic nie przepadło. Liczba przy `Bez szczegółów z KSeF` to faktury, których plik XML wciąż czeka, także te ponad limit jednego uruchomienia. Nieopłacone uzupełni automatyczna synchronizacja, a opłacone z pozycjami kolejna pełna resynchronizacja. Faktura, której pliku nie da się odczytać, może zostać w tej liczbie na stałe.
-- Komunikat `Pełna resynchronizacja zakończona` znaczy, że nie czeka już żaden plik. Liczba `Pobrane` to faktury z listy KSeF, a nie pobrane pliki XML.
+- Komunikat `Pełna resynchronizacja niepełna` pojawia się, gdy w tym uruchomieniu nie udało się pobrać lub odczytać pliku XML części faktur. Nic nie przepadło. Przy `Bez szczegółów z KSeF` widać liczbę faktur z błędem, a dalej liczbę faktur w kolejce, ponad limit jednego uruchomienia. Nieopłacone uzupełni automatyczna synchronizacja, a opłacone kolejna pełna resynchronizacja. Faktura, której pliku nie da się odczytać, może zostać z błędem na stałe.
+- Komunikat `Pełna resynchronizacja zakończona` znaczy, że nie było błędów. Jeśli pliki XML nadal czekają, komunikat podaje ich liczbę: `Szczegóły pozostałych faktur (liczba: ...)`. Liczba `Pobrane` to faktury z listy KSeF, a nie pobrane pliki XML.
 - Faktura, której pliku nie udało się pobrać, zachowuje dotychczasowe pozycje, numer rachunku i termin.
 - Częste uruchamianie może wyczerpać także limit zapytań o listę faktur. Resynchronizacja kończy się wtedy błędem, a kolejną próbę warto odłożyć na około godzinę.
 :::
@@ -174,7 +175,7 @@ KSeF pozwala pobrać plik XML faktury najwyżej 8 razy na sekundę, 16 razy na m
 W aplikacji mobilnej (Android, od wersji 1.0.4):
 
 - lista faktur pokazuje numer faktury sprzedawcy, a gdy go brak -- numer KSeF,
-- szczegóły faktury zawierają **Numer faktury**, **Numer KSeF** i kartę **Pozycje faktury** (nazwa, ilość × jednostka, cena netto, kwoty netto / VAT / brutto),
+- szczegóły faktury zawierają **Numer faktury**, **Numer KSeF** i kartę **Pozycje faktury** (nazwa, ilość, jednostka, cena netto, kwoty netto i brutto, stawka VAT),
 - tytuł przelewu przy kopiowaniu danych i w kodzie QR to sam numer faktury (w kodzie QR skrócony do 32 znaków),
 - przycisk **Zapłać** pokazuje kod QR przelewu według tych samych zasad co portal, zobacz [Zapłać](aplikacja-mobilna#zapłać).
 
