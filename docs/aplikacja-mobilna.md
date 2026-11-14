@@ -82,7 +82,7 @@ Wymaga aplikacji w wersji 1.0.9 lub nowszej i serwera OpenKSeF v0.0.24 lub nowsz
 2. Na komputerze zaloguj się do portalu i otwórz stronę **Telefon**. W karcie **Zaloguj telefon kodem** wpisz kod i naciśnij **Dalej**. Wielkość liter i myślnik nie mają znaczenia.
 3. Portal otwiera stronę logowania OpenKSeF. Jeśli zapyta o hasło, zaloguj się.
 4. Strona pyta **Zezwolić na logowanie: Aplikacja mobilna OpenKSeF?**. Wybierz **Tak** tylko wtedy, gdy ten kod widzisz teraz na swoim telefonie.
-5. Strona pokazuje **Telefon zalogowany**. Aplikacja sama przechodzi do listy faktur.
+5. Strona pokazuje **Telefon zalogowany**. Aplikacja sama przechodzi dalej: do listy faktur albo, gdy konto nie ma jeszcze firmy, do dodania firmy.
 
 <img src="/img/screenshots/mobile/pairing-code.png" alt="Aplikacja: kod do wpisania w portalu i czas ważności" width="320" />
 
@@ -111,9 +111,9 @@ Parowanie łączy telefon z Twoim kontem, nie z firmą. Telefon widzi wszystkie 
 |-----------|-----------|-----------|
 | Aplikacja: `Kod wygasł. Poproś o nowy kod.` | Minęło 5 minut | Naciśnij **Nowy kod** |
 | Aplikacja: `Odrzucono parowanie w portalu.` | Na stronie zatwierdzenia wybrano **Nie** | Naciśnij **Nowy kod** |
-| Portal: `Nieprawidłowy kod. Spróbuj ponownie.` | Literówka albo kod już użyty | Sprawdź kod na telefonie |
+| Strona logowania: `Nieprawidłowy kod. Spróbuj ponownie.` | Literówka albo kod już użyty | Sprawdź kod na telefonie |
 | Aplikacja: `Ten serwer nie obsługuje parowania kodem.` | Serwer starszy niż v0.0.24 albo administrator po aktualizacji nie zapisał **Ustawień** | Zaloguj się przyciskiem **Zaloguj się**. Administrator: [Aktualizacja do v0.0.24](admin-setup#aktualizacja-do-v0024) |
-| Aplikacja po parowaniu: `Sesja wygasła. Zaloguj się ponownie.` | Portal był otwarty pod innym adresem niż adres serwera w aplikacji, np. portal pod `http://192.168.1.50:8080`, a aplikacja ustawiona na `https://ksef.twoja-firma.pl`. Serwer przyjmuje tylko logowanie zatwierdzone pod adresem, który ma aplikacja | Otwórz portal pod adresem serwera z aplikacji (portal pokazuje go pod polem kodu) i sparuj ponownie |
+| Aplikacja po parowaniu: `Sesja wygasła. Zaloguj się ponownie.` | Portal był otwarty pod innym adresem niż adres serwera w aplikacji, np. portal pod `http://192.168.1.50:8080`, a aplikacja ustawiona na `https://ksef.twoja-firma.pl`. Serwer przyjmuje tylko logowanie zatwierdzone pod adresem, który ma aplikacja | Otwórz portal pod adresem serwera z aplikacji (aplikacja pokazuje go jako **Serwer** na ekranie logowania, portal pod polem kodu pokazuje swój adres) i sparuj ponownie |
 
 ## Wymagania dla Android
 

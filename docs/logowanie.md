@@ -12,7 +12,7 @@ Od v0.0.24 portal `/login` przekierowuje na polską stronę logowania OpenKSeF, 
 - **Login i hasło**
 - **Logowanie przez Google** -- Keycloak IdP brokering, gdy skonfigurowano [Google OAuth](#logowanie-google-oauth-opcjonalne)
 - **Rejestrację** -- link **Zarejestruj się**, gdy rejestracja jest włączona w **Ustawieniach**
-- Reset hasła, gdy skonfigurowano SMTP
+- Reset hasła, gdy w **Ustawieniach** skonfigurowano SMTP i włączono reset hasła
 
 Ta sama strona loguje aplikację mobilną od wersji 1.0.9. Telefon możesz też zalogować kodem zatwierdzonym w portalu, bez hasła na telefonie: [Sparuj z portalem](aplikacja-mobilna#sparuj-z-portalem).
 
