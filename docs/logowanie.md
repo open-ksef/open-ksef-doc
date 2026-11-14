@@ -7,11 +7,16 @@ title: Strona logowania
 
 ![Strona logowania](/img/screenshots/portal/login.png)
 
-Portal `/login` uwierzytelnia bezpośrednio przez Keycloak (bez przekierowania). Obsługuje trzy metody:
+Od v0.0.24 portal `/login` przekierowuje na polską stronę logowania OpenKSeF, którą wyświetla Keycloak (Authorization Code + PKCE, motyw `openksef`). Po zalogowaniu wracasz na stronę portalu, którą otwierałeś. Strona logowania obsługuje:
 
-- **Login i hasło** -- ROPC grant via `oidc-client-ts`
-- **Logowanie przez Google** -- Keycloak IdP brokering (`kc_idp_hint=google`)
-- **Rejestracja** -- `POST /api/account/register` (Keycloak Admin API), potem auto-login via ROPC
+- **Login i hasło**
+- **Logowanie przez Google** -- Keycloak IdP brokering, gdy skonfigurowano [Google OAuth](#logowanie-google-oauth-opcjonalne)
+- **Rejestrację** -- link **Zarejestruj się**, gdy rejestracja jest włączona w **Ustawieniach**
+- Reset hasła, gdy skonfigurowano SMTP
+
+Ta sama strona loguje aplikację mobilną od wersji 1.0.9. Telefon możesz też zalogować kodem zatwierdzonym w portalu, bez hasła na telefonie: [Sparuj z portalem](aplikacja-mobilna#sparuj-z-portalem).
+
+**Wyloguj wszystkie urządzenia** na stronie **Telefon** (od v0.0.23) wylogowuje aplikację mobilną na każdym telefonie i portal we wszystkich przeglądarkach, także w tej. Telefony przestają dostawać powiadomienia. Użyj tego po utracie telefonu albo gdy zatwierdziłeś kod, który nie pochodził z Twojego telefonu.
 
 ## Logowanie Google OAuth (opcjonalne)
 
@@ -35,7 +40,9 @@ Przykłady:
 
 ## Rejestracja użytkowników
 
-Kreator zapisuje secret klienta `openksef-api` tylko w bazie i nie nadaje kontu serwisowemu ról `manage-users` ani `view-realm`. Dlatego na instalacji z kreatora z włączoną rejestracją formularz zwraca `503`. Nowy użytkownik loguje się przez Google (jeśli skonfigurowano) albo dostaje konto założone w konsoli Keycloak. Formularz zadziała po [konfiguracji ręcznej](#konfiguracja-ręczna).
+Portal od v0.0.24 i aplikacja od wersji 1.0.9 zakładają konto na stronie logowania Keycloak. To działa bez dodatkowej konfiguracji.
+
+Ta sekcja dotyczy tylko formularza **Załóż konto** w aplikacji mobilnej 1.0.8 i starszej. Formularz używa `POST /api/account/register` (Keycloak Admin API). Kreator zapisuje secret klienta `openksef-api` tylko w bazie i nie nadaje kontu serwisowemu ról `manage-users` ani `view-realm`. Dlatego na instalacji z kreatora z włączoną rejestracją ten formularz zwraca `503`. Użytkownik takiej aplikacji zakłada konto w portalu albo loguje się przez Google (jeśli skonfigurowano). Formularz zadziała po [konfiguracji ręcznej](#konfiguracja-ręczna).
 
 Każde żądanie czyta realm: rejestracja wyłączona zwraca `403`, a nieudany odczyt `503`. W obu przypadkach konto nie powstaje.
 

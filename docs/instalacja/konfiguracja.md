@@ -17,11 +17,11 @@ Plik `.env` jest **wymagany**: musi zawierać dane logowania do PostgreSQL i Key
 
 ## Architektura kontenerów
 
-Obrazy aplikacji są publikowane na GitHub Container Registry (`ghcr.io/open-ksef/*`) i nie wymagają autentykacji. Keycloak korzysta z oficjalnego obrazu (`quay.io/keycloak/keycloak:26.0`).
+Obrazy aplikacji są publikowane na GitHub Container Registry (`ghcr.io/open-ksef/*`) i nie wymagają autentykacji. Od v0.0.24 Keycloak też: `openksef-keycloak` to oficjalny Keycloak 26.0 z polskim motywem strony logowania, uruchamiany poleceniem `start` bez `--features`. Starsze wydania używają `quay.io/keycloak/keycloak:26.0`.
 
 | Obraz | Opis |
 |-------|------|
-| `keycloak/keycloak:26.0` | Keycloak 26 (oficjalny obraz). Realm `openksef` i klienty OAuth tworzone przez [kreator konfiguracji](../admin-setup) |
+| `openksef-keycloak` | Keycloak 26.0 z motywem `openksef`. Realm `openksef` i klienty OAuth tworzone przez [kreator konfiguracji](../admin-setup) |
 | `openksef-gateway` | Nginx z wbudowaną konfiguracją reverse proxy (portal `/`, API `/api/*`, Keycloak `/auth/*`) |
 | `openksef-api` | Backend .NET 10 |
 | `openksef-worker` | Worker .NET 10 (synchronizacja faktur w tle) |

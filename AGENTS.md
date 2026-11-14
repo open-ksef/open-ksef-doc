@@ -70,10 +70,10 @@ docs/
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (login, dashboard, admin-setup kroki 1-3, 5, 6, lista faktur, szczegóły, pozycje, opłacona, QR), tylko jasny motyw
+`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (strona logowania Keycloak, dashboard, admin-setup kroki 1-3, 5, 6, lista faktur, szczegóły, pozycje, opłacona, QR, strona Telefon, zatwierdzenie parowania, telefon zalogowany), tylko jasny motyw
 `static/img/screenshots/home/` -- screeny na stronę główną (start, start na telefonie, lista, płatność), jasny i ciemny motyw
 
-Screenów aplikacji mobilnej brak (nie ma folderu `mobile/`).
+`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (ekran logowania, kod parowania), w docs przez `<img width="320">`
 
 Screeny zawierają wyłącznie dane fikcyjne (np. NIP 1111111111, nazwy "Przykład"). Żadnych prawdziwych NIP-ów, numerów KSeF, nazw firm ani adresów serwerów.
 

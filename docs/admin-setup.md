@@ -97,13 +97,12 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 1. Tworzy realm `openksef` w Keycloak (jeśli nie istnieje)
 2. Tworzy klienty OAuth: `openksef-api`, `openksef-mobile`, `openksef-portal-web`
 3. Pobiera secret klienta API z Keycloak
-4. Włącza token-exchange dla service account
-5. Aktualizuje URI przekierowań z zewnętrznym URL
-6. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP, [blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach))
-7. Tworzy konto admina w Keycloak, rolę realmu `openksef-admin` i przypisuje ją temu kontu
-8. Konfiguruje Google IdP (jeśli podano)
-9. Zapisuje całą konfigurację w bazie danych
-10. Przekierowuje na stronę logowania
+4. Aktualizuje URI przekierowań z zewnętrznym URL
+5. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP, [blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach)), polską stronę logowania z motywem `openksef` i [parowanie telefonu kodem](aplikacja-mobilna#sparuj-z-portalem)
+6. Tworzy konto admina w Keycloak, rolę realmu `openksef-admin` i przypisuje ją temu kontu
+7. Konfiguruje Google IdP (jeśli podano)
+8. Zapisuje całą konfigurację w bazie danych
+9. Przekierowuje na stronę logowania
 
 ## Klucz szyfrowania
 
@@ -197,7 +196,7 @@ Zamknij tego klienta, np. narzędzie bazodanowe z otwartą transakcją. `pg_term
 
 ### Wycofanie aktualizacji
 
-Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` z `ghcr.io/open-ksef/openksef-*` w `docker-compose.yml`, potem uruchom `docker compose up -d`.
+Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` usług `api`, `worker`, `portal-web` i `gateway` w `docker-compose.yml`, potem uruchom `docker compose up -d`. Plik z v0.0.24 lub nowszego ma też obraz `openksef-keycloak`, którego nie ma dla starszych tagów: wtedy wróć plikiem compose z poprzedniego wydania, zobacz [Aktualizacja do v0.0.24](#aktualizacja-do-v0024).
 
 | Sytuacja | Efekt |
 |---|---|
@@ -303,7 +302,7 @@ Potem uruchom `docker compose up -d`.
 Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse proxy lub Cloudflare to adres proxy, a nie przeglądarki. Wpisanie go otwiera konsolę każdemu odwiedzającemu, więc w takiej instalacji użyj tunelu SSH. To samo dotyczy portu przekazywanego przez userland proxy Dockera: w Docker Desktop (Windows, macOS) dla każdego klienta, a w Linuksie dla połączeń na `localhost` i dla wszystkich klientów, gdy w `daemon.json` jest `"iptables": false`. Gateway widzi wtedy adres bramy sieci Docker, np. `172.18.0.1`, a wpisanie go otwiera konsolę każdemu, kto dotrze do portu. Adres widziany przez gateway pokaże `docker compose logs gateway`. Nieprawidłowy wpis gateway pomija, zapisuje w logu `KEYCLOAK_ADMIN_ALLOW entry '<wpis>' is not a valid nginx allow address, skipped` i zachowuje pozostałe wpisy.
 :::
 
-**Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web` i `gateway`, np. `OPENKSEF_VERSION=v1.2.3`. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
+**Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web` i `gateway`, a od v0.0.24 także `keycloak`, np. `OPENKSEF_VERSION=v1.2.3`. Obraz `openksef-keycloak` istnieje od v0.0.24: z plikiem compose z v0.0.24 lub nowszego nie ustawiaj starszej wersji, tylko wróć do pliku compose z tamtego wydania. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
 
 ## Aktualizacja do v0.0.12
 
@@ -337,6 +336,30 @@ SQL
 ```
 
 Skrypt usuwa tylko faktury wystawione i ich pozycje. Nie ma w nich danych użytkownika, a synchronizacja pobierze je ponownie po następnej aktualizacji.
+
+## Aktualizacja do v0.0.24
+
+v0.0.24 zmienia obraz Keycloak na `ghcr.io/open-ksef/openksef-keycloak` (Keycloak 26.0 z motywem OpenKSeF) i uruchamia go poleceniem `start` bez `--features`. Portal loguje na polskiej stronie logowania Keycloak, a telefon można zalogować [kodem z portalu](aplikacja-mobilna#sparuj-z-portalem). Wszystkie strony zostają pod `/auth/`, więc reverse proxy nie wymaga zmian.
+
+1. **Zrób kopię zapasową obu baz:**
+   ```bash
+   docker exec openksef-postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-v0.0.24.dump
+   docker exec openksef-postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc keycloak' > before-v0.0.24-keycloak.dump
+   ```
+2. **Rola `openksef-admin`.** Instalacja z v0.0.11 lub starszej, która jej jeszcze nie ma: nadaj ją według [Aktualizacja do v0.0.12](#aktualizacja-do-v0012), krok 2. Bez niej zapis **Ustawień** w kroku 4 zwraca 403.
+3. **Nowy plik compose:** pobierz `docker-compose.yml` z wydania v0.0.24 i zastąp nim stary plik. Nowy plik nie potrzebuje `--features` w usłudze `keycloak`. Potem `docker compose pull && docker compose up -d`.
+4. **Zapisz Ustawienia raz:** otwórz **Ustawienia** w portalu i zapisz je. Zapis włącza parowanie telefonu kodem, polskie teksty i motyw strony logowania oraz zapis zdarzeń logowania w Keycloak (przez 30 dni). Bez tego zapisu logowanie działa, ale strona logowania jest po angielsku, a aplikacja zgłasza, że serwer nie obsługuje parowania.
+5. **Sprawdź:** `<adres>/auth/realms/openksef/.well-known/openid-configuration` zawiera `device_authorization_endpoint`, a `<adres>/auth/realms/openksef/account/` pokazuje polską stronę logowania OpenKSeF.
+
+Zalogowani użytkownicy portalu i aplikacji zostają zalogowani. Od zapisu **Ustawień** logowanie w aplikacji wygasa po 30 dniach bez użycia i najpóźniej 365 dni po zalogowaniu, także na telefonach zalogowanych wcześniej.
+
+**Instalacja z v0.0.7 na porcie innym niż 8080.** Gateway z v0.0.7 wpisywał do tokenów wewnętrzny port 8080, nowszy wpisuje adres, pod którym otwierasz serwer. Telefony zalogowane jeszcze na v0.0.7 z innym `APP_HOST_PORT` pokażą `Sesja wygasła` i trzeba je zalogować ponownie.
+
+**Adres serwera.** Token telefonu jest ważny tylko dla adresu, pod którym zatwierdzono logowanie. Jeśli portal działa pod kilkoma adresami (np. IP w sieci lokalnej i domena), użytkownicy muszą parować telefon w portalu otwartym pod tym samym adresem, który mają w aplikacji. Inaczej aplikacja pokaże `Sesja wygasła`.
+
+**Własne zmiany CSS motywu.** Przeglądarki trzymają pliki motywu w pamięci podręcznej do 30 dni. Zmieniając CSS na tym samym Keycloak, zmień nazwę pliku, inaczej użytkownicy zobaczą stary wygląd.
+
+**Powrót do v0.0.23.** Obrazu `openksef-keycloak` nie ma dla wersji przed v0.0.24, więc samo `OPENKSEF_VERSION=v0.0.23` nie zadziała. Wróć do `docker-compose.yml` z wydania v0.0.23 i uruchom `docker compose up -d`. Realmu nie trzeba zmieniać. Portal wraca do formularza logowania, a zalogowane telefony zostają zalogowane. Keycloak bez motywu używa wbudowanego wyglądu i przy każdym wyświetleniu strony logowania zapisuje w logu `Failed to find LOGIN theme openksef`. Komunikat znika po ponownej aktualizacji.
 
 ## Reverse proxy i publiczny adres
 
@@ -400,7 +423,7 @@ Sekrety w `SystemConfigs` (secret klienta API, klucz relay, JSON Firebase, secre
 |----------|-------------|-----|
 | `GET /api/system/setup-status` | Anonimowy | Zwraca `{isInitialized: bool}` |
 | `POST /api/system/setup/authenticate` | Anonimowy | Waliduje dane admina KC, zwraca token |
-| `POST /api/system/setup/apply` | Token setup (X-Setup-Token) | Wykonuje pełną konfigurację |
+| `POST /api/system/setup/apply` | Token sesji kreatora z kroku 1 (nagłówek `X-Setup-Token`) | Wykonuje pełną konfigurację |
 
 Wszystkie endpointy setup są blokowane po inicjalizacji (zwracają 403).
 
