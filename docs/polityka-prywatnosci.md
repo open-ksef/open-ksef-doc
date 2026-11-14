@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 4 listopada 2026 r.*
+*Ostatnia aktualizacja: 14 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -41,17 +41,19 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 ### Dane faktur otrzymanych
 
 - Dane faktur pobrane z KSeF: nagłówek (numer, kwoty, daty, dane kontrahentów, numer rachunku sprzedawcy) i pozycje faktury (nazwa towaru lub usługi, ilość, ceny, stawka VAT)
+- Dane faktora (NIP, nazwa, numer rachunku), oznaczenia płatności z faktury (MPP, zapłata)
 - Status płatności faktury ustawiony przez użytkownika
 - Faktury są przechowywane w bazie danych instancji
 
 ### Dane faktur sprzedaży
 
-- Dane faktur sprzedaży pobrane z KSeF, także wystawionych w innym programie: numer, kwoty, daty i dane nabywcy.
+- Dane faktur sprzedaży pobrane z KSeF, także wystawionych w innym programie: numer, kwoty, daty i dane nabywcy oraz pozycje faktury.
 
 ### Dane faktur wystawionych
 
 - Dane sprzedawcy: NIP, nazwa, adres, numer rachunku
 - Dane nabywcy. Firma: NIP, nazwa, adres. Osoba prywatna: imię i nazwisko lub nazwa oraz adres, bez NIP
+- Nabywca zagraniczny: kraj, numer VAT UE lub numer podatkowy. Waluta i kurs. Rachunek zagraniczny sprzedawcy: IBAN, SWIFT, nazwa banku
 - Numer faktury, daty, kwoty i pozycje faktury
 - Po wysłaniu: plik XML, numer KSeF, UPO lub powód odrzucenia
 
@@ -82,12 +84,14 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 Aplikacja mobilna OpenKSeF obsługuje powiadomienia push w modelu warstwowym:
 
 1. **SignalR (lokalne)** — bezpośrednie połączenie WebSocket z Twoją instancją. Żadne dane nie opuszczają serwera.
-2. **Relay OpenKSeF** — Twoja instancja wysyła powiadomienie do serwera relay (`push.open-ksef.pl`), który przekazuje je do urządzenia przez Firebase Cloud Messaging (Android) lub Apple Push Notification service (iOS). Relay przetwarza wyłącznie: identyfikator i adres instancji, token urządzenia i treść powiadomienia. Przy nowej fakturze treść to nazwa sprzedawcy, kwota i waluta faktury oraz identyfikatory firmy i faktury w OpenKSeF. Gdy wystawiona faktura czeka na wyjaśnienie w KSeF, treść zawiera jej numer oraz identyfikatory firmy i faktury.
+2. **Relay OpenKSeF** — Twoja instancja wysyła powiadomienie do serwera relay (`push.open-ksef.pl`), który przekazuje je do urządzenia przez Firebase Cloud Messaging (Android) lub Apple Push Notification service (iOS). Relay przetwarza wyłącznie: identyfikator i adres instancji, token urządzenia i treść powiadomienia. Przy nowej fakturze treść to nazwa sprzedawcy, kwota i waluta faktury oraz identyfikatory firmy i faktury w OpenKSeF. Gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur. Gdy wystawiona faktura czeka na wyjaśnienie w KSeF, treść zawiera jej numer oraz identyfikatory firmy i faktury.
 3. **Bezpośrednie FCM/APNs** — jeśli właściciel instancji skonfigurował własny projekt Firebase, powiadomienia są wysyłane bezpośrednio, bez udziału relay.
 
 Relay `push.open-ksef.pl` prowadzą autorzy OpenKSeF. Administratorem danych w powiadomieniu jest właściciel instancji, z której ono pochodzi.
 
-Aplikacja rejestruje urządzenie do powiadomień po każdym zalogowaniu. W wydanych wersjach aplikacji (do 1.0.5) przełącznik **Powiadomienia push** na ekranie **Konto** nie wyłącza powiadomień. Aby przestać je otrzymywać, wybierz jeden ze sposobów:
+Od wersji 1.0.6 aplikacji push wyłączysz na ekranie **Konto** przełącznikiem **Powiadomienia push**. Aplikacja usuwa wtedy to urządzenie z serwera i instancja przestaje wysyłać na nie push. Ustawienie dotyczy tego telefonu i zostaje po wylogowaniu. Szczegóły: [Wyłączanie powiadomień w aplikacji](powiadomienia-push#wyłączanie-powiadomień-w-aplikacji).
+
+W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejestruje urządzenie po każdym zalogowaniu. Aby przestać je otrzymywać, zaktualizuj aplikację albo wybierz jeden ze sposobów:
 
 - Wyloguj się z aplikacji i usuń urządzenie w portalu: **Telefon** > **Moje urządzenia**. Przy następnym logowaniu urządzenie zarejestruje się ponownie.
 - Wyłącz powiadomienia dla aplikacji OpenKSeF w ustawieniach telefonu. Telefon przestanie je pokazywać, ale instancja może je nadal wysyłać.
@@ -98,11 +102,11 @@ Aplikacja rejestruje urządzenie do powiadomień po każdym zalogowaniu. W wydan
 
 - OpenKSeF **nie przekazuje** danych reklamodawcom ani firmom analitycznym.
 - Dane mogą być przekazywane do:
-  - **Ministerstwo Finansów, KSeF** — wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF.
+  - **Ministerstwo Finansów, KSeF** — NIP i token lub certyfikat KSeF, w celu pobierania faktur, oraz wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF.
   - **Ministerstwo Finansów, wykaz podatników VAT (biała lista)** — NIP wpisany przy użyciu przycisku **Pobierz z NIP**.
-  - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent).
+  - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory; gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent).
   - **Apple Push Notification service (Apple)** — token urządzenia i treść powiadomienia, jak wyżej, w celu dostarczenia powiadomień push na iOS.
-  - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze, jeśli właściciel skonfigurował SMTP.
+  - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze (gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), jeśli właściciel skonfigurował SMTP.
   - **Relay OpenKSeF** (`push.open-ksef.pl`) — jeśli włączona jest warstwa relay (domyślnie).
 
 ---
@@ -128,7 +132,7 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 - **Usunięcie** — możesz zażądać usunięcia konta i danych, zobacz <a href="#usuwanie-konta">Usuwanie konta i danych</a>
 - **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. OpenKSeF nie ma eksportu zbiorczego ani pobierania plików faktur otrzymanych. O pozostałe dane poproś właściciela instancji
 - **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie
-- **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push, w sposób opisany w sekcji 4
+- **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push: od wersji 1.0.6 aplikacji przełącznikiem **Powiadomienia push** na ekranie **Konto**, w starszych wersjach w sposób opisany w sekcji 4
 - **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych
 
 Skargę wnosisz bezpośrednio do Prezesa UODO. W pozostałych sprawach skontaktuj się z właścicielem swojej instancji OpenKSeF.
