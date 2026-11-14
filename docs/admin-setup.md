@@ -305,6 +305,31 @@ Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse prox
 
 **Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web` i `gateway`, np. `OPENKSEF_VERSION=v1.2.3`. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
 
+## Keycloak 26.8: aktualizacja i wycofanie
+
+Od v0.0.25 Keycloak to obraz `openksef-keycloak` na bazie `quay.io/keycloak/keycloak:26.8.2`. Pierwszy start nowego obrazu migruje bazę `keycloak`. Migracja działa tylko w przód: nie ma downgrade'u, a starszy obraz Keycloak nie może wystartować na zmigrowanej bazie.
+
+Aktualizacja:
+
+1. Zrób kopię bazy Keycloak i sprawdź zrzut: `docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc keycloak' > before-keycloak-26-8.dump`, potem `docker compose exec -T postgres pg_restore -l < before-keycloak-26-8.dump > /dev/null; echo "exit=$?"` musi wypisać `exit=0`.
+2. Ustaw `OPENKSEF_VERSION` w `.env` na tag wydania, np. `v0.0.25`. Nie uruchamiaj Keycloak z `:latest`.
+3. `docker compose pull && docker compose up -d`. Poczekaj na `Keycloak 26.8.2 ... started` w `docker compose logs keycloak`.
+4. Sprawdź logowanie hasłem i, jeśli skonfigurowane, przez Google. Istniejące sesje i tokeny odświeżania aplikacji pozostają ważne. Użytkownicy przeglądarki mogą musieć zalogować się ponownie.
+5. Rejestracja włączona: otwórz **Ustawienia** i zapisz raz. Keycloak 26.8.2 przyjmuje tokeny Admin API tylko ze scope klienta `kc-admin-api`, a zapis przypisuje go do `openksef-api`. Do tego czasu rejestracja zwraca 503.
+
+Własny compose z `start-dev` albo `--features=token-exchange,admin-fine-grained-authz` musi używać `command: start` z dołączonego `docker-compose.yml`. Usuń `KC_HOSTNAME_STRICT_HTTPS`: Keycloak 26 go ignoruje.
+
+Wycofanie: przywróć zrzut i wróć do `docker-compose.yml` oraz tagu poprzedniego wydania. Zatrzymaj Keycloak, utwórz od nowa bazę `keycloak` z właścicielem `KC_DB_USERNAME` (domyślnie `POSTGRES_USER`), przywróć zrzut, ustaw `OPENKSEF_VERSION` na poprzedni tag i uruchom. Na `:latest` lub nowym tagu Keycloak 26.8 ponownie zmigruje przywróconą bazę. Wszystko, co zapisano w Keycloak po zrzucie, przepada: nowi użytkownicy, zmiany haseł, zmiany realmu. Tokeny odświeżania wydane przed zrzutem działają dalej.
+
+```bash
+docker compose stop keycloak
+KC_OWNER=$(docker inspect openksef-keycloak --format '{{range .Config.Env}}{{println .}}{{end}}' | sed -n 's/^KC_DB_USERNAME=//p')
+docker compose exec -T -e KC_OWNER="$KC_OWNER" postgres sh -c 'dropdb -U "$POSTGRES_USER" keycloak && createdb -U "$POSTGRES_USER" -O "$KC_OWNER" keycloak'
+docker compose exec -T -e KC_OWNER="$KC_OWNER" postgres sh -c 'pg_restore -U "$POSTGRES_USER" -d keycloak --no-owner --role="$KC_OWNER"' < before-keycloak-26-8.dump
+# ustaw w .env OPENKSEF_VERSION na poprzedni tag
+docker compose pull keycloak && docker compose up -d keycloak
+```
+
 ## Aktualizacja do v0.0.12
 
 Z wersji v0.0.11, przed pobraniem obrazów:
