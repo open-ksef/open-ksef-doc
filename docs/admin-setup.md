@@ -39,6 +39,16 @@ Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PAS
 | Imię / Nazwisko | Opcjonalne dane użytkownika | Admin |
 | NIP | NIP pierwszej firmy | *(wymagany)* |
 | Nazwa firmy | Opcjonalna nazwa firmy | *(brak)* |
+| Nazwa administratora danych | Osoba lub firma, która odpowiada za dane w tej instancji | *(wymagana, do 200 znaków)* |
+| Kontakt do administratora danych | E-mail albo adres do korespondencji | *(wymagany, do 300 znaków)* |
+
+#### Administrator danych
+
+![Krok 2 - administrator danych](/img/screenshots/portal/admin-setup-step2-data-controller.png)
+
+Instancja należy do Ciebie, więc to Ty jesteś administratorem danych osobowych, które w niej przetwarzasz (RODO, art. 13 ust. 1 lit. a). Wpisz nazwę i kontakt. Bez obu pól przycisk **Dalej** nie przejdzie dalej.
+
+Obie wartości są **publiczne**: pokazuje je strona [Prywatność](#strona-prywatność) także osobom niezalogowanym. Nie wpisuj prywatnego adresu domowego, jeśli nie chcesz go publikować. Wystarczy e-mail, np. `rodo@firma.pl`. Dane zmienisz później w [Ustawieniach](#administrator-danych-w-ustawieniach).
 
 ### Krok 3: Autoryzacja i e-mail
 
@@ -104,6 +114,35 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 8. Konfiguruje Google IdP (jeśli podano)
 9. Zapisuje całą konfigurację w bazie danych
 10. Przekierowuje na stronę logowania
+
+## Administrator danych w Ustawieniach
+
+![Ustawienia - administrator danych](/img/screenshots/portal/settings-data-controller.png)
+
+**Ustawienia** > **Administracja** > **Administrator danych**. Zmień nazwę lub kontakt, gdy zmieni się właściciel instancji albo adres kontaktowy, i kliknij **Zapisz zmiany**. Gdy dane są już zapisane, oba pola muszą zostać wypełnione: nie da się ich wyczyścić.
+
+## Strona Prywatność
+
+![Strona Prywatność](/img/screenshots/portal/privacy.png)
+
+Portal ma publiczną stronę `/privacy` (link **Prywatność** w stopce portalu i na stronie logowania). Działa bez logowania. Pokazuje:
+
+- nazwę i kontakt administratora danych; e-mail jest linkiem `mailto:`, adres pocztowy zwykłym tekstem,
+- jak zgłosić sprawę dotyczącą danych i że można złożyć skargę do Prezesa UODO,
+- jakie dane przechowuje instancja, gdzie i jak długo, do kogo mogą trafić,
+- link do pełnej [polityki prywatności](polityka-prywatnosci) oprogramowania OpenKSeF.
+
+Jeśli administrator nie podał danych, strona mówi, że administratorem jest właściciel instancji, i każe zapytać o nazwę i kontakt osobę, która dała dostęp:
+
+![Strona Prywatność bez danych administratora](/img/screenshots/portal/privacy-fallback.png)
+
+## Aktualizacja: administrator danych
+
+Instancje skonfigurowane przed tą wersją nie mają nazwy ani kontaktu administratora danych. Użytkownicy z rolą `openksef-admin` widzą wtedy na każdej stronie portalu baner:
+
+![Baner - brak administratora danych](/img/screenshots/portal/data-controller-banner.png)
+
+Baner nie blokuje pracy. Kliknij **Uzupełnij w ustawieniach**, wpisz oba pola i zapisz. Baner znika, gdy oba pola są wypełnione. Pamiętaj, że dane są publiczne na stronie [Prywatność](#strona-prywatność).
 
 ## Klucz szyfrowania
 
@@ -398,7 +437,7 @@ Sekrety w `SystemConfigs` (secret klienta API, klucz relay, JSON Firebase, secre
 
 | Endpoint | Autoryzacja | Cel |
 |----------|-------------|-----|
-| `GET /api/system/setup-status` | Anonimowy | Zwraca `{isInitialized: bool}` |
+| `GET /api/system/setup-status` | Anonimowy | Zwraca `isInitialized`, `registrationAllowed`, `dataControllerName`, `dataControllerContact` |
 | `POST /api/system/setup/authenticate` | Anonimowy | Waliduje dane admina KC, zwraca token |
 | `POST /api/system/setup/apply` | Token setup (X-Setup-Token) | Wykonuje pełną konfigurację |
 
