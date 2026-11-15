@@ -111,6 +111,12 @@ Pliki pobierzesz w portalu przyciskami **Pobierz XML**, **Pobierz UPO** i **Pobi
 
 Odrzucona faktura **zachowuje swój numer**. Zobaczysz kod i opis błędu z KSeF. **Popraw i wyślij ponownie** wysyła poprawioną fakturę z tym samym numerem.
 
+Faktura odrzucona przez KSeF **nie została wystawiona**. Nie wystawiaj do niej korekty i nie anuluj jej. Popraw dane i wyślij ją ponownie pod tym samym numerem. Numery mogą wtedy trafić do KSeF poza kolejnością, co nie wymaga korekty ([Podręcznik KSeF 2.0 cz. II](https://ksef.podatki.gov.pl/media/rronoxyt/podrecznik-ksef-20-cz-ii-wystawianie-i-otrzymywanie-faktur-w-ksef-06082026.pdf), pkt 1.6.1 i 1.6.7; [pytania i odpowiedzi KSeF 2.0](https://ksef.podatki.gov.pl/pytania-i-odpowiedzi-ksef-20/), pytanie 20).
+
+### Data wystawienia przy późniejszej wysyłce
+
+Data wystawienia w formularzu to prawna data wystawienia faktury (`P_1`), także gdy wyślesz fakturę ponownie kilka dni później. KSeF sam oznaczy taką fakturę jako wystawioną w trybie offline, a datą wystawienia zostanie data z formularza, nie data wysyłki (art. 106nda ust. 10 i 16 ustawy o VAT). Sprawdź więc tę datę przed ponowną wysyłką.
+
 ### Data zostaje w okresie numeru
 
 Numer zawiera okres, więc datę wystawienia możesz zmienić tylko w jego obrębie. Dla numeru `FV/7/11/2026` jest to listopad 2026 r. Inna data zostanie odrzucona komunikatem:
@@ -122,6 +128,8 @@ Numer zawiera okres, więc datę wystawienia możesz zmienić tylko w jego obrę
 **Kopiuj jako nową** tworzy szkic z tym samym nabywcą i pozycjami, z dzisiejszą datą wystawienia i sprzedaży, terminem płatności za 14 dni i bez numeru. Numer dostanie przy wystawieniu.
 
 Skopiowanie odrzuconej faktury nie usuwa jej ani nie zwalnia jej numeru. Odrzucona faktura zostaje na liście i pokazuje, dlaczego ten numer nie został wykorzystany. Nie można jej usunąć.
+
+Przepisy ani Ministerstwo Finansów nie opisują numeru, który został niewykorzystany. W praktyce spisuje się krótkie oświadczenie o przyczynie luki w numeracji i przechowuje je w dokumentacji podatkowej, bez korekty. To zwyczaj, nie obowiązek wynikający z przepisów. Zachowaj też odrzuconą fakturę: filtr **Odrzucone** w menu **Wystawione** pokaże ją księgowemu. W razie wątpliwości [zapytaj księgowego](#zapytaj-księgowego).
 
 ### Kod 440: numer jest już w KSeF
 
