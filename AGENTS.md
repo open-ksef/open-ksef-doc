@@ -45,7 +45,8 @@ docs/
     szybki-start.md           # docker-compose.yml, .env, docker compose up, kreator
     konfiguracja.md           # Zmienne środowiskowe, KSeF test/prod
   admin-setup.md              # Kreator konfiguracji (wizard krok po kroku)
-  logowanie.md                # Strona logowania, Google OAuth, rejestracja
+  logowanie.md                # Strona logowania, nie pamiętasz hasła, Google OAuth, rejestracja
+  weryfikacja-dwuetapowa.md   # 2FA TOTP: włączenie, kody zapasowe, Bezpieczeństwo, reset admina, konsola
   token-ksef.md               # Jak uzyskać token KSeF i gdzie go wkleić
   certyfikat-ksef.md          # Certyfikat KSeF (Uwierzytelnianie) zamiast tokenu, ważność, odnowienie
   faktury.md                  # Lista, szczegóły, pozycje, status płatności, przelew/QR, resynchronizacja
@@ -70,10 +71,10 @@ docs/
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (strona logowania Keycloak, dashboard, admin-setup kroki 1-3, 5, 6, lista faktur, szczegóły, pozycje, opłacona, QR, strona Telefon, zatwierdzenie parowania, telefon zalogowany), tylko jasny motyw
+`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (strona logowania, weryfikacja dwuetapowa: włączenie, kody zapasowe, kod; Ustawienia > Bezpieczeństwo, reset weryfikacji, dashboard, admin-setup kroki 1-3, 5, 6, lista faktur, szczegóły, pozycje, opłacona, QR), tylko jasny motyw
 `static/img/screenshots/home/` -- screeny na stronę główną (start, start na telefonie, lista, płatność), jasny i ciemny motyw
 
-`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (ekran logowania, kod parowania), w docs przez `<img width="320">`
+Screenów aplikacji mobilnej brak (nie ma folderu `mobile/`).
 
 Screeny zawierają wyłącznie dane fikcyjne (np. NIP 1111111111, nazwy "Przykład"). Żadnych prawdziwych NIP-ów, numerów KSeF, nazw firm ani adresów serwerów.
 

@@ -5,18 +5,28 @@ title: Strona logowania
 
 # Konfiguracja strony logowania
 
-![Strona logowania](/img/screenshots/portal/login.png)
+![Strona logowania: Email, Hasło, Nie pamiętasz hasła?, Zaloguj przez Google](/img/screenshots/portal/login.png)
 
-Od v0.0.24 portal `/login` przekierowuje na polską stronę logowania OpenKSeF, którą wyświetla Keycloak (Authorization Code + PKCE, motyw `openksef`). Po zalogowaniu wracasz na stronę portalu, którą otwierałeś. Strona logowania obsługuje:
+Portal `/login` przekierowuje na stronę logowania OpenKSeF. Wyświetla ją Keycloak (Authorization Code + PKCE) w motywie `openksef`, który wygląda jak portal. Po zalogowaniu wracasz na stronę portalu, którą otwierałeś. Na stronie logowania są:
 
-- **Login i hasło**
-- **Logowanie przez Google** -- Keycloak IdP brokering, gdy skonfigurowano [Google OAuth](#logowanie-google-oauth-opcjonalne)
-- **Rejestrację** -- link **Zarejestruj się**, gdy rejestracja jest włączona w **Ustawieniach**
-- Reset hasła, gdy w **Ustawieniach** skonfigurowano SMTP i włączono reset hasła
+- **Email i hasło**, potem kod z aplikacji uwierzytelniającej, zobacz [Weryfikacja dwuetapowa](weryfikacja-dwuetapowa)
+- **Zaloguj przez Google** -- gdy skonfigurowano [Google OAuth](#logowanie-google-oauth-opcjonalne). Bez kodu z aplikacji
+- **Zarejestruj się** -- gdy rejestracja jest włączona w **Ustawieniach**. Nowe konto od razu ustawia weryfikację dwuetapową
+- **Nie pamiętasz hasła?** -- gdy w **Ustawieniach** skonfigurowano SMTP i włączono reset hasła, zobacz [Nie pamiętasz hasła](#nie-pamiętasz-hasła)
 
-Ta sama strona loguje aplikację mobilną od wersji 1.0.9. Telefon możesz też zalogować kodem zatwierdzonym w portalu, bez hasła na telefonie: [Sparuj z portalem](aplikacja-mobilna#sparuj-z-portalem).
+Wszystkie strony logowania (rejestracja, nowe hasło, potwierdzenie e-maila, weryfikacja dwuetapowa, komunikaty o błędach) są po polsku, w tym samym wyglądzie. Wylogowanie nie pyta o potwierdzenie i wraca na stronę logowania.
 
-**Wyloguj wszystkie urządzenia** na stronie **Telefon** (od v0.0.23) wylogowuje aplikację mobilną na każdym telefonie i portal we wszystkich przeglądarkach, także w tej. Telefony przestają dostawać powiadomienia. Użyj tego po utracie telefonu albo gdy zatwierdziłeś kod, który nie pochodził z Twojego telefonu.
+Zmianę hasła, weryfikację dwuetapową i listę zalogowanych urządzeń znajdziesz w portalu: **Ustawienia** > **Bezpieczeństwo**. Adres `/auth/realms/openksef/account` też tam prowadzi. **Wyloguj wszystkie urządzenia** (na tej zakładce i na stronie **Telefon**) wylogowuje aplikację mobilną na każdym telefonie i portal we wszystkich przeglądarkach, także w tej. Telefony przestają dostawać powiadomienia. Użyj tego po utracie telefonu.
+
+Bez obrazu `openksef-keycloak`, na oficjalnym obrazie Keycloak, logowanie działa tak samo, ale strony mają wbudowany wygląd Keycloak.
+
+## Nie pamiętasz hasła
+
+1. Na stronie logowania naciśnij **Nie pamiętasz hasła?**, wpisz e-mail i naciśnij **Wyślij link**. Strona nie mówi, czy konto istnieje.
+2. Otwórz link z e-maila.
+3. Ustaw nowe hasło. Konto z weryfikacją dwuetapową najpierw wpisuje kod z aplikacji albo kod zapasowy. Konto bez weryfikacji ustawia ją po drodze.
+
+Nowe hasło nie wyłącza weryfikacji dwuetapowej. Zgubiłeś telefon i kody zapasowe: [reset przez administratora](weryfikacja-dwuetapowa#zgubiony-telefon-i-kody-reset-przez-administratora).
 
 ## Logowanie Google OAuth (opcjonalne)
 
@@ -40,9 +50,9 @@ Przykłady:
 
 ## Rejestracja użytkowników
 
-Portal od v0.0.24 i aplikacja od wersji 1.0.9 zakładają konto na stronie logowania Keycloak. To działa bez dodatkowej konfiguracji.
+Portal zakłada konto na stronie logowania: **Zarejestruj się** jest widoczne, gdy rejestracja jest włączona w **Ustawieniach**. To działa bez dodatkowej konfiguracji.
 
-Ta sekcja dotyczy tylko formularza **Załóż konto** w aplikacji mobilnej 1.0.8 i starszej. Formularz używa `POST /api/account/register` (Keycloak Admin API). Kreator zapisuje secret klienta `openksef-api` tylko w bazie i nie nadaje kontu serwisowemu ról `manage-users` ani `view-realm`. Dlatego na instalacji z kreatora z włączoną rejestracją ten formularz zwraca `503`. Użytkownik takiej aplikacji zakłada konto w portalu albo loguje się przez Google (jeśli skonfigurowano). Formularz zadziała po [konfiguracji ręcznej](#konfiguracja-ręczna).
+Dalej tylko o formularzu **Załóż konto** w aplikacji mobilnej (1.0.8 i starsze). Formularz używa `POST /api/account/register` (Keycloak Admin API). Kreator zapisuje secret klienta `openksef-api` tylko w bazie i nie nadaje kontu serwisowemu ról `manage-users` ani `view-realm`. Dlatego na instalacji z kreatora z włączoną rejestracją ten formularz zwraca `503`. Użytkownik takiej aplikacji zakłada konto w portalu albo loguje się przez Google (jeśli skonfigurowano). Formularz zadziała po [konfiguracji ręcznej](#konfiguracja-ręczna).
 
 Każde żądanie czyta realm: rejestracja wyłączona zwraca `403`, a nieudany odczyt `503`. W obu przypadkach konto nie powstaje.
 

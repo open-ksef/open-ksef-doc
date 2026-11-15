@@ -98,11 +98,11 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 2. Tworzy klienty OAuth: `openksef-api`, `openksef-mobile`, `openksef-portal-web`
 3. Pobiera secret klienta API z Keycloak
 4. Aktualizuje URI przekierowań z zewnętrznym URL
-5. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP, [blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach)), polską stronę logowania z motywem `openksef` i [parowanie telefonu kodem](aplikacja-mobilna#sparuj-z-portalem)
+5. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP, [blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach)), polskie strony logowania z motywem `openksef` i [weryfikację dwuetapową](weryfikacja-dwuetapowa)
 6. Tworzy konto admina w Keycloak, rolę realmu `openksef-admin` i przypisuje ją temu kontu
 7. Konfiguruje Google IdP (jeśli podano)
 8. Zapisuje całą konfigurację w bazie danych
-9. Przekierowuje na stronę logowania
+9. Przekierowuje na stronę logowania. Pierwsze logowanie hasłem prosi o [włączenie weryfikacji dwuetapowej](weryfikacja-dwuetapowa#pierwsze-logowanie-włącz-weryfikację), także konto admina
 
 ## Klucz szyfrowania
 
@@ -339,7 +339,7 @@ Skrypt usuwa tylko faktury wystawione i ich pozycje. Nie ma w nich danych użytk
 
 ## Aktualizacja do v0.0.24
 
-v0.0.24 zmienia obraz Keycloak na `ghcr.io/open-ksef/openksef-keycloak` (Keycloak 26.0 z motywem OpenKSeF) i uruchamia go poleceniem `start` bez `--features`. Portal loguje na polskiej stronie logowania Keycloak, a telefon można zalogować [kodem z portalu](aplikacja-mobilna#sparuj-z-portalem). Wszystkie strony zostają pod `/auth/`, więc reverse proxy nie wymaga zmian.
+v0.0.24 zmienia obraz Keycloak na `ghcr.io/open-ksef/openksef-keycloak` (Keycloak 26.0) i uruchamia go poleceniem `start` bez `--features`. Portal nadal loguje własnym formularzem, wygląd logowania się nie zmienia.
 
 1. **Zrób kopię zapasową obu baz:**
    ```bash
@@ -348,18 +348,42 @@ v0.0.24 zmienia obraz Keycloak na `ghcr.io/open-ksef/openksef-keycloak` (Keycloa
    ```
 2. **Rola `openksef-admin`.** Instalacja z v0.0.11 lub starszej, która jej jeszcze nie ma: nadaj ją według [Aktualizacja do v0.0.12](#aktualizacja-do-v0012), krok 2. Bez niej zapis **Ustawień** w kroku 4 zwraca 403.
 3. **Nowy plik compose:** pobierz `docker-compose.yml` z wydania v0.0.24 i zastąp nim stary plik. Nowy plik nie potrzebuje `--features` w usłudze `keycloak`. Jeśli `.env` ma `OPENKSEF_VERSION`, ustaw `OPENKSEF_VERSION=v0.0.24` albo usuń tę linię. Potem `docker compose pull && docker compose up -d`.
-4. **Zapisz Ustawienia raz:** otwórz **Ustawienia** w portalu i zapisz je. Zapis włącza parowanie telefonu kodem, polskie teksty i motyw strony logowania oraz zapis zdarzeń logowania w Keycloak (przez 30 dni). Bez tego zapisu logowanie działa, ale strona logowania jest po angielsku, a aplikacja zgłasza, że serwer nie obsługuje parowania.
-5. **Sprawdź:** `<adres>/auth/realms/openksef/.well-known/openid-configuration` zawiera `device_authorization_endpoint`, a `<adres>/auth/realms/openksef/account/` pokazuje polską stronę logowania OpenKSeF.
+4. **Zapisz Ustawienia raz:** otwórz **Ustawienia** w portalu i zapisz je. Zapis ustawia polskie teksty stron Keycloak, zapis zdarzeń logowania (przez 30 dni) i sprawdza, czy rejestracja naprawdę działa. Jeśli rejestracja jest włączona i rola `manage-users` była nadana ręcznie, ten zapis jest konieczny.
 
 Zalogowani użytkownicy portalu i aplikacji zostają zalogowani. Od zapisu **Ustawień** logowanie w aplikacji wygasa po 30 dniach bez użycia i najpóźniej 365 dni po zalogowaniu, także na telefonach zalogowanych wcześniej.
 
 **Instalacja z v0.0.7 na porcie innym niż 8080.** Gateway z v0.0.7 wpisywał do tokenów wewnętrzny port 8080, nowszy wpisuje adres, pod którym otwierasz serwer. Telefony zalogowane jeszcze na v0.0.7 z innym `APP_HOST_PORT` pokażą `Sesja wygasła` i trzeba je zalogować ponownie.
 
-**Adres serwera.** Token telefonu jest ważny tylko dla adresu, pod którym zatwierdzono logowanie. Jeśli portal działa pod kilkoma adresami (np. IP w sieci lokalnej i domena), użytkownicy muszą parować telefon w portalu otwartym pod tym samym adresem, który mają w aplikacji. Inaczej aplikacja pokaże `Sesja wygasła`.
+**Powrót do v0.0.23.** Obrazu `openksef-keycloak` nie ma dla wersji przed v0.0.24, więc samo `OPENKSEF_VERSION=v0.0.23` nie zadziała. Wróć do `docker-compose.yml` z wydania v0.0.23 i uruchom `docker compose up -d`. Realmu nie trzeba zmieniać, zalogowane telefony zostają zalogowane.
+
+## Aktualizacja: nowe strony logowania i weryfikacja dwuetapowa
+
+To wydanie przenosi logowanie portalu na strony logowania OpenKSeF (Keycloak w motywie `openksef`, ten sam wygląd co portal) i wymaga [weryfikacji dwuetapowej](weryfikacja-dwuetapowa) przy logowaniu hasłem. Wymaga obrazu `openksef-keycloak` z tego samego wydania (Keycloak 26.8). Na Keycloak starszym niż 26.4 zapis **Ustawień** pomija weryfikację dwuetapową i zapisuje ostrzeżenie w logu API.
+
+1. **Zrób kopię zapasową obu baz**, jak w [Aktualizacja do v0.0.24](#aktualizacja-do-v0024), krok 1, do nowych plików.
+2. **Nowy plik compose:** pobierz `docker-compose.yml` z wydania i zastąp nim stary plik, potem `docker compose pull && docker compose up -d`. API przy starcie dodaje jedną tabelę (`AuditEvents`, zapis resetów weryfikacji).
+3. **Zapisz Ustawienia raz:** **Ustawienia** > **Administracja**, zaloguj się jako administrator Keycloak i zapisz. Zapis włącza motyw stron logowania, weryfikację dwuetapową i kody zapasowe oraz przekierowuje `/auth/realms/openksef/account` do **Ustawienia** > **Bezpieczeństwo**. Drugi zapis niczego nie zmienia.
+4. **Reset weryfikacji w portalu (opcjonalnie):** nadaj kontu serwisowemu `openksef-api` rolę `manage-users`, zobacz [Zgubiony telefon i kody](weryfikacja-dwuetapowa#zgubiony-telefon-i-kody-reset-przez-administratora). Bez niej reset robisz w konsoli Keycloak.
+5. **Sprawdź:** `/login` pokazuje stronę z tytułem **Logowanie – OpenKSeF**. Pierwsze logowanie hasłem prosi o włączenie weryfikacji dwuetapowej. Logowanie przez Google o nic nie pyta.
+
+Co zobaczą użytkownicy:
+
+- Każde konto z hasłem włącza weryfikację przy najbliższym logowaniu hasłem w portalu, także konto admina. Konta Google nic nie zmieniają.
+- Zalogowane telefony zostają zalogowane, także po włączeniu weryfikacji.
+- Aplikacja 1.0.8 nie ma pola na kod: konto z włączoną weryfikacją nie zaloguje się w niej hasłem, tylko przez Google. Uprzedź użytkowników, żeby zalogowali się w aplikacji przed pierwszym logowaniem do portalu po aktualizacji.
 
 **Własne zmiany CSS motywu.** Przeglądarki trzymają pliki motywu w pamięci podręcznej do 30 dni. Zmieniając CSS na tym samym Keycloak, zmień nazwę pliku, inaczej użytkownicy zobaczą stary wygląd.
 
-**Powrót do v0.0.23.** Obrazu `openksef-keycloak` nie ma dla wersji przed v0.0.24, więc samo `OPENKSEF_VERSION=v0.0.23` nie zadziała. Wróć do `docker-compose.yml` z wydania v0.0.23 i uruchom `docker compose up -d`. Realmu nie trzeba zmieniać. Portal wraca do formularza logowania, a zalogowane telefony zostają zalogowane. Keycloak bez motywu używa wbudowanego wyglądu i przy każdym wyświetleniu strony logowania zapisuje w logu `Failed to find LOGIN theme openksef`. Komunikat znika po ponownej aktualizacji.
+**Wycofanie.**
+
+- Obraz portalu z poprzedniego wydania (własny formularz logowania) działa tylko, dopóki nikt nie włączył weryfikacji. Sprawdź to w bazie Keycloak, wynik musi być `0`:
+  ```bash
+  echo "SELECT count(*) FROM credential WHERE type='otp';" | docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d keycloak -tA'
+  ```
+  Przy wyniku większym niż `0` konta z weryfikacją nie zalogują się starym formularzem. Zostań przy nowym portalu.
+- Wyłączenie weryfikacji w awarii: konsola Keycloak, realm `openksef` > **Authentication**, przypisz z powrotem wbudowane przepływy `browser`, `registration` i `reset credentials`. Zapisane aplikacje uwierzytelniające zostają. Następny zapis **Ustawień** włącza weryfikację ponownie.
+- Oficjalny obraz Keycloak zamiast `openksef-keycloak`: logowanie i weryfikacja działają, strony mają wbudowany wygląd Keycloak.
+- Tabela `AuditEvents` zostaje po powrocie do poprzedniego obrazu API i niczemu nie przeszkadza.
 
 ## Reverse proxy i publiczny adres
 
