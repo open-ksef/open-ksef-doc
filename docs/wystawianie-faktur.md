@@ -129,7 +129,7 @@ Numer zawiera okres, więc datę wystawienia możesz zmienić tylko w jego obrę
 
 Skopiowanie odrzuconej faktury nie usuwa jej ani nie zwalnia jej numeru. Odrzucona faktura zostaje na liście i pokazuje, dlaczego ten numer nie został wykorzystany. Nie można jej usunąć.
 
-Przepisy ani Ministerstwo Finansów nie opisują numeru, który został niewykorzystany. W praktyce spisuje się krótkie oświadczenie o przyczynie luki w numeracji i przechowuje je w dokumentacji podatkowej, bez korekty. To zwyczaj, nie obowiązek wynikający z przepisów. Zachowaj też odrzuconą fakturę: filtr **Odrzucone** w menu **Wystawione** pokaże ją księgowemu. W razie wątpliwości [zapytaj księgowego](#zapytaj-księgowego).
+Nie znaleźliśmy przepisu ani wyjaśnień Ministerstwa Finansów o numerze, który pozostał niewykorzystany. W praktyce spisuje się krótkie oświadczenie o przyczynie luki w numeracji i przechowuje je w dokumentacji podatkowej, bez korekty. To zwyczaj, nie obowiązek wynikający z przepisów. Zachowaj też odrzuconą fakturę: filtr **Odrzucone** w menu **Wystawione** pokaże ją księgowemu. W razie wątpliwości zapytaj księgowego lub doradcę podatkowego.
 
 ### Kod 440: numer jest już w KSeF
 
