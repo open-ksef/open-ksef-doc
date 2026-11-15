@@ -196,7 +196,7 @@ Zamknij tego klienta, np. narzędzie bazodanowe z otwartą transakcją. `pg_term
 
 ### Wycofanie aktualizacji
 
-Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` usług `api`, `worker`, `portal-web` i `gateway` w `docker-compose.yml`, potem uruchom `docker compose up -d`. Plik z v0.0.24 lub nowszego ma też obraz `openksef-keycloak`, którego nie ma dla starszych tagów: wtedy wróć plikiem compose z poprzedniego wydania, zobacz [Aktualizacja do v0.0.24](#aktualizacja-do-v0024).
+Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` usług `api`, `worker`, `portal-web` i `gateway` w `docker-compose.yml`, potem uruchom `docker compose up -d`. Plik z v0.0.24 lub nowszego ma też obraz `openksef-keycloak`, którego nie ma dla starszych tagów: wtedy wróć plikiem compose z poprzedniego wydania, zobacz [Aktualizacja do v0.0.24](#aktualizacja-do-v0024). Po aktualizacji z nowymi stronami logowania i weryfikacją dwuetapową nie cofaj Keycloak ani przez `OPENKSEF_VERSION`, ani starym plikiem compose: zobacz [Wycofanie](#aktualizacja-nowe-strony-logowania-i-weryfikacja-dwuetapowa) w tamtej sekcji.
 
 | Sytuacja | Efekt |
 |---|---|
@@ -376,13 +376,13 @@ Co zobaczą użytkownicy:
 
 **Wycofanie.**
 
-- Obraz portalu z poprzedniego wydania (własny formularz logowania) działa tylko, dopóki nikt nie włączył weryfikacji. Sprawdź to w bazie Keycloak, wynik musi być `0`:
+- Obraz portalu z poprzedniego wydania (własny formularz logowania) działa tylko, dopóki nikt nie włączył weryfikacji. Zmień tag tylko w linii `image:` usługi `portal-web`, nie przez `OPENKSEF_VERSION` ani stary plik compose. Obrazu `keycloak` nie cofaj: Keycloak nie obsługuje powrotu do starszej wersji na zaktualizowanej bazie. Sprawdź w bazie Keycloak, czy ktoś włączył weryfikację, wynik musi być `0`:
   ```bash
   echo "SELECT count(*) FROM credential WHERE type='otp';" | docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d keycloak -tA'
   ```
   Przy wyniku większym niż `0` konta z weryfikacją nie zalogują się starym formularzem. Zostań przy nowym portalu.
 - Wyłączenie weryfikacji w awarii: konsola Keycloak, realm `openksef` > **Authentication**, przypisz z powrotem wbudowane przepływy `browser`, `registration` i `reset credentials`. Zapisane aplikacje uwierzytelniające zostają. Następny zapis **Ustawień** włącza weryfikację ponownie.
-- Oficjalny obraz Keycloak zamiast `openksef-keycloak`: logowanie i weryfikacja działają, strony mają wbudowany wygląd Keycloak.
+- Oficjalny obraz `quay.io/keycloak/keycloak:26.8.2` zamiast `openksef-keycloak`: logowanie i weryfikacja działają, strony mają wbudowany wygląd Keycloak.
 - Tabela `AuditEvents` zostaje po powrocie do poprzedniego obrazu API i niczemu nie przeszkadza.
 
 ## Reverse proxy i publiczny adres

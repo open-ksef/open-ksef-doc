@@ -64,7 +64,7 @@ Z serwerem OpenKSeF starszym niż 0.0.8 aplikacja (od wersji 1.0.6) nie pokazuje
 3. Zaloguj się e-mailem i hasłem z portalu albo przyciskiem **Zaloguj przez Google**
 
 :::warning[Weryfikacja dwuetapowa]
-Aplikacja 1.0.8 nie ma pola na kod z aplikacji uwierzytelniającej. Konto z włączoną [weryfikacją dwuetapową](weryfikacja-dwuetapowa) nie zaloguje się w niej hasłem: aplikacja pokaże `Nieprawidłowy email lub hasło.` Zaloguj się przez Google. Telefon zalogowany wcześniej zostaje zalogowany.
+Aplikacja 1.0.8 nie ma pola na kod z aplikacji uwierzytelniającej. Konto z włączoną [weryfikacją dwuetapową](weryfikacja-dwuetapowa) nie zaloguje się w niej hasłem: aplikacja pokaże `Nieprawidłowy email lub hasło.` Zaloguj się przez Google, jeśli administrator go skonfigurował, a serwer ma adres https://. Telefon zalogowany wcześniej zostaje zalogowany.
 :::
 
 :::tip[Szybkie połączenie]
