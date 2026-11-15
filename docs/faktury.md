@@ -41,6 +41,21 @@ Kliknij fakturę na liście, aby zobaczyć jej szczegóły: numery, sprzedawcę 
 
 Przy fakturze w walucie obcej wiersz VAT nazywa się **VAT w przeliczeniu na PLN**. Netto i brutto są w walucie faktury, więc netto plus VAT nie daje brutto.
 
+### Pobierz XML i Pobierz PDF
+
+Przyciski są pod kwotami i numerem KSeF, w portalu. Ta sama strona pokazuje też [sprzedaż z innych programów](wystawianie-faktur#faktury-spoza-openksef).
+
+- **Pobierz XML** pobiera oryginalny plik XML faktury z KSeF, bajt w bajt, jako `<numer KSeF>.xml`. OpenKSeF zapisuje ten plik przy synchronizacji, więc pobranie nie łączy się z KSeF.
+- **Pobierz PDF** tworzy PDF z zapisanego pliku XML generatorem Ministerstwa Finansów, jako `<numer KSeF>.pdf`. PDF zawiera numer KSeF i kod QR **KOD I**. PDF powstaje w przeglądarce i nie trafia do KSeF.
+- **KOD I** to link do strony weryfikacji KSeF, z NIP sprzedawcy, datą wystawienia (`P_1`) i skrótem SHA-256 pliku XML. Po zeskanowaniu kodu strona KSeF potwierdza, że faktura jest w KSeF, i pokazuje jej numer.
+- PDF to wizualizacja. Fakturą jest plik XML w KSeF.
+- Gdy generator MF nie obsługuje formatu faktury, portal pokazuje `Format faktury nieobsługiwany przez generator PDF MF. Pobierz XML.` Plik XML pobierzesz wtedy bez zmian.
+- Przy innym błędzie generowania portal pokazuje `Nie udało się wygenerować PDF.`
+
+Dopóki OpenKSeF nie ma zapisanego pliku XML faktury, przycisków nie ma. Nowe faktury dostają plik XML zwykle w tej samej synchronizacji. Faktury pobrane przed wprowadzeniem tej funkcji dostają go [stopniowo, w tle](#uzupełnianie-pozycji-rachunku-i-terminu): przy dużej firmie przez kilka cykli automatycznej synchronizacji.
+
+Aplikacja mobilna nie ma tych przycisków.
+
 ### Pozycje faktury
 
 Karta **Pozycje** zawiera wiersze faktury (`FaWiersz`): nazwa, ilość z jednostką, **Cena netto**, **Stawka** i **Brutto**.
@@ -139,6 +154,10 @@ Faktura pojawia się na liście od razu. Jej pozycje, numer rachunku i termin p�
 
 Duża firma potrzebuje kilku cykli. Szacunkowo 300 plików to 5 cykli, czyli około 16 godzin od pierwszego cyklu.
 
+:::info[Po aktualizacji: zapisywanie plików XML starszych faktur]
+Po aktualizacji do wersji z [Pobierz XML](#pobierz-xml-i-pobierz-pdf) OpenKSeF pobiera ponownie pliki XML wcześniej pobranych faktur, żeby je zapisać. Trwa to zwykle około 8 cykli automatycznej synchronizacji. W tym czasie, przez około godzinę po cyklu, **Pobierz z KSeF** może zwrócić `Za dużo żądań. Spróbuj ponownie za chwilę.` Licznik nowych faktur po ręcznej synchronizacji może wtedy obejmować też faktury uzupełniane w tle. Dane faktur i status płatności się nie zmieniają.
+:::
+
 Kolejność pobierania:
 
 1. Nowe faktury otrzymane.
@@ -146,10 +165,11 @@ Kolejność pobierania:
 3. [Sprzedaż z innych programów](wystawianie-faktur#faktury-spoza-openksef) bez pozycji.
 4. Nieopłacone faktury otrzymane, których rozliczeń nie odczytano, bo pobrała je starsza wersja OpenKSeF.
 5. Pozostałe faktury otrzymane bez pozycji, także opłacone.
+6. Faktury, których plik XML został odczytany, ale nie zapisany (pobrane przed wprowadzeniem [Pobierz XML](#pobierz-xml-i-pobierz-pdf)). Plik jest potrzebny tylko do pobrania XML i PDF.
 
-Opłacona faktura, która ma pozycje, ale nie ma terminu, nie trafia do tej kolejki. Uzupełni ją tylko [pełna resynchronizacja](#pełna-resynchronizacja).
+Opłacona faktura, która ma pozycje, ale nie ma terminu, nie trafia do tej kolejki z powodu terminu. Uzupełni go tylko [pełna resynchronizacja](#pełna-resynchronizacja).
 
-Odczytany plik nie jest pobierany ponownie. Wyjątek to nieopłacona faktura, której rozliczeń starsza wersja nie odczytała (punkt 4). Po limicie KSeF pobieranie dla tej firmy zatrzymuje się, a reszta czeka na kolejną synchronizację. Plik, którego nie udało się pobrać lub odczytać, jest ponawiany po pozostałych z tego samego punktu kolejności. W obu przypadkach faktura zachowuje swoje dane i status płatności.
+Zapisany plik nie jest pobierany ponownie. Wyjątek to nieopłacona faktura, której rozliczeń starsza wersja nie odczytała (punkt 4). Po limicie KSeF pobieranie dla tej firmy zatrzymuje się, a reszta czeka na kolejną synchronizację. Plik, którego nie udało się pobrać lub odczytać, jest ponawiany po pozostałych z tego samego punktu kolejności. W obu przypadkach faktura zachowuje swoje dane i status płatności.
 
 ### Pełna resynchronizacja
 
