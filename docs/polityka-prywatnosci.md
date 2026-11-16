@@ -80,6 +80,8 @@ Przed wysłaniem aplikacja usuwa z raportu tokeny, hasła, adresy e-mail, numery
 
 Raport nie zawiera Twojego konta (e-mail, identyfikator, imię i nazwisko), nazwy urządzenia, adresu IP, zrzutów ekranu ani nagrań ekranu. Komunikat błędu może jednak wyjątkowo zawierać fragment tekstu z aplikacji, na przykład nazwę kontrahenta lub numer faktury.
 
+Raporty awarii możesz wyłączyć przełącznikiem **Wysyłaj raporty awarii** na ekranie **Konto**, w sekcji **Prywatność**. Przełącznik jest domyślnie włączony i działa dla danego telefonu, niezależnie od konta. Po wyłączeniu aplikacja od razu przestaje wysyłać raporty awarii, a od następnego uruchomienia nie wysyła do Sentry żadnych danych, także informacji o uruchomieniu i zamknięciu aplikacji.
+
 ---
 
 ## 3. Cel przetwarzania danych
@@ -93,7 +95,7 @@ Raport nie zawiera Twojego konta (e-mail, identyfikator, imię i nazwisko), nazw
 | Kopia wystawionej faktury w instancji | Podgląd faktury, pobieranie plików, wyjaśnienie numeracji | Prawnie uzasadniony interes sprzedawcy (art. 6 ust. 1 lit. f RODO) |
 | Token i identyfikator urządzenia, identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
 | Adres e-mail do powiadomień (per firma) | Wysyłanie powiadomień e-mail o nowych fakturach | Umowa (art. 6 ust. 1 lit. b RODO) |
-| Raporty awarii (aplikacja na Androida) | Wykrywanie i naprawianie błędów, stabilność aplikacji | Prawnie uzasadniony interes wydawcy aplikacji (art. 6 ust. 1 lit. f RODO) |
+| Raporty awarii (aplikacja na Androida) | Wykrywanie i naprawianie błędów, stabilność aplikacji | Prawnie uzasadniony interes wydawcy aplikacji (art. 6 ust. 1 lit. f RODO); możesz wnieść sprzeciw przełącznikiem w aplikacji |
 
 ---
 
@@ -151,7 +153,7 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 - **Sprostowanie** — możesz poprawić nieprawidłowe dane
 - **Usunięcie** — możesz zażądać usunięcia konta i danych, zobacz <a href="#usuwanie-konta">Usuwanie konta i danych</a>
 - **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. OpenKSeF nie ma eksportu zbiorczego ani pobierania plików faktur otrzymanych. O pozostałe dane poproś właściciela instancji
-- **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie. Aplikacja nie ma przełącznika raportów awarii. W sprawie raportów napisz na adres z sekcji 11
+- **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie. Sprzeciw wobec raportów awarii zgłaszasz przełącznikiem **Wysyłaj raporty awarii** (**Konto** > **Prywatność**) albo e-mailem na adres z sekcji 11
 - **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push: od wersji 1.0.6 aplikacji przełącznikiem **Powiadomienia push** na ekranie **Konto**, w starszych wersjach w sposób opisany w sekcji 4
 - **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych
 
