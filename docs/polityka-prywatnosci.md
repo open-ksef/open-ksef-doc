@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 14 listopada 2026 r.*
+*Ostatnia aktualizacja: 16 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -18,6 +18,8 @@ Administratorem danych osobowych jest właściciel instancji OpenKSeF, z której
 Właściciel instancji podaje swoim użytkownikom swoją nazwę i dane kontaktowe. Jeśli ich nie znasz, zapytaj osobę, która dała Ci dostęp. Autorzy OpenKSeF nie mają dostępu do instancji, których sami nie prowadzą.
 
 W sklepie Google Play aplikację OpenKSeF publikuje **Krystian Mikrut**. Wydawca aplikacji nie staje się przez to administratorem danych w instancjach, których nie prowadzi.
+
+Wyjątkiem są raporty awarii aplikacji mobilnej (sekcja 2, „Raporty awarii”). Ich administratorem jest wydawca aplikacji, niezależnie od instancji, z której korzystasz.
 
 Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w OpenKSeF lub pobranej z KSeF, w sprawie tych danych skontaktuj się ze sprzedawcą.
 
@@ -63,6 +65,21 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 - Identyfikator instalacji Firebase, wersja aplikacji i identyfikator klienta (user agent) — zbiera je biblioteka Firebase w aplikacji na Androida
 - Identyfikator i adres instancji — do rejestracji w usłudze relay push
 
+### Raporty awarii (aplikacja na Androida)
+
+Od wersji 1.0.9 aplikacja na Androida wysyła raport do usługi Sentry, gdy się zawiesi lub zamknie przez błąd. Aplikacja na iOS nie wysyła raportów awarii.
+
+Raport zawiera:
+
+- Opis błędu i ślad stosu (miejsce w kodzie aplikacji, w którym wystąpił błąd)
+- Model, producent i parametry urządzenia (pamięć, bateria, orientacja ekranu, strefa czasowa), wersja systemu, wersja i numer kompilacji aplikacji
+- Ostatnie zdarzenia przed awarią: przejścia między ekranami, dotknięcia przycisków, zmiany sieci, zapytania do serwera (adres serwera, ścieżka, metoda i kod odpowiedzi, bez parametrów i treści) oraz komunikaty techniczne aplikacji
+- Informację o uruchomieniu i zamknięciu aplikacji z losowym identyfikatorem instalacji, niepowiązanym z kontem, do liczenia sesji bez awarii
+
+Przed wysłaniem aplikacja usuwa z raportu tokeny, hasła, adresy e-mail, numery NIP i numery rachunków, wartości pól z danych faktur oraz parametry adresów. Usługa Sentry dodatkowo filtruje dane wrażliwe i nie zapisuje adresu IP.
+
+Raport nie zawiera Twojego konta (e-mail, identyfikator, imię i nazwisko), nazwy urządzenia, adresu IP, zrzutów ekranu ani nagrań ekranu. Komunikat błędu może jednak wyjątkowo zawierać fragment tekstu z aplikacji, na przykład nazwę kontrahenta lub numer faktury.
+
 ---
 
 ## 3. Cel przetwarzania danych
@@ -76,6 +93,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 | Kopia wystawionej faktury w instancji | Podgląd faktury, pobieranie plików, wyjaśnienie numeracji | Prawnie uzasadniony interes sprzedawcy (art. 6 ust. 1 lit. f RODO) |
 | Token i identyfikator urządzenia, identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
 | Adres e-mail do powiadomień (per firma) | Wysyłanie powiadomień e-mail o nowych fakturach | Umowa (art. 6 ust. 1 lit. b RODO) |
+| Raporty awarii (aplikacja na Androida) | Wykrywanie i naprawianie błędów, stabilność aplikacji | Prawnie uzasadniony interes wydawcy aplikacji (art. 6 ust. 1 lit. f RODO) |
 
 ---
 
@@ -108,6 +126,7 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
   - **Apple Push Notification service (Apple)** — token urządzenia i treść powiadomienia, jak wyżej, w celu dostarczenia powiadomień push na iOS.
   - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze (gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), jeśli właściciel skonfigurował SMTP.
   - **Relay OpenKSeF** (`push.open-ksef.pl`) — jeśli włączona jest warstwa relay (domyślnie).
+  - **Sentry (Functional Software, Inc., USA)** — raporty awarii aplikacji na Androida, w celu wykrywania i naprawiania błędów. Sentry przetwarza je na zlecenie wydawcy aplikacji (podmiot przetwarzający) i przechowuje w regionie UE (Frankfurt, Niemcy). Dostęp spoza Europejskiego Obszaru Gospodarczego jest możliwy na podstawie EU-U.S. Data Privacy Framework i standardowych klauzul umownych w umowie powierzenia Sentry.
 
 ---
 
@@ -120,6 +139,7 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 - Usunięcie firmy nie obejmuje kopii zapasowych właściciela instancji ani lokalnej kopii faktur w aplikacji mobilnej.
 - Aplikacja mobilna przechowuje lokalną kopię faktur w bazie SQLite w prywatnym katalogu aplikacji na urządzeniu, bez dodatkowego szyfrowania.
 - Tokeny i certyfikaty KSeF (z kluczem prywatnym) są szyfrowane w bazie danych (AES-256-GCM).
+- Raporty awarii są przechowywane w Sentry przez 30 dni, a potem usuwane automatycznie.
 
 ---
 
@@ -131,7 +151,7 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 - **Sprostowanie** — możesz poprawić nieprawidłowe dane
 - **Usunięcie** — możesz zażądać usunięcia konta i danych, zobacz <a href="#usuwanie-konta">Usuwanie konta i danych</a>
 - **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. OpenKSeF nie ma eksportu zbiorczego ani pobierania plików faktur otrzymanych. O pozostałe dane poproś właściciela instancji
-- **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie
+- **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie. Aplikacja nie ma przełącznika raportów awarii. W sprawie raportów napisz na adres z sekcji 11
 - **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push: od wersji 1.0.6 aplikacji przełącznikiem **Powiadomienia push** na ekranie **Konto**, w starszych wersjach w sposób opisany w sekcji 4
 - **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych
 
@@ -177,7 +197,7 @@ O istotnych zmianach w polityce prywatności poinformujemy przez aktualizację t
 
 ## 11. Kontakt
 
-W sprawach tej strony i usługi relay:
+W sprawach tej strony, usługi relay i raportów awarii:
 
 - E-mail: [krystian@mikrut.dev](mailto:krystian@mikrut.dev)
 - GitHub: [github.com/open-ksef](https://github.com/open-ksef)
