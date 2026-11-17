@@ -29,7 +29,9 @@ Sam odczyt wystarczy do przeglądania faktur, ale nie do ich [wystawiania](wysta
 - **Portal, istniejąca firma:** **Firma** > **Dostęp do KSeF i pobieranie**, przycisk **Dodaj token** albo **Zapisz token**. Nowy token zastępuje poprzedni.
 - **Aplikacja mobilna:** krok z tokenem w pierwszej konfiguracji firmy. Token zmienisz później w portalu.
 
-Firma ma jeden token. OpenKSeF przechowuje go zaszyfrowany i nie pokazuje go ponownie: portal wyświetla tylko datę ostatniej aktualizacji.
+Token zapisuje, zmienia i usuwa tylko właściciel lub administrator firmy. Pozostałe role widzą typ i datę aktualizacji: [Role](wspolne-firmy#role).
+
+Firma ma jeden token, wspólny dla wszystkich osób z dostępem. OpenKSeF przechowuje go zaszyfrowany i nie pokazuje go ponownie: portal wyświetla tylko datę ostatniej aktualizacji.
 
 Po zapisaniu uruchom **Pobierz z KSeF**, aby sprawdzić, czy token działa.
 

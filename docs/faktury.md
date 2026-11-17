@@ -69,7 +69,7 @@ Karta **Pozycje** zawiera wiersze faktury (`FaWiersz`): nazwa, ilość z jednost
 
 ### Status płatności
 
-Przycisk **Oznacz jako opłaconą** zmienia status faktury na **Opłacona** i zapisuje datę oznaczenia. **Cofnij oznaczenie** przywraca status **Nieopłacona**.
+Przycisk **Oznacz jako opłaconą** zmienia status faktury na **Opłacona** i zapisuje datę oznaczenia oraz osobę, która oznaczyła. Portal pokazuje „Opłacona dd.mm.rrrr przez \<imię i nazwisko lub e-mail>”. **Cofnij oznaczenie** przywraca status **Nieopłacona**. Status jest wspólny dla wszystkich osób z dostępem do firmy, każda rola może go zmienić: [Wspólne firmy](wspolne-firmy#kto-oznaczył-fakturę-jako-opłaconą).
 
 ![Status płatności](/img/screenshots/portal/invoice-paid.png)
 

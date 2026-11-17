@@ -31,7 +31,7 @@ OpenKSeF jest przeznaczony dla:
 | **Wystawianie faktur** | Faktury VAT wysyłane do KSeF z portalu, XML, UPO i PDF z kodem KOD I. Zobacz [Wystawianie faktur](wystawianie-faktur) |
 | **Portal webowy** | React SPA ze stroną Start, listami otrzymanych i wystawionych faktur, zarządzaniem firmami |
 | **Aplikacja mobilna** | .NET MAUI z powiadomieniami push. Android: plik APK na GitHubie, Google Play i iPhone jeszcze nie |
-| **Multi-tenant** | Wiele firm na jednej instancji, izolacja danych per użytkownik |
+| **Multi-tenant** | Wiele firm na jednej instancji. Firma widoczna tylko dla osób z dostępem, z rolami i zaproszeniami e-mail -- zobacz [Wspólne firmy](wspolne-firmy) |
 | **Powiadomienia push** | SignalR (lokalne) + relay/Firebase (zdalne) |
 | **Bezpieczeństwo** | Keycloak (OIDC). Tokeny KSeF szyfrowane w bazie (AES-256-GCM), klucz poza bazą, w `ENCRYPTION_KEY`: [szczegóły](admin-setup#klucz-szyfrowania). HTTPS zapewnia właściciel instancji |
 | **Self-hosting** | Docker Compose: `docker-compose.yml`, plik `.env` z hasłami i `docker compose up -d` |

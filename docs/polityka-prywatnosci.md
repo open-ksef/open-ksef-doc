@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 14 listopada 2026 r.*
+*Ostatnia aktualizacja: 17 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -30,6 +30,8 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 - Adres e-mail (do logowania i powiadomień)
 - Imię i nazwisko (opcjonalne przy rejestracji e-mailem; przy logowaniu przez Google pochodzą z konta Google)
 - Identyfikator użytkownika w systemie Keycloak (OIDC)
+- Kopia adresu e-mail, imienia i nazwiska oraz informacji, czy adres e-mail jest potwierdzony. Instancja zapisuje ją z danych logowania i odświeża przy korzystaniu z portalu i aplikacji, aby osoby z dostępem do tej samej firmy widziały Twoje imię i nazwisko zamiast identyfikatora
+- Firmy, do których masz dostęp, Twoja rola w każdej z nich i ustawienie powiadomień o nowych fakturach dla każdej firmy
 
 ### Dane firmowe
 
@@ -42,7 +44,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 
 - Dane faktur pobrane z KSeF: nagłówek (numer, kwoty, daty, dane kontrahentów, numer rachunku sprzedawcy) i pozycje faktury (nazwa towaru lub usługi, ilość, ceny, stawka VAT)
 - Dane faktora (NIP, nazwa, numer rachunku), oznaczenia płatności z faktury (MPP, zapłata)
-- Status płatności faktury ustawiony przez użytkownika
+- Status płatności faktury, data jego ustawienia i identyfikator osoby, która go ustawiła
 - Faktury są przechowywane w bazie danych instancji
 
 ### Dane faktur sprzedaży
@@ -56,6 +58,18 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 - Nabywca zagraniczny: kraj, numer VAT UE lub numer podatkowy. Waluta i kurs. Rachunek zagraniczny sprzedawcy: IBAN, SWIFT, nazwa banku
 - Numer faktury, daty, kwoty i pozycje faktury
 - Po wysłaniu: plik XML, numer KSeF, UPO lub powód odrzucenia
+
+### Historia zmian w firmie
+
+- Kto (identyfikator, adres e-mail oraz imię i nazwisko z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, ponowne wysłanie, odwołanie i przyjęcie zaproszenia, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, usunięcie adresu e-mail do powiadomień, wraz z osobą, której to dotyczy (identyfikator, adres e-mail albo oba)
+- Reset weryfikacji dwuetapowej przez administratora instancji: kto go wykonał i czyje konto dotyczył (identyfikatory i adresy e-mail)
+- Historia nie jest widoczna w portalu ani aplikacji. Może ją odczytać właściciel instancji z bazy danych
+
+### Zaproszenia do firmy
+
+- Adres e-mail osoby zaproszonej, wpisany przez zapraszającego, rola, kto zaprosił, kto przyjął zaproszenie, daty utworzenia, wygaśnięcia i przyjęcia
+- Link z zaproszeniem jest ważny 14 dni i działa raz. Instancja przechowuje tylko skrót (hash) kodu z linku, nie sam link
+- Jeśli instancja ma skonfigurowaną pocztę, zaproszona osoba dostaje e-mail z linkiem albo z informacją o nadanym dostępie
 
 ### Dane techniczne
 
@@ -76,6 +90,9 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 | Kopia wystawionej faktury w instancji | Podgląd faktury, pobieranie plików, wyjaśnienie numeracji | Prawnie uzasadniony interes sprzedawcy (art. 6 ust. 1 lit. f RODO) |
 | Token i identyfikator urządzenia, identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
 | Adres e-mail do powiadomień (per firma) | Wysyłanie powiadomień e-mail o nowych fakturach | Umowa (art. 6 ust. 1 lit. b RODO) |
+| Kopia e-maila, imienia i nazwiska, role i dostęp do firm | Pokazanie, kto ma dostęp do firmy i kto oznaczył fakturę jako opłaconą; kontrola uprawnień | Umowa (art. 6 ust. 1 lit. b RODO) |
+| Historia zmian w firmie | Ustalenie, kto i kiedy zmienił status płatności, token KSeF lub dostęp do firmy, oraz bezpieczeństwo konta | Prawnie uzasadniony interes właściciela firmy i instancji (art. 6 ust. 1 lit. f RODO) |
+| Zaproszenia do firmy | Nadanie dostępu do firmy osobie wskazanej przez zapraszającego; ochrona przed nadużyciem (limit zaproszeń) | Prawnie uzasadniony interes właściciela firmy (art. 6 ust. 1 lit. f RODO) |
 
 ---
 
@@ -84,7 +101,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 Aplikacja mobilna OpenKSeF obsługuje powiadomienia push w modelu warstwowym:
 
 1. **SignalR (lokalne)** — bezpośrednie połączenie WebSocket z Twoją instancją. Żadne dane nie opuszczają serwera.
-2. **Relay OpenKSeF** — Twoja instancja wysyła powiadomienie do serwera relay (`push.open-ksef.pl`), który przekazuje je do urządzenia przez Firebase Cloud Messaging (Android) lub Apple Push Notification service (iOS). Relay przetwarza wyłącznie: identyfikator i adres instancji, token urządzenia i treść powiadomienia. Przy nowej fakturze treść to nazwa sprzedawcy, kwota i waluta faktury oraz identyfikatory firmy i faktury w OpenKSeF. Gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur. Gdy wystawiona faktura czeka na wyjaśnienie w KSeF, treść zawiera jej numer oraz identyfikatory firmy i faktury.
+2. **Relay OpenKSeF** — Twoja instancja wysyła powiadomienie do serwera relay (`push.open-ksef.pl`), który przekazuje je do urządzenia przez Firebase Cloud Messaging (Android) lub Apple Push Notification service (iOS). Relay przetwarza wyłącznie: identyfikator i adres instancji, token urządzenia i treść powiadomienia. Przy nowej fakturze treść to nazwa sprzedawcy, kwota i waluta faktury oraz identyfikatory firmy i faktury w OpenKSeF. Gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur. Gdy wystawiona faktura czeka na wyjaśnienie w KSeF, treść zawiera jej numer oraz identyfikatory firmy i faktury. Gdy ktoś nada Ci dostęp do firmy, treść zawiera nazwę i identyfikator tej firmy.
 3. **Bezpośrednie FCM/APNs** — jeśli właściciel instancji skonfigurował własny projekt Firebase, powiadomienia są wysyłane bezpośrednio, bez udziału relay.
 
 Relay `push.open-ksef.pl` prowadzą autorzy OpenKSeF. Administratorem danych w powiadomieniu jest właściciel instancji, z której ono pochodzi.
@@ -104,10 +121,11 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 - Dane mogą być przekazywane do:
   - **Ministerstwo Finansów, KSeF** — NIP i token lub certyfikat KSeF, w celu pobierania faktur, oraz wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF.
   - **Ministerstwo Finansów, wykaz podatników VAT (biała lista)** — NIP wpisany przy użyciu przycisku **Pobierz z NIP**.
-  - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory; gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent).
+  - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory; przy nadaniu dostępu nazwa i identyfikator firmy; gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent).
   - **Apple Push Notification service (Apple)** — token urządzenia i treść powiadomienia, jak wyżej, w celu dostarczenia powiadomień push na iOS.
-  - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze (gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), jeśli właściciel skonfigurował SMTP.
+  - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze (gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), a przy zaproszeniu do firmy adres osoby zaproszonej, nazwę i NIP firmy, rolę, nazwę zapraszającego i link, jeśli właściciel skonfigurował SMTP.
   - **Relay OpenKSeF** (`push.open-ksef.pl`) — jeśli włączona jest warstwa relay (domyślnie).
+- Osoby z dostępem do tej samej firmy widzą, kto oznaczył fakturę jako opłaconą (imię i nazwisko lub adres e-mail). Właściciel i administrator firmy widzą też imiona i nazwiska, adresy e-mail i role osób z dostępem oraz adresy z oczekujących zaproszeń.
 
 ---
 
@@ -120,6 +138,9 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 - Usunięcie firmy nie obejmuje kopii zapasowych właściciela instancji ani lokalnej kopii faktur w aplikacji mobilnej.
 - Aplikacja mobilna przechowuje lokalną kopię faktur w bazie SQLite w prywatnym katalogu aplikacji na urządzeniu, bez dodatkowego szyfrowania.
 - Tokeny i certyfikaty KSeF (z kluczem prywatnym) są szyfrowane w bazie danych (AES-256-GCM).
+- Kopia e-maila, imienia i nazwiska jest przechowywana, dopóki nie usuniemy konta (sekcja 8). Dostęp do firmy znika po jej opuszczeniu, usunięciu z firmy albo usunięciu firmy.
+- Zaproszenia, także wygasłe, odwołane i przyjęte, są przechowywane, dopóki istnieje firma. Usunięcie firmy usuwa jej zaproszenia.
+- Historia zmian w firmie i historia resetów weryfikacji dwuetapowej nie są usuwane automatycznie. Historia firmy zostaje także po usunięciu firmy, już bez powiązania z nią, razem z identyfikatorami, imionami i nazwiskami oraz adresami e-mail osób, które w niej występują. Nie ma dziś ustalonego terminu jej usunięcia. Usuwa ją właściciel instancji na żądanie (sekcja 8) albo z własnej decyzji.
 
 ---
 
@@ -150,11 +171,14 @@ Aby usunąć konto w OpenKSeF i powiązane z nim dane, wyślij prośbę e-mailem
 
 Prośby realizujemy ręcznie. Odpowiadamy w ciągu miesiąca.
 
-**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator), zarejestrowane urządzenia oraz firmy tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur i fakturami wystawionymi, z wyjątkami poniżej.
+**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator) i jego kopię w instancji, dostęp do firm innych osób, zarejestrowane urządzenia oraz firmy dodane z tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur, fakturami wystawionymi i zaproszeniami, z wyjątkami poniżej. Jeśli z takiej firmy korzystają też inne osoby albo jesteś jedynym właścicielem firmy, z której korzystają inni, przed usunięciem skontaktujemy się z Tobą: usunięcie firmy odebrałoby ją także im.
+
+**Zaproszenie bez konta:** jeśli ktoś zaprosił Twój adres e-mail, a nie masz konta, możesz poprosić o usunięcie zaproszenia i Twojego adresu z historii zmian firmy, tak samo jak o usunięcie konta.
 
 **Co może zostać:**
 
 - Faktura przyjęta na środowisku PRODUKCJA zostaje w KSeF przez okres podany w sekcji 6. Nikt nie może jej stamtąd usunąć. Jej kopię w instancji możemy zachować razem z danymi firmy, do której należy (NIP, nazwa, dane sprzedawcy), i napiszemy o tym w odpowiedzi.
+- W historii zmian (sekcja 2), także firm usuniętych razem z kontem, zostają czynność, data i jej przedmiot (np. rola, identyfikator faktury), bez Twojego identyfikatora, imienia i nazwiska oraz adresu e-mail, także jako osoby zaproszonej lub usuniętej z firmy. Faktura oznaczona przez Ciebie jako opłacona zostaje opłacona, bez informacji, kto ją oznaczył.
 - Dane w kopiach zapasowych właściciela instancji, do czasu usunięcia tych kopii.
 - Lokalna kopia faktur na telefonie. Usuniesz ją, odinstalowując aplikację. Może ją też zawierać kopia zapasowa Androida na Twoim koncie Google i wrócić po ponownej instalacji.
 
