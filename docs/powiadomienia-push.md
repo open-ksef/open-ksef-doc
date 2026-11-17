@@ -45,13 +45,27 @@ Dotyczy aplikacji mobilnej od wersji 1.0.7. Telefon pokazuje jedno powiadomienie
 
 E-mail działa w każdej z tych sytuacji, jeśli jest skonfigurowany.
 
+## Zgoda na powiadomienia w aplikacji
+
+Od wersji 1.0.9 aplikacja mobilna nie rejestruje telefonu na serwerze, dopóki konto nie odpowie **Tak**. Bez rejestracji instancja nie wysyła na ten telefon push.
+
+1. Po zalogowaniu (konto bez firmy: po dodaniu pierwszej firmy) aplikacja raz pyta: „Czy chcesz dostawać powiadomienia o nowych fakturach? Telefon pokaże sprzedawcę i kwotę, gdy faktura trafi do KSeF. Zmienisz to w zakładce Konto.”
+2. **Tak**: dopiero teraz Android pyta o zgodę na powiadomienia. Po zgodzie aplikacja rejestruje telefon i urządzenie pojawia się w portalu na liście **Telefon** > **Moje urządzenia**.
+3. **Nie teraz**: telefon nie jest rejestrowany. Aplikacja nie pyta ponownie. Włączysz powiadomienia w **Konto** > **Powiadomienia push**.
+
+Wybór jest zapamiętany dla konta na tym telefonie. Inne konto zalogowane na tym samym telefonie dostaje własne pytanie. Wylogowanie usuwa telefon z serwera. Po ponownym zalogowaniu tym samym kontem aplikacja stosuje zapamiętany wybór bez pytania.
+
+Aktualizacja z 1.0.8 nie pyta ponownie: dotychczasowe ustawienie telefonu przechodzi na pierwsze konto zalogowane po aktualizacji. Telefon z wyłączonymi powiadomieniami zostaje bez nich, zarejestrowany zostaje zarejestrowany.
+
+E-mail nie zależy od tej zgody.
+
 ## Wyłączanie powiadomień w aplikacji
 
 W aplikacji mobilnej (od wersji 1.0.6): **Konto** > **Powiadomienia push**. Po wyłączeniu aplikacja usuwa to urządzenie z serwera i instancja przestaje wysyłać na nie push.
 
-- Ustawienie dotyczy tego telefonu, nie konta. Inne telefony tego samego użytkownika dostają powiadomienia dalej.
-- Ustawienie zostaje po wylogowaniu. Obowiązuje każde konto, na które zalogujesz się na tym telefonie.
-- Odinstalowanie aplikacji kasuje ustawienie. Po ponownej instalacji i zalogowaniu aplikacja znów rejestruje urządzenie do powiadomień.
+- Inne telefony tego samego użytkownika dostają powiadomienia dalej.
+- Od wersji 1.0.9 ustawienie dotyczy konta na tym telefonie. W wersji 1.0.8 i starszej dotyczy telefonu: zostaje po wylogowaniu i obowiązuje każde konto zalogowane na tym telefonie.
+- Odinstalowanie aplikacji kasuje ustawienie. Wersja 1.0.9 po ponownej instalacji znów pyta o zgodę.
 - Bez dostępu do sieci aplikacja zapamięta wyłączenie, ale serwer jeszcze o nim nie wie. Aplikacja pokazuje wtedy komunikat „Powiadomienia wyłączone, ale serwer jeszcze o tym nie wie. Powiadomienie może dotrzeć, dopóki nie uruchomisz aplikacji ponownie z dostępem do sieci.” Serwer dowie się, gdy uruchomisz aplikację od nowa (nie tylko wrócisz do niej z tła) z dostępem do sieci.
 - Przełącznik nie zmienia e-maili. E-maile zatrzymasz, usuwając adres do powiadomień w danych firmy.
 - Ponowne włączenie wymaga połączenia z serwerem.
@@ -63,7 +77,19 @@ W aplikacji mobilnej (od wersji 1.0.6): **Konto** > **Powiadomienia push**. Po w
 - Ponowienie wysyła tylko push. E-mail poszedł przy pierwszej próbie, drugiego nie ma.
 - Push uznaje się za doręczony, gdy dotarł na co najmniej jedno urządzenie, także innej osoby z dostępem do firmy. Urządzenie, na które wtedy nie dotarł, nie dostanie ponowienia.
 - Ponowienia dotyczą tylko faktur otrzymanych. Faktury z pierwszej synchronizacji i pełnej resynchronizacji nie dostają push także przy ponowieniu.
-- Aplikacja mobilna (Android, od wersji 1.0.4) sprawdza po zalogowaniu, czy jej urządzenie jest nadal zarejestrowane na serwerze, i w razie potrzeby rejestruje je ponownie.
+- Aplikacja mobilna (Android, od wersji 1.0.4) sprawdza po zalogowaniu, czy jej urządzenie jest nadal zarejestrowane na serwerze, i w razie potrzeby rejestruje je ponownie. Od wersji 1.0.9 tylko wtedy, gdy konto zgodziło się na powiadomienia.
+
+## Faktura wystawiona czeka na KSeF
+
+Faktura [wystawiona w OpenKSeF](wystawianie-faktur), która 24 godziny po wystawieniu nadal jest w statusie **Wysyłanie** albo jest przyjęta w KSeF bez UPO, dostaje oznaczenie **Wymaga uwagi**. Wtedy instancja:
+
+- wysyła jeden push „Faktura czeka na wyjaśnienie w KSeF” na zarejestrowane urządzenia osób z dostępem do firmy,
+- od v0.0.27 wysyła jeden e-mail o tym samym temacie na adres do powiadomień firmy, jeśli jest ustawiony, a e-mail jest skonfigurowany (`EMAIL_*`). Dzięki temu dowie się także właściciel bez telefonu,
+- pokazuje **Wymaga uwagi** na liście faktur wystawionych i na stronie **Start** w portalu.
+
+Push i e-mail nie powtarzają się przy kolejnych próbach. Status faktury się nie zmienia, a OpenKSeF dalej sprawdza ją w KSeF. **Nie wystawiaj faktury ponownie bez sprawdzenia**: wcześniejsza próba mogła zostać przyjęta. Szczegóły: [Statusy](wystawianie-faktur#statusy).
+
+Dla administratora instancji (od v0.0.27): Worker zapisuje w logu błąd `Issued invoice <id> of tenant <id> needs attention` z numerem, statusem i ostatnim błędem, a `/health` API zwraca `Degraded`, dopóki faktura nie dostanie UPO albo nie zostanie odrzucona. Jak to monitorować i co zrobić: [issuing-stuck-runbook.md](https://github.com/open-ksef/open-ksef/blob/main/docs/issuing-stuck-runbook.md) w repozytorium open-ksef. Próg 24 godzin jest stały, plik `docker-compose.yml` go nie przekazuje.
 
 ## Konfiguracja
 

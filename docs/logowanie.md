@@ -52,6 +52,8 @@ Przykłady:
 
 Portal zakłada konto na stronie logowania: **Zarejestruj się** jest widoczne, gdy rejestracja jest włączona w **Ustawieniach**. To działa bez dodatkowej konfiguracji.
 
+Aplikacja mobilna 1.0.9: **Załóż konto** otwiera tę samą stronę rejestracji w przeglądarce telefonu.
+
 Dalej tylko o formularzu **Załóż konto** w aplikacji mobilnej (1.0.8 i starsze). Formularz używa `POST /api/account/register` (Keycloak Admin API). Kreator zapisuje secret klienta `openksef-api` tylko w bazie i nie nadaje kontu serwisowemu ról `manage-users` ani `view-realm`. Dlatego na instalacji z kreatora z włączoną rejestracją ten formularz zwraca `503`. Użytkownik takiej aplikacji zakłada konto w portalu albo loguje się przez Google (jeśli skonfigurowano). Formularz zadziała po [konfiguracji ręcznej](#konfiguracja-ręczna).
 
 Każde żądanie czyta realm: rejestracja wyłączona zwraca `403`, a nieudany odczyt `503`. W obu przypadkach konto nie powstaje.

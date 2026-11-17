@@ -97,6 +97,8 @@ VAT jest liczony od sumy netto dla każdej stawki. VAT widoczny przy pozycji jes
 
 Jeśli KSeF nie odpowiada albo wynik wysyłki jest niepewny, faktura zostaje w statusie **Wysyłanie**, a OpenKSeF ponawia sprawdzanie. **Nie wysyłaj wtedy faktury drugi raz.** Wcześniejsza próba mogła zostać przyjęta, a kopia oznaczałaby drugi dokument dla tej samej sprzedaży. Dlatego w tym statusie nie można skopiować faktury.
 
+Faktura, która 24 godziny po wystawieniu nadal jest w statusie **Wysyłanie** albo nie ma UPO, dostaje oznaczenie **Wymaga uwagi** na liście faktur wystawionych i na stronie **Start**. Osoby z dostępem do firmy dostają jeden push, a od v0.0.27 także jeden e-mail na adres do powiadomień firmy. Szczegóły: [Faktura wystawiona czeka na KSeF](powiadomienia-push#faktura-wystawiona-czeka-na-ksef).
+
 ## XML, UPO i PDF
 
 Pliki są dostępne dla faktury wystawionej w OpenKSeF i **Przyjętej w KSeF**.

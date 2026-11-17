@@ -13,7 +13,7 @@ Kto loguje się e-mailem i hasłem, po haśle wpisuje 6-cyfrowy kod z aplikacji 
 | Przez Google | Nie. Weryfikację dwuetapową ustawiasz na swoim koncie Google |
 | Konto z hasłem i połączonym Google | Tylko przy logowaniu hasłem |
 
-Wyłączyć weryfikacji nie można. Dodatkowej opłaty ani konfiguracji nie ma: działa po zapisaniu **Ustawień** przez administratora, zobacz [Aktualizacja: nowe strony logowania i weryfikacja dwuetapowa](admin-setup#aktualizacja-nowe-strony-logowania-i-weryfikacja-dwuetapowa).
+Działa od serwera v0.0.27. Wyłączyć weryfikacji nie można. Dodatkowej opłaty ani konfiguracji nie ma: działa po zapisaniu **Ustawień** przez administratora, zobacz [Aktualizacja do v0.0.27](admin-setup#aktualizacja-do-v0027-nowe-strony-logowania-i-weryfikacja-dwuetapowa).
 
 ## Pierwsze logowanie: włącz weryfikację
 
@@ -87,7 +87,10 @@ Reset zrobisz w konsoli Keycloak. Logujesz się do niej kontem `KEYCLOAK_ADMIN` 
 
 ## Aplikacja mobilna
 
-Aplikacja w wersji 1.0.8 loguje e-mailem i hasłem we własnym formularzu, bez pola na kod. Po włączeniu weryfikacji to konto nie zaloguje się w niej hasłem: aplikacja pokaże `Nieprawidłowy email lub hasło.` Co działa:
+Aplikacja w wersji 1.0.9 loguje na stronie logowania OpenKSeF w przeglądarce telefonu: po haśle wpisujesz tam kod z aplikacji uwierzytelniającej albo kod zapasowy. Bez hasła na telefonie zalogujesz się [parowaniem kodem z portalem](aplikacja-mobilna#sparuj-z-portalem).
 
+Aplikacja w wersji 1.0.8 loguje e-mailem i hasłem we własnym formularzu, bez pola na kod. Po włączeniu weryfikacji to konto nie zaloguje się w niej hasłem: aplikacja pokaże `Nieprawidłowy email lub hasło.` Kolejne próby czasowo zablokują konto, zobacz [Blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach). Co działa:
+
+- Aktualizacja aplikacji do 1.0.9.
 - Telefon zalogowany wcześniej zostaje zalogowany. Zaloguj się w aplikacji, zanim pierwszy raz zalogujesz się do portalu po aktualizacji serwera.
 - **Zaloguj przez Google** w aplikacji, jeśli administrator skonfigurował Google.

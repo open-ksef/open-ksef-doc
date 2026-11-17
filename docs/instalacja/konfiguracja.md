@@ -74,6 +74,8 @@ Gateway ma konfigurację wbudowaną w obraz. Nie trzeba montować plików konfig
 | `FORWARD_LIMIT` | Liczba proxy dopisujących się do `X-Forwarded-For`, łącznie z gateway. Domyślnie `1` (sam gateway), zobacz [Adres klienta za proxy](../admin-setup#adres-klienta-za-proxy) |
 | `TRUSTED_PROXY_NETWORKS` | CIDR proxy, od których API przyjmuje `X-Forwarded-For`, po przecinku. Puste: `127.0.0.0/8,::1/128,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16`. Nigdy `0.0.0.0/0` |
 
+Próg, po którym faktura wystawiona dostaje oznaczenie **Wymaga uwagi** (24 godziny, `Issuing__StuckAfterHours` w Workerze), nie jest konfigurowalny: `docker-compose.yml` nie przekazuje tej zmiennej. Zobacz [Faktura wystawiona czeka na KSeF](../powiadomienia-push#faktura-wystawiona-czeka-na-ksef).
+
 ## E-mail o nowych fakturach
 
 E-mail o nowej fakturze zakupowej trafia na adres do powiadomień ustawiony w danych firmy. Wysyła go Worker (automatyczna synchronizacja) i API (ręczna synchronizacja), obok push i niezależnie od niego, także bez zarejestrowanego urządzenia. Najwyżej 10 e-maili na firmę w jednej synchronizacji, o pozostałych fakturach jeden e-mail z podsumowaniem. Ustaw zmienne w `.env`: `docker-compose.yml` od v0.0.12 przekazuje je usługom `api` i `worker`. SMTP z kreatora dotyczy tylko Keycloak i tu nie działa. Więcej: [Powiadomienia push](../powiadomienia-push).
