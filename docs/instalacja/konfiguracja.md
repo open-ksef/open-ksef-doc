@@ -17,11 +17,11 @@ Plik `.env` jest **wymagany**: musi zawierać dane logowania do PostgreSQL i Key
 
 ## Architektura kontenerów
 
-Obrazy aplikacji są publikowane na GitHub Container Registry (`ghcr.io/open-ksef/*`) i nie wymagają autentykacji. Keycloak korzysta z oficjalnego obrazu (`quay.io/keycloak/keycloak:26.0`).
+Obrazy aplikacji są publikowane na GitHub Container Registry (`ghcr.io/open-ksef/*`) i nie wymagają autentykacji. Keycloak to obraz `openksef-keycloak`, od v0.0.27 zbudowany na oficjalnym `quay.io/keycloak/keycloak:26.8.2` (przypięty digest), uruchamiany przez `start` bez `--features`. v0.0.24 używa `openksef-keycloak` na Keycloak 26.0.8, v0.0.23 i starsze oficjalnego `quay.io/keycloak/keycloak:26.0` z `--features`. Przed aktualizacją przeczytaj [Keycloak 26.8: aktualizacja i wycofanie](../admin-setup#keycloak-268-aktualizacja-i-wycofanie).
 
 | Obraz | Opis |
 |-------|------|
-| `keycloak/keycloak:26.0` | Keycloak 26 (oficjalny obraz). Realm `openksef` i klienty OAuth tworzone przez [kreator konfiguracji](../admin-setup) |
+| `openksef-keycloak` | Keycloak 26.8.2 (od v0.0.27). Realm `openksef` i klienty OAuth tworzone przez [kreator konfiguracji](../admin-setup) |
 | `openksef-gateway` | Nginx z wbudowaną konfiguracją reverse proxy (portal `/`, API `/api/*`, Keycloak `/auth/*`) |
 | `openksef-api` | Backend .NET 10 |
 | `openksef-worker` | Worker .NET 10 (synchronizacja faktur w tle) |
