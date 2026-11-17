@@ -307,12 +307,12 @@ Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse prox
 
 ## Keycloak 26.8: aktualizacja i wycofanie
 
-Od v0.0.25 Keycloak to obraz `openksef-keycloak` na bazie `quay.io/keycloak/keycloak:26.8.2`. Pierwszy start nowego obrazu migruje bazę `keycloak`. Migracja działa tylko w przód: nie ma downgrade'u, a starszy obraz Keycloak nie może wystartować na zmigrowanej bazie.
+Od v0.0.27 obraz `openksef-keycloak` jest zbudowany na `quay.io/keycloak/keycloak:26.8.2`. W v0.0.24 był na 26.0.8, a v0.0.23 i starsze używały oficjalnego `quay.io/keycloak/keycloak:26.0`. Pierwszy start nowego obrazu migruje bazę `keycloak`. Migracja działa tylko w przód: nie ma downgrade'u, a starszy obraz Keycloak nie może wystartować na zmigrowanej bazie.
 
 Aktualizacja:
 
 1. Zrób kopię bazy Keycloak i sprawdź zrzut: `docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc keycloak' > before-keycloak-26-8.dump`, potem `docker compose exec -T postgres pg_restore -l < before-keycloak-26-8.dump > /dev/null; echo "exit=$?"` musi wypisać `exit=0`.
-2. Ustaw `OPENKSEF_VERSION` w `.env` na tag wydania, np. `v0.0.25`. Nie uruchamiaj Keycloak z `:latest`.
+2. Ustaw `OPENKSEF_VERSION` w `.env` na tag wydania, np. `v0.0.27`. Nie uruchamiaj Keycloak z `:latest`.
 3. `docker compose pull && docker compose up -d`. Poczekaj na `Keycloak 26.8.2 ... started` w `docker compose logs keycloak`.
 4. Sprawdź logowanie hasłem i, jeśli skonfigurowane, przez Google. Istniejące sesje i tokeny odświeżania aplikacji pozostają ważne. Użytkownicy przeglądarki mogą musieć zalogować się ponownie.
 5. Rejestracja włączona: otwórz **Ustawienia** i zapisz raz. Keycloak 26.8.2 przyjmuje tokeny Admin API tylko ze scope klienta `kc-admin-api`, a zapis przypisuje go do `openksef-api`. Do tego czasu rejestracja zwraca 503.
