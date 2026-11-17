@@ -40,7 +40,7 @@ Plik `.crt` bez klucza prywatnego nie wystarczy. Łączny rozmiar plików to mak
 
 ## Wgraj certyfikat w OpenKSeF
 
-Certyfikat dodasz tylko w portalu. Aplikacja mobilna nie obsługuje certyfikatów.
+Certyfikat dodasz tylko w portalu. Aplikacja mobilna nie obsługuje certyfikatów. Certyfikat zapisuje i usuwa tylko właściciel lub administrator firmy: [Role](wspolne-firmy#role).
 
 1. Otwórz **Firma** > **Dostęp do KSeF i pobieranie**.
 2. W karcie **Dostęp do KSeF**, w polu **Sposób logowania do KSeF**, wybierz **Certyfikat KSeF**.

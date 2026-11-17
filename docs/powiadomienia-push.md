@@ -23,10 +23,10 @@ Większość instalacji potrzebuje tylko **SignalR + Relay**. Nie wymaga to konf
 
 - **Automatyczna synchronizacja** (Worker, domyślnie co 4 godziny) wysyła powiadomienia zdalne (relay albo własny Firebase/APNs) i e-mail.
 - **Ręczna synchronizacja** (przycisk w portalu lub w aplikacji mobilnej) wysyła dodatkowo powiadomienie SignalR.
-- Powiadomienie push trafia na urządzenia użytkownika, do którego należy firma. Inni użytkownicy instancji go nie dostają.
+- Push o nowej fakturze trafia na urządzenia każdej osoby z dostępem do firmy, która ma włączone **Powiadomienia o nowych fakturach** dla tej firmy (domyślnie włączone, [Wspólne firmy](wspolne-firmy#powiadomienia-w-każdej-firmie)). Osoby bez dostępu do firmy go nie dostają. Po opuszczeniu lub usunięciu z firmy push o niej przestaje przychodzić od razu.
 - E-mail trafia na adres do powiadomień ustawiony w danych firmy. Może to być dowolny adres, także osoby spoza instancji.
 - E-mail idzie obok push, nie zamiast niego. Instancja wysyła go także wtedy, gdy żadne urządzenie nie jest zarejestrowane albo gdy w aplikacji wyłączysz **Powiadomienia push**. Wyłączenie push na urządzeniu zatrzymuje tylko push na tym urządzeniu. E-maile zatrzymasz, usuwając adres do powiadomień w danych firmy.
-- Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach swojego użytkownika, chyba że przypisano je do jednej firmy. Przypisanie widać w portalu: **Telefon** > **Moje urządzenia**, kolumna **Powiadomienia**.
+- Urządzenie zarejestrowane w aplikacji mobilnej otrzymuje powiadomienia o wszystkich firmach, do których jego użytkownik ma dostęp, chyba że przypisano je do jednej firmy. Przypisanie widać w portalu: **Telefon** > **Moje urządzenia**, kolumna **Powiadomienia**.
 - Jedna synchronizacja wysyła na firmę najwyżej 10 powiadomień push i 10 e-maili, o 10 najnowszych fakturach (według daty przyjęcia w KSeF). O pozostałych fakturach przychodzi jedno podsumowanie push i jeden e-mail z ich liczbą. Wszystkie faktury są zapisywane.
 - Limit nie zależy od czasu. Po dłuższej przerwie w synchronizacji (np. awaria Workera albo wygasły token KSeF) faktury z przerwy też dostają powiadomienia, w ramach tego samego limitu 10 i podsumowania.
 - Pierwsza synchronizacja nowej firmy i [pełna resynchronizacja](faktury#pełna-resynchronizacja) nie wysyłają powiadomień, nawet jeśli pobiorą wiele faktur.
