@@ -82,6 +82,7 @@ Screeny robione Playwrightem z osobnego stacku z wydanej wersji (`docker compose
 ### CI/CD
 
 `.github/workflows/deploy.yml` -- automatyczny deploy na GitHub Pages przy push do `main`.
+`.github/workflows/build.yml` -- `npm run build` na każdym PR do `main`.
 
 ### Komendy
 
