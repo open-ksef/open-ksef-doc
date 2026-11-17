@@ -140,7 +140,7 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 - Tokeny i certyfikaty KSeF (z kluczem prywatnym) są szyfrowane w bazie danych (AES-256-GCM).
 - Kopia e-maila, imienia i nazwiska jest przechowywana, dopóki nie usuniemy konta (sekcja 8). Dostęp do firmy znika po jej opuszczeniu, usunięciu z firmy albo usunięciu firmy.
 - Zaproszenia, także wygasłe, odwołane i przyjęte, są przechowywane, dopóki istnieje firma. Usunięcie firmy usuwa jej zaproszenia.
-- Historia zmian w firmie i historia resetów weryfikacji dwuetapowej nie są usuwane automatycznie. Historia firmy zostaje także po usunięciu firmy, już bez powiązania z nią, razem z identyfikatorami, imionami i nazwiskami oraz adresami e-mail osób, które w niej występują. Nie ma dziś ustalonego terminu jej usunięcia. Usuwa ją właściciel instancji na żądanie (sekcja 8) albo z własnej decyzji.
+- Historia zmian w firmie zostaje, dopóki istnieje firma. Nie ma ustalonego terminu jej usunięcia. Po usunięciu firmy jej historia zostaje już bez powiązania z nią, razem z identyfikatorami, imionami i nazwiskami oraz adresami e-mail osób, które w niej występują. Wpisy bez powiązania z firmą, czyli historia usuniętych firm i historia resetów weryfikacji dwuetapowej, są usuwane automatycznie po 12 miesiącach od zdarzenia, nie od usunięcia firmy. Wpisy starsze niż 12 miesięcy znikają więc wkrótce po usunięciu firmy. Wcześniej historię usuwa właściciel instancji na żądanie (sekcja 8) albo z własnej decyzji.
 
 ---
 
@@ -171,7 +171,7 @@ Aby usunąć konto w OpenKSeF i powiązane z nim dane, wyślij prośbę e-mailem
 
 Prośby realizujemy ręcznie. Odpowiadamy w ciągu miesiąca.
 
-**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator) i jego kopię w instancji, dostęp do firm innych osób, zarejestrowane urządzenia oraz firmy dodane z tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur, fakturami wystawionymi i zaproszeniami, z wyjątkami poniżej. Jeśli z takiej firmy korzystają też inne osoby albo jesteś jedynym właścicielem firmy, z której korzystają inni, przed usunięciem skontaktujemy się z Tobą: usunięcie firmy odebrałoby ją także im.
+**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator) i jego kopię w instancji, dostęp do firm innych osób, zarejestrowane urządzenia oraz firmy dodane z tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur, fakturami wystawionymi i zaproszeniami, z wyjątkami poniżej. Jeśli z takiej firmy korzystają też inne osoby albo jesteś jedynym właścicielem firmy, z której korzystają inni, przed usunięciem skontaktujemy się z Tobą: usunięcie firmy odebrałoby ją także im. Usuwamy też firmy dodane z innego konta, do których nikt poza Tobą nie ma dostępu, z tymi samymi danymi i wyjątkami. Przed usunięciem wymienimy je w osobnej wiadomości i usuniemy je dopiero po Twoim potwierdzeniu.
 
 **Zaproszenie bez konta:** jeśli ktoś zaprosił Twój adres e-mail, a nie masz konta, możesz poprosić o usunięcie zaproszenia i Twojego adresu z historii zmian firmy, tak samo jak o usunięcie konta.
 
