@@ -235,7 +235,7 @@ Zamknij tego klienta, np. narzędzie bazodanowe z otwartą transakcją. `pg_term
 
 ### Wycofanie aktualizacji
 
-Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` usług `api`, `worker`, `portal-web` i `gateway` w `docker-compose.yml`, potem uruchom `docker compose up -d`. Plik z v0.0.24 lub nowszego ma też obraz `openksef-keycloak`, którego nie ma dla starszych tagów: wtedy wróć plikiem compose z poprzedniego wydania, zobacz [Aktualizacja do v0.0.24](#aktualizacja-do-v0024). Po aktualizacji z nowymi stronami logowania i weryfikacją dwuetapową nie cofaj Keycloak ani przez `OPENKSEF_VERSION`, ani starym plikiem compose: zobacz [Wycofanie](#aktualizacja-do-v0027-nowe-strony-logowania-i-weryfikacja-dwuetapowa) w tamtej sekcji.
+Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` usług `api`, `worker`, `portal-web` i `gateway` w `docker-compose.yml`, potem uruchom `docker compose up -d`. Plik z v0.0.24 lub nowszego ma też obraz `openksef-keycloak`, którego nie ma dla starszych tagów: wtedy wróć plikiem compose z poprzedniego wydania, zobacz [Aktualizacja do v0.0.24](#aktualizacja-do-v0024). Po aktualizacji do v0.0.27 nie cofaj Keycloak (ani przez `OPENKSEF_VERSION`, ani starym plikiem compose) bez przywrócenia zrzutu bazy `keycloak` sprzed aktualizacji: zobacz [Wycofanie](#aktualizacja-do-v0027-nowe-strony-logowania-i-weryfikacja-dwuetapowa) w tamtej sekcji.
 
 | Sytuacja | Efekt |
 |---|---|
