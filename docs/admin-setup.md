@@ -125,7 +125,7 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 
 ![Strona Prywatność](/img/screenshots/portal/privacy.png)
 
-Od v0.0.27 portal ma publiczną stronę `<adres portalu>/privacy`. Działa bez logowania. Link **Prywatność** jest w stopce portalu po zalogowaniu i na stronie portalu po wylogowaniu. Strona logowania Keycloak nie ma tego linku, więc niezalogowanym podaj adres `/privacy`. Pokazuje:
+Od v0.0.27 portal ma publiczną stronę `<adres portalu>/privacy`. Działa bez logowania. Link **Prywatność** jest w stopce portalu po zalogowaniu i na stronie portalu po wylogowaniu. Strona logowania Keycloak nie ma tego linku, więc niezalogowanym podaj adres `/privacy`. Strona pokazuje:
 
 - nazwę i kontakt administratora danych; e-mail jest linkiem `mailto:`, adres pocztowy zwykłym tekstem,
 - jak zgłosić sprawę dotyczącą danych i że można złożyć skargę do Prezesa UODO,
