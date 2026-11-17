@@ -107,13 +107,12 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 1. Tworzy realm `openksef` w Keycloak (jeśli nie istnieje)
 2. Tworzy klienty OAuth: `openksef-api`, `openksef-mobile`, `openksef-portal-web`
 3. Pobiera secret klienta API z Keycloak
-4. Włącza token-exchange dla service account
-5. Aktualizuje URI przekierowań z zewnętrznym URL
-6. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP, [blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach))
-7. Tworzy konto admina w Keycloak, rolę realmu `openksef-admin` i przypisuje ją temu kontu
-8. Konfiguruje Google IdP (jeśli podano)
-9. Zapisuje całą konfigurację w bazie danych
-10. Przekierowuje na stronę logowania
+4. Aktualizuje URI przekierowań z zewnętrznym URL
+5. Konfiguruje realm Keycloak (polityka logowania, haseł, SMTP, [blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach)), polskie strony logowania z motywem `openksef` i [weryfikację dwuetapową](weryfikacja-dwuetapowa)
+6. Tworzy konto admina w Keycloak, rolę realmu `openksef-admin` i przypisuje ją temu kontu
+7. Konfiguruje Google IdP (jeśli podano)
+8. Zapisuje całą konfigurację w bazie danych
+9. Przekierowuje na stronę logowania. Pierwsze logowanie hasłem prosi o [włączenie weryfikacji dwuetapowej](weryfikacja-dwuetapowa#pierwsze-logowanie-włącz-weryfikację), także konto admina
 
 ## Administrator danych w Ustawieniach
 
@@ -236,7 +235,7 @@ Zamknij tego klienta, np. narzędzie bazodanowe z otwartą transakcją. `pg_term
 
 ### Wycofanie aktualizacji
 
-Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` z `ghcr.io/open-ksef/openksef-*` w `docker-compose.yml`, potem uruchom `docker compose up -d`.
+Poprzednie obrazy mają tag wydania, np. `:v0.0.14`. Ustaw go w czterech liniach `image:` usług `api`, `worker`, `portal-web` i `gateway` w `docker-compose.yml`, potem uruchom `docker compose up -d`. Plik z v0.0.24 lub nowszego ma też obraz `openksef-keycloak`, którego nie ma dla starszych tagów: wtedy wróć plikiem compose z poprzedniego wydania, zobacz [Aktualizacja do v0.0.24](#aktualizacja-do-v0024). Po aktualizacji do v0.0.27 nie cofaj Keycloak (ani przez `OPENKSEF_VERSION`, ani starym plikiem compose) bez przywrócenia zrzutu bazy `keycloak` sprzed aktualizacji: zobacz [Wycofanie](#aktualizacja-do-v0027-nowe-strony-logowania-i-weryfikacja-dwuetapowa) w tamtej sekcji.
 
 | Sytuacja | Efekt |
 |---|---|
@@ -342,7 +341,7 @@ Potem uruchom `docker compose up -d`.
 Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse proxy lub Cloudflare to adres proxy, a nie przeglądarki. Wpisanie go otwiera konsolę każdemu odwiedzającemu, więc w takiej instalacji użyj tunelu SSH. To samo dotyczy portu przekazywanego przez userland proxy Dockera: w Docker Desktop (Windows, macOS) dla każdego klienta, a w Linuksie dla połączeń na `localhost` i dla wszystkich klientów, gdy w `daemon.json` jest `"iptables": false`. Gateway widzi wtedy adres bramy sieci Docker, np. `172.18.0.1`, a wpisanie go otwiera konsolę każdemu, kto dotrze do portu. Adres widziany przez gateway pokaże `docker compose logs gateway`. Nieprawidłowy wpis gateway pomija, zapisuje w logu `KEYCLOAK_ADMIN_ALLOW entry '<wpis>' is not a valid nginx allow address, skipped` i zachowuje pozostałe wpisy.
 :::
 
-**Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web`, `gateway` i (od v0.0.24) `keycloak`, np. `OPENKSEF_VERSION=v1.2.3`. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. Z v0.0.27 nie cofaj `OPENKSEF_VERSION` bez odtworzenia bazy Keycloak, bo zmienia też obraz Keycloak: zobacz [Keycloak 26.8: aktualizacja i wycofanie](#keycloak-268-aktualizacja-i-wycofanie). Pojedynczą usługę cofniesz, wpisując poprzedni tag w jej `image:` i uruchamiając `docker compose up -d --no-deps <usługa>`. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
+**Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web`, `gateway` i (od v0.0.24) `keycloak`, np. `OPENKSEF_VERSION=v1.2.3`. Obraz `openksef-keycloak` istnieje od v0.0.24: z plikiem compose z v0.0.24 lub nowszego nie ustawiaj wersji starszej niż v0.0.24, tylko wróć do pliku compose z tamtego wydania. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. Z v0.0.27 nie cofaj `OPENKSEF_VERSION` bez odtworzenia bazy Keycloak ze zrzutu sprzed aktualizacji, bo zmienia też obraz Keycloak. Po aktualizacji do v0.0.27 (nowe strony logowania, weryfikacja dwuetapowa) powrót Keycloak bez tego zrzutu jest niemożliwy, a przywrócenie zrzutu kasuje weryfikacje i hasła ustawione później: zobacz [Keycloak 26.8: aktualizacja i wycofanie](#keycloak-268-aktualizacja-i-wycofanie). Pojedynczą usługę cofniesz, wpisując poprzedni tag w jej `image:` i uruchamiając `docker compose up -d --no-deps <usługa>`. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
 
 ## Keycloak 26.8: aktualizacja i wycofanie
 
@@ -401,6 +400,55 @@ SQL
 ```
 
 Skrypt usuwa tylko faktury wystawione i ich pozycje. Nie ma w nich danych użytkownika, a synchronizacja pobierze je ponownie po następnej aktualizacji.
+
+## Aktualizacja do v0.0.24
+
+v0.0.24 zmienia obraz Keycloak na `ghcr.io/open-ksef/openksef-keycloak` (Keycloak 26.0) i uruchamia go poleceniem `start` bez `--features`. Portal nadal loguje własnym formularzem, wygląd logowania się nie zmienia.
+
+1. **Zrób kopię zapasową obu baz:**
+   ```bash
+   docker exec openksef-postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc openksef' > before-v0.0.24.dump
+   docker exec openksef-postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc keycloak' > before-v0.0.24-keycloak.dump
+   ```
+2. **Rola `openksef-admin`.** Instalacja z v0.0.11 lub starszej, która jej jeszcze nie ma: nadaj ją według [Aktualizacja do v0.0.12](#aktualizacja-do-v0012), krok 2. Bez niej zapis **Ustawień** w kroku 4 zwraca 403.
+3. **Nowy plik compose:** pobierz `docker-compose.yml` z wydania v0.0.24 i zastąp nim stary plik. Nowy plik nie potrzebuje `--features` w usłudze `keycloak`. Jeśli `.env` ma `OPENKSEF_VERSION`, ustaw `OPENKSEF_VERSION=v0.0.24` albo usuń tę linię. Potem `docker compose pull && docker compose up -d`.
+4. **Zapisz Ustawienia raz:** otwórz **Ustawienia** w portalu i zapisz je. Zapis ustawia polskie teksty stron Keycloak, zapis zdarzeń logowania (przez 30 dni) i sprawdza, czy rejestracja naprawdę działa. Jeśli rejestracja jest włączona i rola `manage-users` była nadana ręcznie, ten zapis jest konieczny.
+
+Zalogowani użytkownicy portalu i aplikacji zostają zalogowani. Od zapisu **Ustawień** logowanie w aplikacji wygasa po 30 dniach bez użycia i najpóźniej 365 dni po zalogowaniu, także na telefonach zalogowanych wcześniej.
+
+**Instalacja z v0.0.7 na porcie innym niż 8080.** Gateway z v0.0.7 wpisywał do tokenów wewnętrzny port 8080, nowszy wpisuje adres, pod którym otwierasz serwer. Telefony zalogowane jeszcze na v0.0.7 z innym `APP_HOST_PORT` pokażą `Sesja wygasła` i trzeba je zalogować ponownie.
+
+**Powrót do v0.0.23.** Obrazu `openksef-keycloak` nie ma dla wersji przed v0.0.24, więc samo `OPENKSEF_VERSION=v0.0.23` nie zadziała. Wróć do `docker-compose.yml` z wydania v0.0.23 i uruchom `docker compose up -d`. Realmu nie trzeba zmieniać, zalogowane telefony zostają zalogowane.
+
+## Aktualizacja do v0.0.27: nowe strony logowania i weryfikacja dwuetapowa
+
+v0.0.27 przenosi logowanie portalu na strony logowania OpenKSeF (Keycloak w motywie `openksef`, ten sam wygląd co portal) i wymaga [weryfikacji dwuetapowej](weryfikacja-dwuetapowa) przy logowaniu hasłem. Wymaga obrazu `openksef-keycloak` z tego samego wydania (Keycloak 26.8), zobacz [Keycloak 26.8: aktualizacja i wycofanie](#keycloak-268-aktualizacja-i-wycofanie). Na Keycloak starszym niż 26.4 zapis **Ustawień** pomija weryfikację dwuetapową i zapisuje ostrzeżenie w logu API.
+
+1. **Zrób kopię zapasową obu baz**, jak w [Aktualizacja do v0.0.24](#aktualizacja-do-v0024), krok 1, do nowych plików. Sprawdź zrzut bazy `keycloak` jak w [Keycloak 26.8](#keycloak-268-aktualizacja-i-wycofanie), krok 1: bez niego nie wrócisz do poprzedniej wersji Keycloak.
+2. **Nowy plik compose:** pobierz `docker-compose.yml` z wydania i zastąp nim stary plik, potem `docker compose pull && docker compose up -d`. API przy starcie dodaje jedną tabelę (`AuditEvents`, zapis resetów weryfikacji).
+3. **Zapisz Ustawienia raz:** **Ustawienia** > **Administracja**, zaloguj się jako administrator Keycloak i zapisz. Zapis włącza motyw stron logowania, weryfikację dwuetapową, kody zapasowe i [parowanie telefonu kodem](aplikacja-mobilna#sparuj-z-portalem) oraz przekierowuje `/auth/realms/openksef/account` do **Ustawienia** > **Bezpieczeństwo**. Drugi zapis niczego nie zmienia.
+4. **Reset weryfikacji w portalu (opcjonalnie):** nadaj kontu serwisowemu `openksef-api` rolę `manage-users`, zobacz [Zgubiony telefon i kody](weryfikacja-dwuetapowa#zgubiony-telefon-i-kody-reset-przez-administratora). Bez niej reset robisz w konsoli Keycloak.
+5. **Sprawdź:** `/login` pokazuje stronę z tytułem **Logowanie – OpenKSeF**. Pierwsze logowanie hasłem prosi o włączenie weryfikacji dwuetapowej. Logowanie przez Google o nic nie pyta.
+
+Co zobaczą użytkownicy:
+
+- Każde konto z hasłem włącza weryfikację przy najbliższym logowaniu hasłem w portalu, także konto admina. Konta Google nic nie zmieniają.
+- Zalogowane telefony zostają zalogowane, także po włączeniu weryfikacji.
+- Aplikacja 1.0.9 loguje na stronie logowania OpenKSeF, z kodem z aplikacji uwierzytelniającej, albo [parowaniem kodem z portalem](aplikacja-mobilna#sparuj-z-portalem).
+- Aplikacja 1.0.8 nie ma pola na kod: konto z włączoną weryfikacją nie zaloguje się w niej hasłem, tylko przez Google. Nieudane próby liczą się do [blokady po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach). Uprzedź użytkowników, żeby zaktualizowali aplikację do 1.0.9 albo zalogowali się w 1.0.8 przed pierwszym logowaniem do portalu po aktualizacji.
+
+**Własne zmiany CSS motywu.** Przeglądarki trzymają pliki motywu w pamięci podręcznej do 30 dni. Zmieniając CSS na tym samym Keycloak, zmień nazwę pliku, inaczej użytkownicy zobaczą stary wygląd.
+
+**Wycofanie.**
+
+- Obraz portalu z poprzedniego wydania (własny formularz logowania) działa tylko, dopóki nikt nie włączył weryfikacji. Zmień tag tylko w linii `image:` usługi `portal-web`, nie przez `OPENKSEF_VERSION` ani stary plik compose. Obrazu `keycloak` nie cofaj bez przywrócenia zrzutu bazy `keycloak`: Keycloak nie obsługuje powrotu do starszej wersji na zaktualizowanej bazie, zobacz [Keycloak 26.8: aktualizacja i wycofanie](#keycloak-268-aktualizacja-i-wycofanie). Sprawdź w bazie Keycloak, czy ktoś włączył weryfikację, wynik musi być `0`:
+  ```bash
+  echo "SELECT count(*) FROM credential WHERE type='otp';" | docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d keycloak -tA'
+  ```
+  Przy wyniku większym niż `0` konta z weryfikacją nie zalogują się starym formularzem. Zostań przy nowym portalu.
+- Wyłączenie weryfikacji w awarii: konsola Keycloak, realm `openksef` > **Authentication**, przypisz z powrotem wbudowane przepływy `browser`, `registration` i `reset credentials`. Zapisane aplikacje uwierzytelniające zostają. Następny zapis **Ustawień** włącza weryfikację ponownie.
+- Oficjalny obraz `quay.io/keycloak/keycloak:26.8.2` zamiast `openksef-keycloak`: logowanie i weryfikacja działają, strony mają wbudowany wygląd Keycloak.
+- Tabela `AuditEvents` zostaje po powrocie do poprzedniego obrazu API i niczemu nie przeszkadza.
 
 ## Reverse proxy i publiczny adres
 
@@ -464,7 +512,7 @@ Sekrety w `SystemConfigs` (secret klienta API, klucz relay, JSON Firebase, secre
 |----------|-------------|-----|
 | `GET /api/system/setup-status` | Anonimowy | Zwraca `isInitialized`, `registrationAllowed`, `dataControllerName`, `dataControllerContact` |
 | `POST /api/system/setup/authenticate` | Anonimowy | Waliduje dane admina KC, zwraca token |
-| `POST /api/system/setup/apply` | Token setup (X-Setup-Token) | Wykonuje pełną konfigurację |
+| `POST /api/system/setup/apply` | Token sesji kreatora z kroku 1 (nagłówek `X-Setup-Token`) | Wykonuje pełną konfigurację |
 
 Wszystkie endpointy setup są blokowane po inicjalizacji (zwracają 403).
 
