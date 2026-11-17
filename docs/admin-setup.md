@@ -125,7 +125,7 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 
 ![Strona Prywatność](/img/screenshots/portal/privacy.png)
 
-Portal ma publiczną stronę `/privacy` (link **Prywatność** w stopce portalu i na stronie logowania). Działa bez logowania. Pokazuje:
+Od v0.0.27 portal ma publiczną stronę `<adres portalu>/privacy`. Działa bez logowania. Link **Prywatność** jest w stopce portalu po zalogowaniu i na stronie portalu po wylogowaniu. Strona logowania Keycloak nie ma tego linku, więc niezalogowanym podaj adres `/privacy`. Pokazuje:
 
 - nazwę i kontakt administratora danych; e-mail jest linkiem `mailto:`, adres pocztowy zwykłym tekstem,
 - jak zgłosić sprawę dotyczącą danych i że można złożyć skargę do Prezesa UODO,
@@ -138,7 +138,7 @@ Jeśli administrator nie podał danych, strona mówi, że administratorem jest w
 
 ## Aktualizacja: administrator danych
 
-Instancje skonfigurowane przed tą wersją nie mają nazwy ani kontaktu administratora danych. Użytkownicy z rolą `openksef-admin` widzą wtedy na każdej stronie portalu baner:
+Instancje skonfigurowane przed v0.0.27 nie mają nazwy ani kontaktu administratora danych. Użytkownicy z rolą `openksef-admin` widzą wtedy na każdej stronie portalu baner:
 
 ![Baner - brak administratora danych](/img/screenshots/portal/data-controller-banner.png)
 
