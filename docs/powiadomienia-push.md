@@ -61,6 +61,7 @@ W aplikacji mobilnej (od wersji 1.0.6): **Konto** > **Powiadomienia push**. Po w
 - Chwilowa niedostępność relay, Firebase lub APNs nie usuwa rejestracji urządzenia. Urządzenie jest usuwane z listy tylko wtedy, gdy FCM/APNs jednoznacznie odrzuci jego token (np. po odinstalowaniu aplikacji).
 - Push o nowej fakturze, który nie dotarł (np. chwilowa awaria relay, Firebase lub APNs), Worker ponawia na początku kolejnych cykli automatycznej synchronizacji, przez 24 godziny od pobrania faktury. Dotyczy to także push z ręcznej synchronizacji. Po 24 godzinach push o tej fakturze nie zostanie wysłany, a Worker zapisze to w logu.
 - Ponowienie wysyła tylko push. E-mail poszedł przy pierwszej próbie, drugiego nie ma.
+- Push uznaje się za doręczony, gdy dotarł na co najmniej jedno urządzenie, także innej osoby z dostępem do firmy. Urządzenie, na które wtedy nie dotarł, nie dostanie ponowienia.
 - Ponowienia dotyczą tylko faktur otrzymanych. Faktury z pierwszej synchronizacji i pełnej resynchronizacji nie dostają push także przy ponowieniu.
 - Aplikacja mobilna (Android, od wersji 1.0.4) sprawdza po zalogowaniu, czy jej urządzenie jest nadal zarejestrowane na serwerze, i w razie potrzeby rejestruje je ponownie.
 
