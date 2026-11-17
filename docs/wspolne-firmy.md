@@ -44,7 +44,7 @@ Wynik zależy od tego, czy adres należy do konta na tej instancji:
 
 | Sytuacja | Co widzisz | Co dostaje zaproszona osoba |
 |----------|------------|-----------------------------|
-| Na instancji jest konto z tym adresem e-mail, potwierdzonym | **Dostęp nadany**. Osoba ma dostęp od razu | Push „Masz dostęp do firmy” na zarejestrowane telefony. E-mail „Masz dostęp do firmy \<firma>”, jeśli instancja ma skonfigurowany e-mail |
+| Konto z tym adresem e-mail, potwierdzonym, które choć raz zalogowało się do portalu lub aplikacji | **Dostęp nadany**. Osoba ma dostęp od razu | Push „Masz dostęp do firmy” na telefony z powiadomieniami o wszystkich firmach. E-mail „Masz dostęp do firmy \<firma>”, jeśli instancja ma skonfigurowany e-mail |
 | Brak konta z tym adresem albo adres konta niepotwierdzony | **Zaproszenie oczekuje** i **Link do zaproszenia** z przyciskiem **Kopiuj link** | E-mail „Zaproszenie do firmy \<firma> w OpenKSeF” z tym samym linkiem, jeśli instancja ma skonfigurowany e-mail |
 
 Link widać tylko zaraz po wysłaniu zaproszenia i zaraz po **Wyślij ponownie**. Lista oczekujących zaproszeń go nie pokazuje. Bez e-maila na instancji skopiuj link od razu i przekaż go osobie zaproszonej dowolnym kanałem. Portal pisze wtedy „Przekaż link osobie zapraszanej (\<e-mail>) dowolnym kanałem.”
@@ -133,4 +133,4 @@ Dodanie firmy o NIP, do którego masz już dostęp: „Masz już dostęp do firm
 
 ## Historia zmian
 
-Instancja zapisuje, kto i kiedy zaprosił, nadał dostęp, przyjął zaproszenie, zmienił rolę, usunął osobę lub opuścił firmę, zapisał lub usunął token oraz oznaczył fakturę jako opłaconą. Historii nie widać w portalu ani w aplikacji. Może ją odczytać właściciel instancji z bazy danych. Zobacz [Polityka prywatności](polityka-prywatnosci).
+Instancja zapisuje, kto i kiedy zaprosił, nadał dostęp, przyjął zaproszenie, zmienił rolę, usunął osobę lub opuścił firmę, odwołał lub ponownie wysłał zaproszenie, usunął adres e-mail do powiadomień, zapisał lub usunął token oraz oznaczył fakturę jako opłaconą. Historii nie widać w portalu ani w aplikacji. Może ją odczytać właściciel instancji z bazy danych. Zobacz [Polityka prywatności](polityka-prywatnosci).

@@ -61,7 +61,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 
 ### Historia zmian w firmie
 
-- Kto (identyfikator, imię i nazwisko lub adres e-mail z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, wraz z osobą, której to dotyczy (identyfikator i adres e-mail)
+- Kto (identyfikator, adres e-mail oraz imię i nazwisko z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, ponowne wysłanie, odwołanie i przyjęcie zaproszenia, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, usunięcie adresu e-mail do powiadomień, wraz z osobą, której to dotyczy (identyfikator, adres e-mail albo oba)
 - Reset weryfikacji dwuetapowej przez administratora instancji: kto go wykonał i czyje konto dotyczył (identyfikatory i adresy e-mail)
 - Historia nie jest widoczna w portalu ani aplikacji. Może ją odczytać właściciel instancji z bazy danych
 
@@ -138,9 +138,9 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 - Usunięcie firmy nie obejmuje kopii zapasowych właściciela instancji ani lokalnej kopii faktur w aplikacji mobilnej.
 - Aplikacja mobilna przechowuje lokalną kopię faktur w bazie SQLite w prywatnym katalogu aplikacji na urządzeniu, bez dodatkowego szyfrowania.
 - Tokeny i certyfikaty KSeF (z kluczem prywatnym) są szyfrowane w bazie danych (AES-256-GCM).
-- Kopia e-maila, imienia i nazwiska jest przechowywana, dopóki istnieje konto. Dostęp do firmy znika po jej opuszczeniu, usunięciu z firmy albo usunięciu firmy.
+- Kopia e-maila, imienia i nazwiska jest przechowywana, dopóki nie usuniemy konta (sekcja 8). Dostęp do firmy znika po jej opuszczeniu, usunięciu z firmy albo usunięciu firmy.
 - Zaproszenia, także wygasłe, odwołane i przyjęte, są przechowywane, dopóki istnieje firma. Usunięcie firmy usuwa jej zaproszenia.
-- Historia zmian w firmie i historia resetów weryfikacji dwuetapowej nie są usuwane automatycznie. Historia firmy zostaje także po usunięciu firmy, już bez powiązania z nią, razem z adresami e-mail osób zaproszonych. Nie ma dziś ustalonego terminu jej usunięcia. Usuwa ją właściciel instancji na żądanie (sekcja 8) albo z własnej decyzji.
+- Historia zmian w firmie i historia resetów weryfikacji dwuetapowej nie są usuwane automatycznie. Historia firmy zostaje także po usunięciu firmy, już bez powiązania z nią, razem z identyfikatorami, imionami i nazwiskami oraz adresami e-mail osób, które w niej występują. Nie ma dziś ustalonego terminu jej usunięcia. Usuwa ją właściciel instancji na żądanie (sekcja 8) albo z własnej decyzji.
 
 ---
 
@@ -171,7 +171,7 @@ Aby usunąć konto w OpenKSeF i powiązane z nim dane, wyślij prośbę e-mailem
 
 Prośby realizujemy ręcznie. Odpowiadamy w ciągu miesiąca.
 
-**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator) i jego kopię w instancji, dostęp do firm innych osób, zarejestrowane urządzenia oraz firmy tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur, fakturami wystawionymi i zaproszeniami, z wyjątkami poniżej.
+**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator) i jego kopię w instancji, dostęp do firm innych osób, zarejestrowane urządzenia oraz firmy dodane z tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur, fakturami wystawionymi i zaproszeniami, z wyjątkami poniżej. Jeśli z takiej firmy korzystają też inne osoby albo jesteś jedynym właścicielem firmy, z której korzystają inni, przed usunięciem skontaktujemy się z Tobą: usunięcie firmy odebrałoby ją także im.
 
 **Zaproszenie bez konta:** jeśli ktoś zaprosił Twój adres e-mail, a nie masz konta, możesz poprosić o usunięcie zaproszenia i Twojego adresu z historii zmian firmy, tak samo jak o usunięcie konta.
 
