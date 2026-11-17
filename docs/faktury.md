@@ -52,7 +52,7 @@ Przyciski są pod kwotami i numerem KSeF, w portalu. Ta sama strona pokazuje te�
 - Gdy generator MF nie obsługuje formatu faktury, portal pokazuje `Format faktury nieobsługiwany przez generator PDF MF. Pobierz XML.` Plik XML pobierzesz wtedy bez zmian.
 - Przy innym błędzie generowania portal pokazuje `Nie udało się wygenerować PDF.`
 
-Dopóki OpenKSeF nie ma zapisanego pliku XML faktury, przycisków nie ma. Nowe faktury dostają plik XML zwykle w tej samej synchronizacji. Faktury pobrane przed wprowadzeniem tej funkcji dostają go [stopniowo, w tle](#uzupełnianie-pozycji-rachunku-i-terminu): przy dużej firmie przez kilka cykli automatycznej synchronizacji.
+Dopóki OpenKSeF nie ma zapisanego pliku XML faktury, przycisków nie ma. Nowe faktury dostają plik XML zwykle w tej samej synchronizacji. Faktury pobrane przed v0.0.27 dostają go [stopniowo, w tle](#uzupełnianie-pozycji-rachunku-i-terminu): przy dużej firmie przez kilka cykli automatycznej synchronizacji.
 
 Aplikacja mobilna nie ma tych przycisków.
 
@@ -155,7 +155,7 @@ Faktura pojawia się na liście od razu. Jej pozycje, numer rachunku i termin p�
 Duża firma potrzebuje kilku cykli. Szacunkowo 300 plików to 5 cykli, czyli około 16 godzin od pierwszego cyklu.
 
 :::info[Po aktualizacji: zapisywanie plików XML starszych faktur]
-Po aktualizacji do wersji z [Pobierz XML](#pobierz-xml-i-pobierz-pdf) OpenKSeF pobiera ponownie pliki XML wcześniej pobranych faktur, żeby je zapisać. Trwa to zwykle około 8 cykli automatycznej synchronizacji. W tym czasie, przez około godzinę po cyklu, **Pobierz z KSeF** może zwrócić `Za dużo żądań. Spróbuj ponownie za chwilę.` Licznik nowych faktur po ręcznej synchronizacji może wtedy obejmować też faktury uzupełniane w tle. Dane faktur i status płatności się nie zmieniają.
+Po aktualizacji do v0.0.27 OpenKSeF pobiera ponownie pliki XML wcześniej pobranych faktur, żeby je zapisać i udostępnić [Pobierz XML](#pobierz-xml-i-pobierz-pdf). Obowiązuje ten sam limit 60 plików na firmę w jednym cyklu, np. 450 faktur to około 8 cykli automatycznej synchronizacji. W tym czasie, przez około godzinę po cyklu, **Pobierz z KSeF** może zwrócić `Za dużo żądań. Spróbuj ponownie za chwilę.` Licznik nowych faktur po ręcznej synchronizacji może wtedy obejmować też faktury uzupełniane w tle. Dane faktur i status płatności się nie zmieniają.
 :::
 
 Kolejność pobierania:
@@ -165,7 +165,7 @@ Kolejność pobierania:
 3. [Sprzedaż z innych programów](wystawianie-faktur#faktury-spoza-openksef) bez pozycji.
 4. Nieopłacone faktury otrzymane, których rozliczeń nie odczytano, bo pobrała je starsza wersja OpenKSeF.
 5. Pozostałe faktury otrzymane bez pozycji, także opłacone.
-6. Faktury, których plik XML został odczytany, ale nie zapisany (pobrane przed wprowadzeniem [Pobierz XML](#pobierz-xml-i-pobierz-pdf)). Plik jest potrzebny tylko do pobrania XML i PDF.
+6. Faktury, których plik XML został odczytany, ale nie zapisany (pobrane przed v0.0.27). Plik jest potrzebny tylko do pobrania XML i PDF.
 
 Opłacona faktura, która ma pozycje, ale nie ma terminu, nie trafia do tej kolejki z powodu terminu. Uzupełni go tylko [pełna resynchronizacja](#pełna-resynchronizacja).
 
