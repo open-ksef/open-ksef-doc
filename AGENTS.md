@@ -70,7 +70,7 @@ docs/
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (login, dashboard, admin-setup kroki 1-3, 5, 6, lista faktur, szczegóły, pozycje, opłacona, QR), tylko jasny motyw
+`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (login, dashboard, admin-setup kroki 1-3, 5, 6, administrator danych: kreator, ustawienia, baner, strona Prywatność, lista faktur, szczegóły, pozycje, opłacona, QR), tylko jasny motyw
 `static/img/screenshots/home/` -- screeny na stronę główną (start, start na telefonie, lista, płatność), jasny i ciemny motyw
 
 Screenów aplikacji mobilnej brak (nie ma folderu `mobile/`).

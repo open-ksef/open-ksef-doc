@@ -15,7 +15,7 @@ OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchro
 
 Administratorem danych osobowych jest właściciel instancji OpenKSeF, z której korzystasz. Każda wdrożona instancja ma swojego właściciela i działa niezależnie od innych.
 
-Właściciel instancji podaje swoim użytkownikom swoją nazwę i dane kontaktowe. Jeśli ich nie znasz, zapytaj osobę, która dała Ci dostęp. Autorzy OpenKSeF nie mają dostępu do instancji, których sami nie prowadzą.
+Właściciel instancji podaje swoim użytkownikom swoją nazwę i dane kontaktowe. W portalu instancji znajdziesz je na stronie **Prywatność** pod adresem `/privacy`, np. `https://faktury.firma.pl/privacy` (link w stopce portalu). Jeśli ich nie znasz, zapytaj osobę, która dała Ci dostęp. Autorzy OpenKSeF nie mają dostępu do instancji, których sami nie prowadzą.
 
 W sklepie Google Play aplikację OpenKSeF publikuje **Krystian Mikrut**. Wydawca aplikacji nie staje się przez to administratorem danych w instancjach, których nie prowadzi.
 
