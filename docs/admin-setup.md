@@ -39,6 +39,16 @@ Wprowadź dane logowania admina Keycloak (`KEYCLOAK_ADMIN` i `KEYCLOAK_ADMIN_PAS
 | Imię / Nazwisko | Opcjonalne dane użytkownika | Admin |
 | NIP | NIP pierwszej firmy | *(wymagany)* |
 | Nazwa firmy | Opcjonalna nazwa firmy | *(brak)* |
+| Nazwa administratora danych | Osoba lub firma, która odpowiada za dane w tej instancji | *(wymagana, do 200 znaków)* |
+| Kontakt do administratora danych | E-mail albo adres do korespondencji | *(wymagany, do 300 znaków)* |
+
+#### Administrator danych
+
+![Krok 2 - administrator danych](/img/screenshots/portal/admin-setup-step2-data-controller.png)
+
+Instancja należy do Ciebie, więc to Ty jesteś administratorem danych osobowych, które w niej przetwarzasz (RODO, art. 13 ust. 1 lit. a). Wpisz nazwę i kontakt. Bez obu pól przycisk **Dalej** nie przejdzie dalej.
+
+Obie wartości są **publiczne**: pokazuje je strona [Prywatność](#strona-prywatność) także osobom niezalogowanym. Nie wpisuj prywatnego adresu domowego, jeśli nie chcesz go publikować. Wystarczy e-mail, np. `rodo@firma.pl`. Dane zmienisz później w [Ustawieniach](#administrator-danych-w-ustawieniach).
 
 ### Krok 3: Autoryzacja i e-mail
 
@@ -103,6 +113,35 @@ Przejrzyj wszystkie ustawienia i kliknij "Zastosuj". Wizard:
 7. Konfiguruje Google IdP (jeśli podano)
 8. Zapisuje całą konfigurację w bazie danych
 9. Przekierowuje na stronę logowania. Pierwsze logowanie hasłem prosi o [włączenie weryfikacji dwuetapowej](weryfikacja-dwuetapowa#pierwsze-logowanie-włącz-weryfikację), także konto admina
+
+## Administrator danych w Ustawieniach
+
+![Ustawienia - administrator danych](/img/screenshots/portal/settings-data-controller.png)
+
+**Ustawienia** > **Administracja** > **Administrator danych**. Zmień nazwę lub kontakt, gdy zmieni się właściciel instancji albo adres kontaktowy, i kliknij **Zapisz zmiany**. Gdy dane są już zapisane, oba pola muszą zostać wypełnione: nie da się ich wyczyścić.
+
+## Strona Prywatność
+
+![Strona Prywatność](/img/screenshots/portal/privacy.png)
+
+Od v0.0.27 portal ma publiczną stronę `<adres portalu>/privacy`. Działa bez logowania. Link **Prywatność** jest w stopce portalu po zalogowaniu i na stronie portalu po wylogowaniu. Strona logowania Keycloak nie ma tego linku, więc niezalogowanym podaj adres `/privacy`. Strona pokazuje:
+
+- nazwę i kontakt administratora danych; e-mail jest linkiem `mailto:`, adres pocztowy zwykłym tekstem,
+- jak zgłosić sprawę dotyczącą danych i że można złożyć skargę do Prezesa UODO,
+- jakie dane przechowuje instancja, gdzie i jak długo, do kogo mogą trafić,
+- link do pełnej [polityki prywatności](polityka-prywatnosci) oprogramowania OpenKSeF.
+
+Jeśli administrator nie podał danych, strona mówi, że administratorem jest właściciel instancji, i każe zapytać o nazwę i kontakt osobę, która dała dostęp:
+
+![Strona Prywatność bez danych administratora](/img/screenshots/portal/privacy-fallback.png)
+
+## Aktualizacja: administrator danych
+
+Instancje skonfigurowane przed v0.0.27 nie mają nazwy ani kontaktu administratora danych. Użytkownicy z rolą `openksef-admin` widzą wtedy na każdej stronie portalu baner:
+
+![Baner - brak administratora danych](/img/screenshots/portal/data-controller-banner.png)
+
+Baner nie blokuje pracy. Kliknij **Uzupełnij w ustawieniach**, wpisz oba pola i zapisz. Baner znika, gdy oba pola są wypełnione. Pamiętaj, że dane są publiczne na stronie [Prywatność](#strona-prywatność).
 
 ## Klucz szyfrowania
 
@@ -302,7 +341,32 @@ Potem uruchom `docker compose up -d`.
 Gateway sprawdza adres połączenia, które do niego przychodzi. Za reverse proxy lub Cloudflare to adres proxy, a nie przeglądarki. Wpisanie go otwiera konsolę każdemu odwiedzającemu, więc w takiej instalacji użyj tunelu SSH. To samo dotyczy portu przekazywanego przez userland proxy Dockera: w Docker Desktop (Windows, macOS) dla każdego klienta, a w Linuksie dla połączeń na `localhost` i dla wszystkich klientów, gdy w `daemon.json` jest `"iptables": false`. Gateway widzi wtedy adres bramy sieci Docker, np. `172.18.0.1`, a wpisanie go otwiera konsolę każdemu, kto dotrze do portu. Adres widziany przez gateway pokaże `docker compose logs gateway`. Nieprawidłowy wpis gateway pomija, zapisuje w logu `KEYCLOAK_ADMIN_ALLOW entry '<wpis>' is not a valid nginx allow address, skipped` i zachowuje pozostałe wpisy.
 :::
 
-**Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web` i `gateway`, a od v0.0.24 także `keycloak`, np. `OPENKSEF_VERSION=v1.2.3`. Obraz `openksef-keycloak` istnieje od v0.0.24: z plikiem compose z v0.0.24 lub nowszego nie ustawiaj wersji starszej niż v0.0.24, tylko wróć do pliku compose z tamtego wydania. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
+**Wersja obrazów.** `OPENKSEF_VERSION` w `.env` wybiera wersję `api`, `worker`, `portal-web`, `gateway` i (od v0.0.24) `keycloak`, np. `OPENKSEF_VERSION=v1.2.3`. Obraz `openksef-keycloak` istnieje od v0.0.24: z plikiem compose z v0.0.24 lub nowszego nie ustawiaj wersji starszej niż v0.0.24, tylko wróć do pliku compose z tamtego wydania. Bez tej zmiennej używana jest wersja wydania, z którego pochodzi `docker-compose.yml`. Aktualizacja: zmień ją (albo pobierz nowy plik compose), potem `docker compose pull && docker compose up -d`. Powrót do poprzedniej wersji: ustaw poprzednią wersję i uruchom te same polecenia. Migracje bazy nie są cofane, więc najpierw przeczytaj informacje o wydaniu. Z v0.0.27 nie cofaj `OPENKSEF_VERSION` bez odtworzenia bazy Keycloak, bo zmienia też obraz Keycloak: zobacz [Keycloak 26.8: aktualizacja i wycofanie](#keycloak-268-aktualizacja-i-wycofanie). Pojedynczą usługę cofniesz, wpisując poprzedni tag w jej `image:` i uruchamiając `docker compose up -d --no-deps <usługa>`. `docker-compose.yml` z wersji v0.0.11 lub starszej używa `:latest`, czyli najnowszego wydania. Powrót do tego pliku przywraca stare porty, ale nie stare obrazy.
+
+## Keycloak 26.8: aktualizacja i wycofanie
+
+Od v0.0.27 obraz `openksef-keycloak` jest zbudowany na `quay.io/keycloak/keycloak:26.8.2`. W v0.0.24 był na 26.0.8, a v0.0.23 i starsze używały oficjalnego `quay.io/keycloak/keycloak:26.0`. Pierwszy start nowego obrazu migruje bazę `keycloak`. Migracja działa tylko w przód: nie ma downgrade'u, a starszy obraz Keycloak nie może wystartować na zmigrowanej bazie.
+
+Aktualizacja:
+
+1. Zrób kopię bazy Keycloak i sprawdź zrzut: `docker compose exec -T postgres sh -c 'pg_dump -U "$POSTGRES_USER" -Fc keycloak' > before-keycloak-26-8.dump`, potem `docker compose exec -T postgres pg_restore -l < before-keycloak-26-8.dump > /dev/null; echo "exit=$?"` musi wypisać `exit=0`.
+2. Ustaw `OPENKSEF_VERSION` w `.env` na tag wydania, np. `v0.0.27`. Nie uruchamiaj Keycloak z `:latest`.
+3. `docker compose pull && docker compose up -d`. Poczekaj na `Keycloak 26.8.2 ... started` w `docker compose logs keycloak`.
+4. Sprawdź logowanie hasłem i, jeśli skonfigurowane, przez Google. Istniejące sesje i tokeny odświeżania aplikacji pozostają ważne. Użytkownicy przeglądarki mogą musieć zalogować się ponownie.
+5. Rejestracja włączona: otwórz **Ustawienia** i zapisz raz. Keycloak 26.8.2 przyjmuje tokeny Admin API tylko ze scope klienta `kc-admin-api`, a zapis przypisuje go do `openksef-api`. Do tego czasu rejestracja zwraca 503.
+
+Własny compose z `start-dev` albo `--features=token-exchange,admin-fine-grained-authz` musi używać `command: start` z dołączonego `docker-compose.yml`. Usuń `KC_HOSTNAME_STRICT_HTTPS`: Keycloak 26 go ignoruje.
+
+Wycofanie: przywróć zrzut i wróć do `docker-compose.yml` oraz tagu poprzedniego wydania. Zatrzymaj Keycloak, utwórz od nowa bazę `keycloak` z właścicielem `KC_DB_USERNAME` (domyślnie `POSTGRES_USER`), przywróć zrzut, ustaw `OPENKSEF_VERSION` na poprzedni tag i uruchom. Na `:latest` lub nowym tagu Keycloak 26.8 ponownie zmigruje przywróconą bazę. Wszystko, co zapisano w Keycloak po zrzucie, przepada: nowi użytkownicy, zmiany haseł, zmiany realmu. Tokeny odświeżania wydane przed zrzutem działają dalej.
+
+```bash
+docker compose stop keycloak
+KC_OWNER=$(docker inspect openksef-keycloak --format '{{range .Config.Env}}{{println .}}{{end}}' | sed -n 's/^KC_DB_USERNAME=//p')
+docker compose exec -T -e KC_OWNER="$KC_OWNER" postgres sh -c 'dropdb -U "$POSTGRES_USER" keycloak && createdb -U "$POSTGRES_USER" -O "$KC_OWNER" keycloak'
+docker compose exec -T -e KC_OWNER="$KC_OWNER" postgres sh -c 'pg_restore -U "$POSTGRES_USER" -d keycloak --no-owner --role="$KC_OWNER"' < before-keycloak-26-8.dump
+# ustaw w .env OPENKSEF_VERSION na poprzedni tag
+docker compose pull keycloak && docker compose up -d keycloak
+```
 
 ## Aktualizacja do v0.0.12
 
@@ -445,7 +509,7 @@ Sekrety w `SystemConfigs` (secret klienta API, klucz relay, JSON Firebase, secre
 
 | Endpoint | Autoryzacja | Cel |
 |----------|-------------|-----|
-| `GET /api/system/setup-status` | Anonimowy | Zwraca `{isInitialized: bool}` |
+| `GET /api/system/setup-status` | Anonimowy | Zwraca `isInitialized`, `registrationAllowed`, `dataControllerName`, `dataControllerContact` |
 | `POST /api/system/setup/authenticate` | Anonimowy | Waliduje dane admina KC, zwraca token |
 | `POST /api/system/setup/apply` | Token sesji kreatora z kroku 1 (nagłówek `X-Setup-Token`) | Wykonuje pełną konfigurację |
 

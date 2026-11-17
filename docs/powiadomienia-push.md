@@ -59,6 +59,10 @@ W aplikacji mobilnej (od wersji 1.0.6): **Konto** > **Powiadomienia push**. Po w
 ## Niezawodność
 
 - Chwilowa niedostępność relay, Firebase lub APNs nie usuwa rejestracji urządzenia. Urządzenie jest usuwane z listy tylko wtedy, gdy FCM/APNs jednoznacznie odrzuci jego token (np. po odinstalowaniu aplikacji).
+- Push o nowej fakturze, który nie dotarł (np. chwilowa awaria relay, Firebase lub APNs), Worker ponawia na początku kolejnych cykli automatycznej synchronizacji, przez 24 godziny od pobrania faktury. Dotyczy to także push z ręcznej synchronizacji. Po 24 godzinach push o tej fakturze nie zostanie wysłany, a Worker zapisze to w logu.
+- Ponowienie wysyła tylko push. E-mail poszedł przy pierwszej próbie, drugiego nie ma.
+- Push uznaje się za doręczony, gdy dotarł na co najmniej jedno urządzenie, także innej osoby z dostępem do firmy. Urządzenie, na które wtedy nie dotarł, nie dostanie ponowienia.
+- Ponowienia dotyczą tylko faktur otrzymanych. Faktury z pierwszej synchronizacji i pełnej resynchronizacji nie dostają push także przy ponowieniu.
 - Aplikacja mobilna (Android, od wersji 1.0.4) sprawdza po zalogowaniu, czy jej urządzenie jest nadal zarejestrowane na serwerze, i w razie potrzeby rejestruje je ponownie.
 
 ## Konfiguracja
@@ -93,6 +97,7 @@ Komunikacja z relay jest zabezpieczona trzema warstwami:
 | Powiadomienie przyszło po wyłączeniu push | Serwer nie wiedział jeszcze o wyłączeniu. Zamknij aplikację całkowicie i uruchom ją ponownie z dostępem do sieci |
 | Brak powiadomień, urządzenia nie ma w portalu na liście **Telefon** > **Moje urządzenia** | W aplikacji mobilnej: **Konto** > wyłącz i włącz **Powiadomienia push**. Aplikacja zarejestruje urządzenie ponownie |
 | Brak e-maili o nowych fakturach | Sprawdź `EMAIL_ENABLED=true` i pozostałe `EMAIL_*` w `.env` ([Konfiguracja](instalacja/konfiguracja#e-mail-o-nowych-fakturach)), `docker compose up -d api worker` oraz adres do powiadomień w danych firmy. Błędy SMTP są w logach `api` i `worker` |
+| Push przyszedł kilka godzin po fakturze, bez drugiego e-maila | Pierwsza próba nie dotarła, Worker [ponowił push](#niezawodność) w kolejnym cyklu |
 | Brak powiadomień po pełnej resynchronizacji | Zamierzone -- pełna resynchronizacja nie wysyła powiadomień |
 | SignalR nie łączy | Zaloguj się ponownie w aplikacji |
 | Relay zwraca 401 | Instancja niezarejestrowana -- przejdź do **Ustawienia** > **Administracja instancji** > **Powiadomienia push** > **Zarejestruj ponownie** |
