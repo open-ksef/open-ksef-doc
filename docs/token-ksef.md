@@ -15,13 +15,13 @@ Token zostaje domyślnym sposobem logowania. Od v0.0.13 możesz zamiast tokenu w
    - test: [ap-test.ksef.mf.gov.pl](https://ap-test.ksef.mf.gov.pl).
 2. Zaloguj się pieczęcią kwalifikowaną firmy albo jako osoba z uprawnieniami do firmy w KSeF: podpisem kwalifikowanym lub Profilem Zaufanym. To logowanie jest potrzebne tylko do wygenerowania tokenu. OpenKSeF go nie wykonuje.
 3. Wygeneruj token z dwoma uprawnieniami:
-   - **odczyt faktur** (w API KSeF `InvoiceRead`), aby pobierać faktury,
-   - **wystawianie faktur** (`InvoiceWrite`), aby je wysyłać.
+   - **Przeglądanie faktur** (w API KSeF `InvoiceRead`), aby pobierać faktury,
+   - **Wystawianie faktur** (`InvoiceWrite`), aby je wysyłać.
 4. Skopiuj token od razu. Aplikacja Podatnika pokazuje go tylko raz.
 
 Uprawnień tokenu nie da się zmienić. Jeśli brakuje uprawnienia, wygeneruj nowy token i podmień go w OpenKSeF.
 
-Sam odczyt wystarczy do przeglądania faktur, ale nie do ich [wystawiania](wystawianie-faktur#token-ksef).
+Bez uprawnienia **Wystawianie faktur** tylko odbierasz faktury, bez ich [wystawiania](wystawianie-faktur#token-ksef).
 
 ## Wklej token w OpenKSeF
 
