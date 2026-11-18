@@ -302,6 +302,12 @@ Usunięcie firmy usuwa te faktury tylko z OpenKSeF. W KSeF zostają.
 
 Wystawianie faktur jest też w [aplikacji na Androida](aplikacja-mobilna), od wersji 1.0.5. Faktury dla firm zagranicznych wystawisz tylko w portalu: [szczegóły](#aplikacja-mobilna-a-faktury-zagraniczne).
 
+Zakładka **Wystawione** pokazuje listę faktur z filtrami statusu. Szkic otwiera szczegóły z przyciskami **Wystaw i wyślij**, **Edytuj** i **Usuń szkic**. **Edytuj** otwiera formularz szkicu.
+
+<img src="/img/screenshots/mobile/issued-list.png" alt="Aplikacja, zakładka Wystawione: wyszukiwarka, filtry statusu, dwa szkice" width="320" />
+<img src="/img/screenshots/mobile/issued-details.png" alt="Aplikacja, Szkic faktury: Wystaw i wyślij, Edytuj, Usuń szkic, kwota do zapłaty, nabywca, pozycje" width="320" />
+<img src="/img/screenshots/mobile/issued-draft.png" alt="Aplikacja, Edycja szkicu: nabywca firma z NIP, daty, kwota do zapłaty, przycisk Wystaw i wyślij do KSeF" width="320" />
+
 ## Ograniczenia
 
 Tych rzeczy OpenKSeF jeszcze nie obsługuje:

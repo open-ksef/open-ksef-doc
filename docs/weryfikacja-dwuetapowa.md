@@ -91,6 +91,8 @@ Reset zrobisz w konsoli Keycloak. Logujesz się do niej kontem `KEYCLOAK_ADMIN` 
 
 Aplikacja w wersji 1.0.9 loguje na stronie logowania OpenKSeF w przeglądarce telefonu: po haśle wpisujesz tam kod z aplikacji uwierzytelniającej albo kod zapasowy. Bez hasła na telefonie zalogujesz się [parowaniem kodem z portalem](aplikacja-mobilna#sparuj-z-portalem).
 
+<img src="/img/screenshots/mobile/login-otp.png" alt="Strona Weryfikacja dwuetapowa otwarta z aplikacji w przeglądarce telefonu: pole Kod z aplikacji, przycisk Potwierdź" width="320" />
+
 Aplikacja w wersji 1.0.8 loguje e-mailem i hasłem we własnym formularzu, bez pola na kod. Po włączeniu weryfikacji to konto nie zaloguje się w niej hasłem: aplikacja pokaże `Nieprawidłowy email lub hasło.` Kolejne próby czasowo zablokują konto, zobacz [Blokada po nieudanych logowaniach](logowanie#blokada-po-nieudanych-logowaniach). Co działa:
 
 - Aktualizacja aplikacji do 1.0.9.
