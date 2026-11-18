@@ -53,6 +53,8 @@ Od wersji 1.0.9 aplikacja mobilna nie rejestruje telefonu na serwerze, dopóki k
 2. **Tak**: dopiero teraz Android pyta o zgodę na powiadomienia. Po zgodzie aplikacja rejestruje telefon i urządzenie pojawia się w portalu na liście **Telefon** > **Moje urządzenia**.
 3. **Nie teraz**: telefon nie jest rejestrowany. Aplikacja nie pyta ponownie. Włączysz powiadomienia w **Konto** > **Powiadomienia push**.
 
+<img src="/img/screenshots/mobile/push-consent.png" alt="Aplikacja po zalogowaniu: okno Powiadomienia z przyciskami Nie teraz i Tak" width="320" />
+
 Wybór jest zapamiętany dla konta na tym telefonie. Inne konto zalogowane na tym samym telefonie dostaje własne pytanie. Wylogowanie usuwa telefon z serwera. Po ponownym zalogowaniu tym samym kontem aplikacja stosuje zapamiętany wybór bez pytania.
 
 Aktualizacja z 1.0.8 nie pyta ponownie: dotychczasowe ustawienie telefonu przechodzi na pierwsze konto zalogowane po aktualizacji. Telefon z wyłączonymi powiadomieniami zostaje bez nich, zarejestrowany zostaje zarejestrowany.

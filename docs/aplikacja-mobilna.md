@@ -91,6 +91,8 @@ Karta **Zaloguj telefon kodem** na stronie **Telefon** w portalu nie działa z a
 Wymaga aplikacji w wersji 1.0.9 lub nowszej i serwera OpenKSeF v0.0.27 lub nowszego, na którym administrator po aktualizacji zapisał **Ustawienia**.
 
 1. W aplikacji naciśnij **Sparuj z portalem**. Aplikacja pokazuje kod z 8 liter, np. `ABCD-EFGH`, i czas jego ważności: 5 minut.
+
+<img src="/img/screenshots/mobile/pairing-code.png" alt="Aplikacja, ekran Sparuj z portalem: kod z 8 liter i czas ważności" width="320" />
 2. Na komputerze zaloguj się do portalu i otwórz stronę **Telefon**. W karcie **Zaloguj telefon kodem** wpisz kod i naciśnij **Dalej**. Wielkość liter i myślnik nie mają znaczenia.
 3. Portal otwiera stronę logowania OpenKSeF. Jeśli zapyta o hasło i kod, zaloguj się.
 4. Strona pyta **Zalogować telefon?**. Wybierz **Tak** tylko wtedy, gdy ten kod widzisz teraz na swoim telefonie.
