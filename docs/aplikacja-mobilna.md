@@ -96,6 +96,10 @@ Wymaga aplikacji w wersji 1.0.9 lub nowszej i serwera OpenKSeF v0.0.27 lub nowsz
 4. Strona pyta **Zalogować telefon?**. Wybierz **Tak** tylko wtedy, gdy ten kod widzisz teraz na swoim telefonie.
 5. Strona pokazuje **Telefon zalogowany**. Aplikacja sama przechodzi dalej: do listy faktur albo, gdy konto nie ma jeszcze firmy, do dodania firmy.
 
+![Strona Zalogować telefon? z przyciskami Tak, zaloguj telefon i Nie](/img/screenshots/portal/pairing-consent.png)
+
+![Strona Telefon zalogowany: wróć do telefonu](/img/screenshots/portal/pairing-done.png)
+
 ![Portal, strona Telefon: karta Zaloguj telefon kodem z ostrzeżeniem](/img/screenshots/portal/mobile-setup.png)
 
 :::danger[Wpisuj tylko kod z własnego telefonu]
