@@ -15,23 +15,23 @@ Przy fakturze widać środowisko KSeF: **TEST**, **DEMO** albo **PRODUKCJA**. Na
 
 ## Zanim zaczniesz
 
-1. Zapisz w **Firma** > **Dostęp do KSeF i pobieranie** [token KSeF z uprawnieniem do zapisu](#token-ksef) albo [certyfikat KSeF](certyfikat-ksef).
+1. Zapisz w **Firma** > **Dostęp do KSeF i pobieranie** [token KSeF z uprawnieniem **Wystawianie faktur**](#token-ksef) albo [certyfikat KSeF](certyfikat-ksef).
 2. Uzupełnij [dane do faktur](#dane-do-faktur).
 
 ## Token KSeF
 
 Token musi mieć dwa uprawnienia:
 
-- **odczyt faktur**, aby pobierać faktury z KSeF,
-- **wystawianie faktur** (zapis), aby je wysyłać.
+- **Przeglądanie faktur**, aby pobierać faktury z KSeF,
+- **Wystawianie faktur**, aby je wysyłać.
 
-Sam odczyt wystarczy do przeglądania faktur, ale nie do ich wystawiania. Wysyłka zakończy się wtedy komunikatem:
+Bez uprawnienia **Wystawianie faktur** tylko odbierasz faktury. Wysyłka zakończy się wtedy komunikatem:
 
-> Brak uprawnienia do wystawiania faktur w KSeF. Podmień w ustawieniach firmy token lub certyfikat na taki, który ma uprawnienie do zapisu.
+> Brak uprawnienia do wystawiania faktur w KSeF. Podmień w ustawieniach firmy token lub certyfikat na taki, który ma uprawnienie Wystawianie faktur.
 
 Te same dwa uprawnienia musi mieć w KSeF osoba lub firma, której [certyfikat](certyfikat-ksef) zapiszesz zamiast tokenu.
 
-Jeśli firma ma token tylko do odczytu, wygeneruj nowy w Aplikacji Podatnika KSeF i podmień go w ustawieniach firmy.
+Jeśli token firmy ma tylko uprawnienie **Przeglądanie faktur**, wygeneruj nowy w Aplikacji Podatnika KSeF i podmień go w ustawieniach firmy.
 
 Gdy KSeF odmówi logowania, faktura pokaże jeden z komunikatów:
 

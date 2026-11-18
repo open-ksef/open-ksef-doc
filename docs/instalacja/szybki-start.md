@@ -96,7 +96,7 @@ System wykryje, że nie jest jeszcze skonfigurowany i automatycznie przekieruje 
 Szczegółowy opis każdego kroku znajdziesz w [Kreatorze konfiguracji](../admin-setup).
 
 :::info[Token KSeF]
-Po konfiguracji dodaj do firmy token KSeF. Token musi mieć uprawnienia do **odczytu faktur** i **wystawiania faktur** (zapis). Sam odczyt nie wystarczy do [wystawiania faktur](../wystawianie-faktur#token-ksef).
+Po konfiguracji dodaj do firmy token KSeF. Token musi mieć uprawnienia **Przeglądanie faktur** i **Wystawianie faktur**. Bez uprawnienia **Wystawianie faktur** tylko odbierasz faktury, bez [wystawiania](../wystawianie-faktur#token-ksef).
 :::
 
 :::info[Klucz szyfrowania]
