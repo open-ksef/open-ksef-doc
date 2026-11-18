@@ -125,11 +125,20 @@ Szczegóły: [Kto dostaje powiadomienie](powiadomienia-push#kto-dostaje-powiadom
 - Starsze wersje pokazują te przyciski, ale serwer odmówi zapisu. Przeglądanie faktur działa w każdej wersji.
 - Zaproszenia otwierasz w przeglądarce. Dostęp nadany w portalu pojawi się w aplikacji po odświeżeniu listy firm.
 
-## Ta sama firma u dwóch osób
+## Jedna firma na NIP
 
-OpenKSeF nie łączy firm po NIP. Dwie osoby mogą dodać osobno firmę o tym samym NIP: każda ma wtedy własny token, synchronizację i status płatności. Aby pracować na wspólnych fakturach, zaproś drugą osobę do jednej firmy.
+Od v0.0.29 na jednym serwerze OpenKSeF może być tylko jedna firma o danym NIP. Druga osoba dostaje dostęp do tej firmy tylko przez [zaproszenie](#zapraszanie) od Właściciela lub Administratora. Dotyczy to portalu, aplikacji mobilnej i kreatora pierwszej konfiguracji.
 
-Dodanie firmy o NIP, do którego masz już dostęp: „Masz już dostęp do firmy z tym NIP-em: \<nazwa>.” Jeśli opuściłeś firmę, możesz dodać ten NIP ponownie jako nową firmę.
+Dodanie firmy o NIP, który jest już na serwerze:
+
+- Masz dostęp do tej firmy: „Masz już dostęp do firmy z tym NIP-em: \<nazwa>.”
+- Nie masz dostępu: „Firma z tym NIP-em jest już dodana na tym serwerze OpenKSeF. Poproś osobę, która nią zarządza, o zaproszenie do firmy. Jeśli nie wiesz, kto to jest, napisz do administratora serwera.” Komunikat nie podaje nazwy firmy ani osób z dostępem.
+
+Jeśli opuściłeś firmę, nie dodasz jej NIP ponownie. Poproś Właściciela lub Administratora o nowe zaproszenie.
+
+NIP zwalnia się dopiero po usunięciu firmy przez Właściciela albo razem z kontem jej jedynej osoby. Firma dodana potem jest nowa i pusta: bez faktur, statusów płatności, tokenu i osób z dostępem.
+
+Firmy o tym samym NIP dodane przed v0.0.29 działają dalej bez zmian. Każda ma własny token, synchronizację, faktury i status płatności. Nowej firmy z tym NIP nie da się już dodać.
 
 ## Historia zmian
 
