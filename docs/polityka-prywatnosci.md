@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 17 listopada 2026 r.*
+*Ostatnia aktualizacja: 18 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -140,6 +140,7 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 - Tokeny i certyfikaty KSeF (z kluczem prywatnym) są szyfrowane w bazie danych (AES-256-GCM).
 - Kopia e-maila, imienia i nazwiska jest przechowywana, dopóki nie usuniemy konta (sekcja 8). Dostęp do firmy znika po jej opuszczeniu, usunięciu z firmy albo usunięciu firmy.
 - Zaproszenia, także wygasłe, odwołane i przyjęte, są przechowywane, dopóki istnieje firma. Usunięcie firmy usuwa jej zaproszenia.
+- Logi techniczne serwera mają ograniczony rozmiar i nadpisują się same. Szczegóły w sekcji 8.
 - Historia zmian w firmie zostaje, dopóki istnieje firma. Nie ma ustalonego terminu jej usunięcia. Po usunięciu firmy jej historia zostaje już bez powiązania z nią, razem z identyfikatorami, imionami i nazwiskami oraz adresami e-mail osób, które w niej występują. Wpisy bez powiązania z firmą, czyli historia usuniętych firm i historia resetów weryfikacji dwuetapowej, są usuwane automatycznie po 12 miesiącach od zdarzenia, nie od usunięcia firmy. Wpisy starsze niż 12 miesięcy znikają więc wkrótce po usunięciu firmy. Wcześniej historię usuwa właściciel instancji na żądanie (sekcja 8) albo z własnej decyzji.
 
 ---
@@ -180,6 +181,8 @@ Prośby realizujemy ręcznie. Odpowiadamy w ciągu miesiąca.
 - Faktura przyjęta na środowisku PRODUKCJA zostaje w KSeF przez okres podany w sekcji 6. Nikt nie może jej stamtąd usunąć. Jej kopię w instancji możemy zachować razem z danymi firmy, do której należy (NIP, nazwa, dane sprzedawcy), i napiszemy o tym w odpowiedzi.
 - W historii zmian (sekcja 2), także firm usuniętych razem z kontem, zostają czynność, data i jej przedmiot (np. rola, identyfikator faktury), bez Twojego identyfikatora, imienia i nazwiska oraz adresu e-mail, także jako osoby zaproszonej lub usuniętej z firmy. Faktura oznaczona przez Ciebie jako opłacona zostaje opłacona, bez informacji, kto ją oznaczył.
 - Dane w kopiach zapasowych właściciela instancji, do czasu usunięcia tych kopii.
+- Logi techniczne serwera. Mogą zawierać Twój identyfikator, adres e-mail, NIP firmy, adres IP i adresy otwieranych stron. Nie usuwamy z nich pojedynczych wpisów. W instancji prowadzonej przez autorów OpenKSeF każda usługa OpenKSeF trzyma najwyżej 30 MB logów, a nowe wpisy zastępują najstarsze. W usługach, które zapisują najwięcej (API i synchronizacja faktur), wpisy znikają po kilku godzinach do kilku dni. Usługi, które zapisują mało, np. logowanie, mogą je trzymać dłużej, najdłużej do aktualizacji tej usługi. Limit nie obejmuje serwera pośredniczącego, który kieruje ruch do instancji. W innych instancjach o okres przechowywania logów zapytaj ich właściciela.
+- Korespondencja w sprawie usunięcia konta. Prośbę, potwierdzenie i naszą odpowiedź przechowujemy przez 1 rok od wysłania odpowiedzi, aby móc wykazać, że prośbę zrealizowaliśmy. Potem ją usuwamy.
 - Lokalna kopia faktur na telefonie. Usuniesz ją, odinstalowując aplikację. Może ją też zawierać kopia zapasowa Androida na Twoim koncie Google i wrócić po ponownej instalacji.
 
 ---
