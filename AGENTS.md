@@ -72,14 +72,14 @@ docs/
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (strona logowania, weryfikacja dwuetapowa: włączenie, kody zapasowe, kod; Ustawienia > Bezpieczeństwo, reset weryfikacji, dashboard, admin-setup kroki 1-3, 5, 6, administrator danych: kreator, ustawienia, baner, strona Prywatność, lista faktur, szczegóły, pozycje, opłacona, QR), tylko jasny motyw
+`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (strona logowania, weryfikacja dwuetapowa: włączenie, kody zapasowe, kod; Ustawienia > Bezpieczeństwo, reset weryfikacji, dashboard, admin-setup kroki 1-3, 5, 6, administrator danych: kreator, ustawienia, baner, strona Prywatność, lista faktur, szczegóły, pozycje, opłacona, QR; wystawianie: dane do faktur, szkic B2B i B2C, Wysyłanie, Przyjęta, PDF z KOD I, Odrzucona, okres numeru, 440, lista; parowanie: Zalogować telefon?, Telefon zalogowany; kod zapasowy), tylko jasny motyw
 `static/img/screenshots/home/` -- screeny na stronę główną (start, start na telefonie, lista, płatność), jasny i ciemny motyw
 
 `static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (ekran logowania 1.0.9). Portal: `mobile-setup.png` (strona Telefon, karta Zaloguj telefon kodem)
 
 Screeny zawierają wyłącznie dane fikcyjne (np. NIP 1111111111, nazwy "Przykład"). Żadnych prawdziwych NIP-ów, numerów KSeF, nazw firm ani adresów serwerów.
 
-Screeny robione Playwrightem z osobnego stacku z wydanej wersji (`docker compose -p <nazwa>`) z danymi fikcyjnymi. Nigdy z bazy dev ani produkcji: są w nich prawdziwe dane. Stack bez Workera, usuń go po zrzutach. **Zastosuj** w kreatorze w trybie Relay rejestruje instancję w produkcyjnym relay: po zrzucie kroku 6 wróć do kroku 5 i wybierz **Tylko lokalne (SignalR)**. Gateway podaje w OIDC port 8080, więc stack musi działać na tym porcie.
+Screeny robione Playwrightem z osobnego stacku z wydanej wersji (`docker compose -p <nazwa>`) z danymi fikcyjnymi. Nigdy z bazy dev ani produkcji: są w nich prawdziwe dane. Stack bez Workera, usuń go po zrzutach. **Zastosuj** w kreatorze w trybie Relay rejestruje instancję w produkcyjnym relay: po zrzucie kroku 6 wróć do kroku 5 i wybierz **Tylko lokalne (SignalR)**. Od v0.0.27 gateway bierze port z nagłówka Host, więc stack może działać na innym porcie niż 8080. Zrzuty z wysyłki do KSeF wymagają Workera na KSeF TEST z fikcyjnym NIP; NIP-y i numery KSeF maskuj na 1111111111, kod QR pikselizuj.
 
 ### CI/CD
 

@@ -55,6 +55,8 @@ Te dane trafiają na każdą wystawianą fakturę. Bez nich wystawianie jest zab
 - **Metoda kasowa**: dodaje na fakturze adnotację „metoda kasowa”. Faktura dla firmy zagranicznej nie ma tej adnotacji.
 - **Rachunek do faktur zagranicznych**: opcjonalny. Zobacz [Rachunek i SWIFT](#rachunek-i-swift).
 
+![Firma > Dane do faktur: sprzedawca, rachunek bankowy, numeracja z podglądem następnego numeru](/img/screenshots/portal/invoice-data.png)
+
 ### Numeracja
 
 Numer nadaje serwer w chwili wystawienia. Szkic nie ma numeru, więc usunięcie szkicu nie zostawia luki.
@@ -84,6 +86,10 @@ Formularz pokazuje numer, który dostanie następna faktura.
 6. Kliknij **Zapisz szkic**, jeśli chcesz wrócić do faktury później. Szkic można edytować i usunąć.
 7. Kliknij **Wystaw i wyślij do KSeF**. Na środowiskach TEST i DEMO faktura wysyła się od razu. W pozostałych przypadkach potwierdź w oknie ze sprzedawcą, środowiskiem, numerem, nabywcą, datą wystawienia i kwotą.
 
+![Nowa faktura dla firmy: nabywca z NIP, pozycja, daty, przelew, przycisk Wystaw i wyślij do KSeF](/img/screenshots/portal/issue-b2b-draft.png)
+
+![Nowa faktura dla osoby prywatnej: nabywca bez NIP, płatność gotówką](/img/screenshots/portal/issue-b2c-draft.png)
+
 VAT jest liczony od sumy netto dla każdej stawki. VAT widoczny przy pozycji jest poglądowy.
 
 ## Statusy
@@ -94,6 +100,10 @@ VAT jest liczony od sumy netto dla każdej stawki. VAT widoczny przy pozycji jes
 | **Wysyłanie** | Numer nadany, trwa wysyłka lub czekamy na odpowiedź KSeF | Poczekać. Możesz zamknąć stronę |
 | **Przyjęta w KSeF** | KSeF nadał numer KSeF | Pobrać XML, UPO i PDF, skopiować |
 | **Odrzucona** | KSeF nie przyjął faktury albo wysyłka nie mogła się rozpocząć | Zobacz [Odrzucona faktura](#odrzucona-faktura) |
+
+![Lista Wystawione faktury: filtry statusu, faktury przyjęte i odrzucone](/img/screenshots/portal/issued-list.png)
+
+![Faktura w statusie Wysyłanie: sprawdzono, nadano numer, wysyłka do KSeF, pobranie UPO](/img/screenshots/portal/issue-sending.png)
 
 Jeśli KSeF nie odpowiada albo wynik wysyłki jest niepewny, faktura zostaje w statusie **Wysyłanie**, a OpenKSeF ponawia sprawdzanie. **Nie wysyłaj wtedy faktury drugi raz.** Wcześniejsza próba mogła zostać przyjęta, a kopia oznaczałaby drugi dokument dla tej samej sprzedaży. Dlatego w tym statusie nie można skopiować faktury.
 
@@ -109,9 +119,17 @@ Pliki są dostępne dla faktury wystawionej w OpenKSeF i **Przyjętej w KSeF**.
 
 Pliki pobierzesz w portalu przyciskami **Pobierz XML**, **Pobierz UPO** i **Pobierz PDF**. Faktura dla firmy zagranicznej ma [trzy przyciski PDF](#pdf-dla-nabywcy).
 
+![Faktura Przyjęta w KSeF: numer KSeF, UPO pobrane, przyciski Pobierz PDF, XML, UPO, Kopiuj jako nową, karta KOD I](/img/screenshots/portal/issue-accepted.png)
+
+![PDF faktury, strona 1: numer faktury i numer KSeF, sprzedawca, nabywca, pozycje, płatność](/img/screenshots/portal/issue-pdf.png)
+
+![PDF faktury, strona 2: KOD I z linkiem weryfikacyjnym KSeF](/img/screenshots/portal/issue-pdf-kod-i.png)
+
 ## Odrzucona faktura
 
 Odrzucona faktura **zachowuje swój numer**. Zobaczysz kod i opis błędu z KSeF. **Popraw i wyślij ponownie** wysyła poprawioną fakturę z tym samym numerem.
+
+![Faktura Odrzucona: KSeF odrzucił token, kod 450, przyciski Podmień token KSeF i Wyślij ponownie](/img/screenshots/portal/issue-rejected.png)
 
 Faktura odrzucona przez KSeF **nie została wystawiona**. Nie wystawiaj do niej korekty i nie anuluj jej. Popraw dane i wyślij ją ponownie pod tym samym numerem. Numery mogą wtedy trafić do KSeF poza kolejnością, co nie wymaga korekty ([Podręcznik KSeF 2.0 cz. II](https://ksef.podatki.gov.pl/media/rronoxyt/podrecznik-ksef-20-cz-ii-wystawianie-i-otrzymywanie-faktur-w-ksef-06082026.pdf), pkt 1.6.1 i 1.6.7; [pytania i odpowiedzi KSeF 2.0](https://ksef.podatki.gov.pl/pytania-i-odpowiedzi-ksef-20/), pytanie 20).
 
@@ -124,6 +142,8 @@ Data wystawienia w formularzu to prawna data wystawienia faktury (`P_1`), także
 Numer zawiera okres, więc datę wystawienia możesz zmienić tylko w jego obrębie. Dla numeru `FV/7/11/2026` jest to listopad 2026 r. Inna data zostanie odrzucona komunikatem:
 
 > Numer FV/7/11/2026 należy do okresu 11/2026. Zostaw datę wystawienia w tym okresie albo użyj „Kopiuj jako nową”. Nowa faktura dostanie nowy numer, a ten pozostanie niewykorzystany.
+
+![Popraw fakturę: data wystawienia spoza okresu numeru, komunikat o okresie 11/2026](/img/screenshots/portal/issue-date-period.png)
 
 ### Kopiuj jako nową
 
@@ -142,6 +162,8 @@ Kod 440 oznacza, że KSeF ma już dokument tej firmy z tym samym numerem. Ponown
 Jeśli numer KSeF tego dokumentu jest znany, OpenKSeF go pokaże, razem ze wskazówką:
 
 > Sprawdź tę fakturę w KSeF. Jeśli to ta sama sprzedaż, nie wystawiaj jej ponownie.
+
+![Faktura Odrzucona z kodem 440: numer zajęty w KSeF, numer KSeF dokumentu, przycisk Kopiuj jako nową](/img/screenshots/portal/issue-440.png)
 
 Dokument sprawdzisz na przykład w Aplikacji Podatnika KSeF:
 

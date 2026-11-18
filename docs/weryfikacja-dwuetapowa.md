@@ -44,6 +44,8 @@ Po haśle strona **Weryfikacja dwuetapowa** prosi o kod z aplikacji. Przy złym 
 
 Nie masz telefonu? Naciśnij **Nie masz telefonu? Użyj kodu zapasowego**, wybierz **Kod zapasowy** i wpisz kod o numerze, który poda strona. Wpisany kod przestaje działać.
 
+![Strona Kod zapasowy: pole Kod zapasowy nr 1, link Wróć do kodu z aplikacji](/img/screenshots/portal/2fa-recovery-input.png)
+
 Zalogowany telefon z aplikacją OpenKSeF nie prosi o kod: działa dalej także po włączeniu weryfikacji. Włączenie weryfikacji nie wylogowuje innych urządzeń. Jeśli podejrzewasz, że ktoś zna Twoje hasło, użyj **Wyloguj wszystkie urządzenia** (niżej).
 
 ## Ustawienia > Bezpieczeństwo
