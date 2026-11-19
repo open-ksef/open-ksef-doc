@@ -132,9 +132,58 @@ Od v0.0.29 na jednym serwerze OpenKSeF może być tylko jedna firma o danym NIP.
 Dodanie firmy o NIP, który jest już na serwerze:
 
 - Masz dostęp do tej firmy: „Masz już dostęp do firmy z tym NIP-em: \<nazwa>.”
-- Nie masz dostępu: „Firma z tym NIP-em jest już dodana na tym serwerze OpenKSeF. Poproś osobę, która nią zarządza, o zaproszenie do firmy. Jeśli nie wiesz, kto to jest, napisz do administratora serwera.” Komunikat nie podaje nazwy firmy ani osób z dostępem.
+- Nie masz dostępu: „Firma z tym NIP-em jest już dodana na tym serwerze OpenKSeF. Poproś osobę, która nią zarządza, o zaproszenie do firmy. Jeśli nie wiesz, kto to jest, napisz do administratora serwera. Jeśli masz token KSeF z uprawnieniem Zarządzanie uprawnieniami dla tego NIP-u, możesz przejąć firmę w portalu OpenKSeF (Przejmij firmę).” Komunikat nie podaje nazwy firmy ani osób z dostępem.
 
-Jeśli opuściłeś firmę, nie dodasz jej NIP ponownie. Poproś Właściciela lub Administratora o nowe zaproszenie.
+Jeśli opuściłeś firmę, nie dodasz jej NIP ponownie. Poproś Właściciela lub Administratora o nowe zaproszenie albo [przejmij firmę](#przejęcie-firmy-tokenem-ksef).
+
+### Przejęcie firmy tokenem KSeF
+
+Od v0.0.30. Ktoś dodał Twoją firmę przed Tobą i nikt Cię nie zaprasza? Przejmij ją tokenem KSeF z uprawnieniem **Zarządzanie uprawnieniami** (w API KSeF `CredentialsManage`) dla jej NIP. Taki token potwierdza, że w KSeF zarządzasz dostępem do tej firmy.
+
+Działa tylko w portalu i tylko na serwerze połączonym ze środowiskiem PRODUKCJA KSeF. Na środowisku TEST lub DEMO portal odpowiada: „Przejęcie firmy tokenem działa tylko na środowisku PRODUKCJA KSeF. Napisz do administratora serwera.” W środowisku testowym każdy może zalogować się do KSeF w imieniu dowolnego NIP, więc token stamtąd niczego nie dowodzi.
+
+#### Wygeneruj token do przejęcia
+
+1. Otwórz Aplikację Podatnika KSeF 2.0 na produkcji: [ap.ksef.mf.gov.pl](https://ap.ksef.mf.gov.pl). Zaloguj się jak przy zwykłym tokenie: [Wygeneruj token](token-ksef#wygeneruj-token).
+2. Wygeneruj nowy token z uprawnieniem **Zarządzanie uprawnieniami**. Możesz dodać inne uprawnienia, ale to jedno jest konieczne.
+3. Skopiuj token. Aplikacja Podatnika pokazuje go tylko raz.
+
+Token z tym uprawnieniem wygeneruje tylko osoba, która sama ma w KSeF uprawnienie do zarządzania uprawnieniami tej firmy, np. właściciel logujący się pieczęcią firmy lub podpisem kwalifikowanym. Token z samym **Przeglądaniem faktur** i **Wystawianiem faktur**, np. od biura rachunkowego, nie wystarczy.
+
+Wygeneruj osobny token tylko do przejęcia. Po przejęciu możesz go unieważnić w Aplikacji Podatnika.
+
+#### Przejmij firmę
+
+1. Dodaj firmę o tym NIP: przełącznik firm na górze menu bocznego > **Dodaj firmę** albo pierwszy krok konfiguracji, gdy nie masz jeszcze żadnej firmy.
+2. Gdy portal pokaże komunikat o firmie już dodanej, wybierz **Przejmij firmę**.
+3. NIP jest wpisany. Wklej token w pole **Token KSeF**, wybierz **Dalej**, potem **Przejmij firmę**.
+
+Po udanym przejęciu portal otwiera firmę.
+
+OpenKSeF używa tokenu raz: loguje się nim do KSeF, sprawdza NIP, status i uprawnienia tokenu, potem zamyka tę sesję KSeF. Tokenu nie zapisuje, nie pokazuje i nie zapisuje w logach. Token, którym firma pobiera faktury, zostaje bez zmian. Zmienisz go jako Właściciel w **Firma** > **Dostęp do KSeF i pobieranie**: [Token KSeF](token-ksef#wklej-token-w-openksef).
+
+#### Co zmienia przejęcie
+
+- Zostajesz jedynym Właścicielem firmy.
+- Dotychczasowi Właściciele tracą dostęp do firmy. Każdy dostaje e-mail, jeśli serwer ma skonfigurowaną wysyłkę e-maili: temat „Firma \<nazwa> (NIP \<NIP>) ma nowego właściciela”, treść „Firma \<nazwa> (NIP \<NIP>) ma nowego właściciela: \<imię i nazwisko lub e-mail>. Potwierdził dostęp do KSeF dla tego NIP-u tokenem KSeF. Twój dostęp do firmy w OpenKSeF został usunięty. Jeśli to pomyłka, napisz do administratora serwera.” Powiadomienia push nie ma.
+- Administratorzy, Księgowi i Pracownicy zachowują swoje role.
+- Adres e-mail do powiadomień firmy znika, jeśli był adresem usuniętego Właściciela.
+- Faktury, statusy płatności, faktury wystawione, token KSeF, dane do faktur, numeracja i zaproszenia zostają.
+
+Przejęcie można powtórzyć: osoba z innym ważnym tokenem z tym uprawnieniem przejmie firmę z powrotem. Spór rozstrzyga administrator serwera.
+
+#### Gdy przejęcie się nie udaje
+
+| Komunikat | Co zrobić |
+|---|---|
+| „Ten token nie potwierdza dostępu do KSeF dla NIP \<NIP>. Sprawdź token i NIP.” | Token jest nieważny, dla innego NIP albo bez uprawnienia **Zarządzanie uprawnieniami**. Wygeneruj nowy. |
+| „Masz już dostęp do firmy z tym NIP-em: \<nazwa>.” | Jesteś już w firmie. Aby zostać Właścicielem przez przejęcie, najpierw [opuść firmę](#opuszczanie-firmy-i-usuwanie-osób). |
+| „Nie ma firmy z tym NIP-em do przejęcia. Dodaj ją zwykłym formularzem.” | Dodaj firmę jak zwykle. |
+| „Na tym serwerze jest więcej niż jedna firma z tym NIP-em. Napisz do administratora serwera.” | Firmy dodane przed v0.0.29. Przejęcia nie ma. |
+| „Za dużo prób przejęcia firmy. Spróbuj później.” | Limit: 5 prób na godzinę na osobę i 10 prób na dobę dla jednego NIP, od wszystkich osób razem. Liczą się udane i nieudane próby. |
+| „KSeF nie odpowiada. Spróbuj później.” | KSeF jest niedostępny. Nic się nie zmieniło. |
+
+Nieudana próba niczego nie zmienia i nie trafia do historii firmy.
 
 NIP zwalnia się dopiero po usunięciu firmy przez Właściciela albo razem z kontem jej jedynej osoby. Firma dodana potem jest nowa i pusta: bez faktur, statusów płatności, tokenu i osób z dostępem.
 
@@ -142,4 +191,4 @@ Firmy o tym samym NIP dodane przed v0.0.29 działają dalej bez zmian. Każda ma
 
 ## Historia zmian
 
-Instancja zapisuje, kto i kiedy zaprosił, nadał dostęp, przyjął zaproszenie, zmienił rolę, usunął osobę lub opuścił firmę, odwołał lub ponownie wysłał zaproszenie, usunął adres e-mail do powiadomień, zapisał lub usunął token oraz oznaczył fakturę jako opłaconą. Historii nie widać w portalu ani w aplikacji. Może ją odczytać właściciel instancji z bazy danych. Zobacz [Polityka prywatności](polityka-prywatnosci).
+Instancja zapisuje, kto i kiedy zaprosił, nadał dostęp, przyjął zaproszenie, zmienił rolę, usunął osobę lub opuścił firmę, odwołał lub ponownie wysłał zaproszenie, usunął adres e-mail do powiadomień, zapisał lub usunął token, oznaczył fakturę jako opłaconą oraz przejął firmę tokenem KSeF (z kodami uprawnień tokenu, bez samego tokenu). Historii nie widać w portalu ani w aplikacji. Może ją odczytać właściciel instancji z bazy danych. Zobacz [Polityka prywatności](polityka-prywatnosci).

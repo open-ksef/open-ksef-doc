@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 18 listopada 2026 r.*
+*Ostatnia aktualizacja: 19 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -61,7 +61,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 
 ### Historia zmian w firmie
 
-- Kto (identyfikator, adres e-mail oraz imię i nazwisko z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, ponowne wysłanie, odwołanie i przyjęcie zaproszenia, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, usunięcie adresu e-mail do powiadomień, wraz z osobą, której to dotyczy (identyfikator, adres e-mail albo oba)
+- Kto (identyfikator, adres e-mail oraz imię i nazwisko z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, ponowne wysłanie, odwołanie i przyjęcie zaproszenia, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, usunięcie adresu e-mail do powiadomień, przejęcie firmy tokenem KSeF (kody uprawnień tokenu i numer operacji uwierzytelnienia w KSeF, bez tokenu), wraz z osobą, której to dotyczy (identyfikator, adres e-mail albo oba)
 - Reset weryfikacji dwuetapowej przez administratora instancji: kto go wykonał i czyje konto dotyczył (identyfikatory i adresy e-mail)
 - Historia nie jest widoczna w portalu ani aplikacji. Może ją odczytać właściciel instancji z bazy danych
 
@@ -119,11 +119,11 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 
 - OpenKSeF **nie przekazuje** danych reklamodawcom ani firmom analitycznym.
 - Dane mogą być przekazywane do:
-  - **Ministerstwo Finansów, KSeF** — NIP i token lub certyfikat KSeF, w celu pobierania faktur, oraz wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF.
+  - **Ministerstwo Finansów, KSeF** — NIP i token lub certyfikat KSeF, w celu pobierania faktur, oraz wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF. Przy przejęciu firmy NIP i token KSeF podany przez przejmującego, w celu sprawdzenia prawa do przejęcia. Tego tokenu nie przechowujemy.
   - **Ministerstwo Finansów, wykaz podatników VAT (biała lista)** — NIP wpisany przy użyciu przycisku **Pobierz z NIP**.
   - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory; przy nadaniu dostępu nazwa i identyfikator firmy; gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent).
   - **Apple Push Notification service (Apple)** — token urządzenia i treść powiadomienia, jak wyżej, w celu dostarczenia powiadomień push na iOS.
-  - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze (gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), a przy zaproszeniu do firmy adres osoby zaproszonej, nazwę i NIP firmy, rolę, nazwę zapraszającego i link, jeśli właściciel skonfigurował SMTP.
+  - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze (gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), a przy zaproszeniu do firmy adres osoby zaproszonej, nazwę i NIP firmy, rolę, nazwę zapraszającego i link, a przy przejęciu firmy adres e-mail dotychczasowego Właściciela, nazwę i NIP firmy oraz imię i nazwisko lub adres e-mail nowego Właściciela, jeśli właściciel skonfigurował SMTP.
   - **Relay OpenKSeF** (`push.open-ksef.pl`) — jeśli włączona jest warstwa relay (domyślnie).
 - Osoby z dostępem do tej samej firmy widzą, kto oznaczył fakturę jako opłaconą (imię i nazwisko lub adres e-mail). Właściciel i administrator firmy widzą też imiona i nazwiska, adresy e-mail i role osób z dostępem oraz adresy z oczekujących zaproszeń.
 
