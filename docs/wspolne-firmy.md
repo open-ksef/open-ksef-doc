@@ -154,9 +154,9 @@ Wygeneruj osobny token tylko do przejęcia. Po przejęciu możesz go unieważni�
 
 #### Przejmij firmę
 
-1. Dodaj firmę o tym NIP: **Firmy** > **Dodaj firmę** albo pierwszy krok konfiguracji, gdy nie masz jeszcze żadnej firmy.
+1. Dodaj firmę o tym NIP: przełącznik firm na górze menu bocznego > **Dodaj firmę** albo pierwszy krok konfiguracji, gdy nie masz jeszcze żadnej firmy.
 2. Gdy portal pokaże komunikat o firmie już dodanej, wybierz **Przejmij firmę**.
-3. NIP jest wpisany. Wklej token i potwierdź.
+3. NIP jest wpisany. Wklej token w pole **Token KSeF**, wybierz **Dalej**, potem **Przejmij firmę**.
 
 Po udanym przejęciu portal otwiera firmę.
 
