@@ -23,6 +23,8 @@ Uprawnień tokenu nie da się zmienić. Jeśli brakuje uprawnienia, wygeneruj no
 
 Bez uprawnienia **Wystawianie faktur** tylko odbierasz faktury, bez ich [wystawiania](wystawianie-faktur#token-ksef).
 
+Do przejęcia firmy dodanej przez kogoś innego potrzebny jest osobny token z uprawnieniem **Zarządzanie uprawnieniami**: [Przejęcie firmy tokenem KSeF](wspolne-firmy#przejęcie-firmy-tokenem-ksef).
+
 ## Wklej token w OpenKSeF
 
 - **Portal, nowa firma:** krok **Połącz z KSeF** w pierwszej konfiguracji.
