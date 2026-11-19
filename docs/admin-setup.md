@@ -450,6 +450,32 @@ Co zobaczą użytkownicy:
 - Oficjalny obraz `quay.io/keycloak/keycloak:26.8.2` zamiast `openksef-keycloak`: logowanie i weryfikacja działają, strony mają wbudowany wygląd Keycloak.
 - Tabela `AuditEvents` zostaje po powrocie do poprzedniego obrazu API i niczemu nie przeszkadza.
 
+## Aktualizacja do v0.0.29: jedna firma na NIP
+
+Od v0.0.29 serwer przyjmuje tylko jedną aktywną firmę o danym NIP, zobacz [Jedna firma na NIP](wspolne-firmy#jedna-firma-na-nip). Wydanie nie zmienia schematu bazy. Nie ma ustawienia, które to wyłącza.
+
+- Firmy o tym samym NIP dodane wcześniej działają dalej bez zmian: osoby z dostępem, token, synchronizacja, faktury, status płatności i faktury wystawione. Aktualizacja ich nie łączy, nie usuwa i nie ukrywa.
+- Nowej firmy z takim NIP nie doda nikt, także w kreatorze pierwszej konfiguracji: kreator kończy się bez tworzenia firmy.
+- Firmy zachowane po usunięciu konta (`UserId` zaczyna się od `deleted:`) nie blokują NIP.
+
+Lista NIP z więcej niż jedną aktywną firmą (tylko odczyt):
+
+```bash
+docker exec -i openksef-postgres sh -c 'psql -U "$POSTGRES_USER" -d openksef' <<'SQL'
+BEGIN READ ONLY;
+SELECT t."Nip", t."Id", t."DisplayName", t."CreatedAt",
+       (SELECT count(*) FROM "TenantMembers" m WHERE m."TenantId" = t."Id") AS "Members",
+       (SELECT count(*) FROM "InvoiceHeaders" i WHERE i."TenantId" = t."Id") AS "Invoices"
+FROM "Tenants" t
+WHERE t."UserId" NOT LIKE 'deleted:%'
+  AND t."Nip" IN (SELECT "Nip" FROM "Tenants" WHERE "UserId" NOT LIKE 'deleted:%' GROUP BY "Nip" HAVING count(*) > 1)
+ORDER BY t."Nip", t."CreatedAt";
+ROLLBACK;
+SQL
+```
+
+Pusty wynik: na serwerze nie ma duplikatów.
+
 ## Reverse proxy i publiczny adres
 
 Keycloak buduje wystawcę tokenu (`iss`) i każdy bezwzględny link (przekierowania logowania, weryfikacja e-maila, reset hasła) z tego, co wysyła mu gateway. Gateway bierze host i port z nagłówka `Host`. Schemat (`http` lub `https`) bierze z `APP_EXTERNAL_BASE_URL`, jeśli jest ustawiony w `.env`, w przeciwnym razie z `X-Forwarded-Proto`. Ignoruje `X-Forwarded-Host` i `X-Forwarded-Port` od klienta. `Host`, a gdy `APP_EXTERNAL_BASE_URL` nie jest ustawiony także `X-Forwarded-Proto`, musi przychodzić od proxy, które je nadpisuje. Przy dostępie bezpośrednim albo przez proxy, które przekazuje wartość klienta, żądanie nadal może zmienić host lub port we własnych linkach, a bez `APP_EXTERNAL_BASE_URL` także schemat. Wystawca musi być równy `APP_EXTERNAL_BASE_URL/auth/realms/openksef` (albo adresowi zapisanemu przez kreator), inaczej API odpowiada 401.
