@@ -96,6 +96,8 @@ Karta **Zapłać tę fakturę** zawiera kwotę, termin płatności, odbiorcę, t
 
 ![Zapłać tę fakturę: dane do przelewu i kod QR](/img/screenshots/portal/invoice-qr.png)
 
+![Dane do przelewu bez kodu QR: rachunek odbiorcy brak i komunikat Brak poprawnego numeru rachunku na fakturze](/img/screenshots/portal/invoice-no-qr.png)
+
 Tytuł przelewu to sam numer faktury sprzedawcy, np. `FV/2026/10/0042`. Jeśli faktura nie ma numeru sprzedawcy, tytułem jest numer KSeF. W kodzie QR tytuł ma najwyżej 32 znaki: dłuższy numer jest skracany, a komunikat podaje pełny numer. Sprawdź wtedy tytuł w banku przed wysłaniem przelewu. Gdy nie ma numeru rachunku, pole **Rachunek odbiorcy** pokazuje `brak`.
 
 Dane do przelewu i kod QR przygotowuje serwer OpenKSeF, według tych samych zasad dla portalu i aplikacji mobilnej. Numer rachunku pochodzi z faktury. OpenKSeF nie sprawdza go na białej liście podatników VAT.

@@ -80,6 +80,8 @@ Gmail wymaga **Hasła aplikacji** (nie zwykłego hasła). Wygeneruj je w ustawie
 
 ### Krok 4: Bezpieczeństwo
 
+![Krok 4 - bezpieczeństwo: klucz szyfrowania ustawiasz poza aplikacją](/img/screenshots/portal/admin-setup-step4.png)
+
 Wizard pobiera **secret klienta API** z klienta Keycloak `openksef-api` i zapisuje go w bazie.
 
 **Klucz szyfrowania AES-256** nie jest częścią wizarda. Ustaw `ENCRYPTION_KEY` dla API i Workera przed uruchomieniem stacku i przechowuj kopię poza bazą danych. Od wersji 0.0.15 bez prawidłowego klucza wizard zatrzymuje się na kroku 1, po zalogowaniu do Keycloak, i nie zmienia niczego. Szczegóły w sekcji [Klucz szyfrowania](#klucz-szyfrowania).
