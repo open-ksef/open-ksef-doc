@@ -83,5 +83,6 @@ Lista faktur, szczegóły z pozycjami, kod QR przelewu i powiadomienia push na t
 
 - [Wymagania systemowe](instalacja/wymagania) -- co potrzebujesz przed instalacją
 - [Szybki start](instalacja/szybki-start) -- instalacja krok po kroku
+- [Wypróbuj na KSeF TEST](instalacja/wyprobuj-na-ksef-test) -- próba na fikcyjnych danych, bez prawdziwej firmy
 - [Kreator konfiguracji](admin-setup) -- krok po kroku przez wizard
 - [Otrzymane faktury](faktury) -- lista, szczegóły, status płatności, synchronizacja

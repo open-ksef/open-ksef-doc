@@ -43,7 +43,7 @@ Gdy KSeF odmówi logowania, faktura pokaże jeden z komunikatów:
 | Inna przyczyna | `KSeF odmówił logowania. Przyczynę podaje KSeF w szczegółach.` Pod komunikatem są szczegóły z KSeF. |
 
 :::note[Ważność tokenu]
-Logowanie tokenem jest dopuszczone do 31 grudnia 2026 r. (Dz.U. 2025 poz. 1815, § 13), chyba że przepisy zostaną zmienione. Sprawdź aktualny stan w [materiałach Ministerstwa Finansów](https://ksef.podatki.gov.pl/).
+Logowanie tokenem jest dopuszczone do 31 grudnia 2026 r. (Dz.U. 2025 poz. 1815, § 13). Ministerstwo Finansów zapowiedziało, że tokeny zostaną utrzymane bezterminowo, a rozporządzenie zostanie znowelizowane ([Certyfikaty KSeF](https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/), sekcja „Certyfikaty KSeF a tokeny”, zmodyfikowano 01.09.2026). Do czasu nowelizacji obowiązuje termin 31 grudnia 2026 r.
 :::
 
 ## Dane do faktur

@@ -9,6 +9,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'instalacja/wymagania',
         'instalacja/szybki-start',
+        'instalacja/wyprobuj-na-ksef-test',
         'instalacja/konfiguracja',
       ],
     },

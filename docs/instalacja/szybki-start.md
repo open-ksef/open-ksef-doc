@@ -163,6 +163,7 @@ Pełny opis wszystkich zmiennych znajdziesz w [Konfiguracja](konfiguracja).
 
 ## Następne kroki
 
+- [Wypróbuj na KSeF TEST](wyprobuj-na-ksef-test) -- pełna próba na fikcyjnych danych: pobieranie, wystawienie i odbiór faktury
 - [Konfiguracja](konfiguracja) -- pełna lista zmiennych środowiskowych
 - [Kreator konfiguracji](../admin-setup) -- szczegóły każdego kroku wizarda
 - [Powiadomienia push](../powiadomienia-push) -- jak skonfigurować powiadomienia

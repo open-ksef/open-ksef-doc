@@ -43,6 +43,7 @@ docs/
   instalacja/
     wymagania.md              # Wymagania systemowe
     szybki-start.md           # docker-compose.yml, .env, docker compose up, kreator
+    wyprobuj-na-ksef-test.md  # Próba na KSeF TEST: losowe NIP-y A i B, token testowy, wystawienie, odbiór
     konfiguracja.md           # Zmienne środowiskowe, KSeF test/prod
   admin-setup.md              # Kreator konfiguracji (wizard krok po kroku)
   logowanie.md                # Strona logowania, zgubiony telefon, nie pamiętasz hasła, Google OAuth, rejestracja
