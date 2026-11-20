@@ -45,7 +45,7 @@ docs/
     szybki-start.md           # docker-compose.yml, .env, docker compose up, kreator
     konfiguracja.md           # Zmienne środowiskowe, KSeF test/prod
   admin-setup.md              # Kreator konfiguracji (wizard krok po kroku)
-  logowanie.md                # Strona logowania, nie pamiętasz hasła, Google OAuth, rejestracja
+  logowanie.md                # Strona logowania, zgubiony telefon, nie pamiętasz hasła, Google OAuth, rejestracja
   weryfikacja-dwuetapowa.md   # 2FA TOTP: włączenie, kody zapasowe, Bezpieczeństwo, reset admina, konsola
   token-ksef.md               # Jak uzyskać token KSeF i gdzie go wkleić
   certyfikat-ksef.md          # Certyfikat KSeF (Uwierzytelnianie) zamiast tokenu, ważność, odnowienie
@@ -53,7 +53,7 @@ docs/
   faktury.md                  # Lista, szczegóły, XML/PDF, pozycje, status płatności, przelew/QR, resynchronizacja
   wystawianie-faktur.md       # Dane do faktur, numeracja, wystawianie, statusy, XML/UPO/PDF, odrzucona faktura, ograniczenia
   powiadomienia-push.md       # Push notifications (SignalR, relay, Firebase, email)
-  aplikacja-mobilna.md        # Logowanie, parowanie kodem, zgoda na powiadomienia, Zapłać, build
+  aplikacja-mobilna.md        # Logowanie, parowanie kodem, zgoda na powiadomienia, motyw, Zapłać, build
   o-projekcie.md              # AI disclaimer, self-hosting, odpowiedzialność
   licencja.md                 # Elastic License 2.0 + formalny disclaimer bezpieczeństwa
   polityka-prywatnosci.md     # Polityka prywatności (wymóg Google Play)

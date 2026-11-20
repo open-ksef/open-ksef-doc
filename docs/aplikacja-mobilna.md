@@ -21,6 +21,7 @@ Android: [plik APK na GitHubie](https://github.com/open-ksef/open-ksef-mobile/re
 - Przycisk **Zapłać**: kod QR przelewu do zeskanowania w aplikacji bankowej, zobacz [Zapłać](#zapłać)
 - [Wystawianie faktur](wystawianie-faktur), od wersji 1.0.5
 - Skanowanie kodu QR z portalu, które ustawia adres serwera
+- Motyw jak w telefonie: jasny albo ciemny. Zmienisz go w **Konto** > **Motyw**: **System**, **Jasny** albo **Ciemny**
 
 ## Zapłać
 
