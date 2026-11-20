@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 19 listopada 2026 r.*
+*Ostatnia aktualizacja: 20 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -88,7 +88,8 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 | Dane faktur, status płatności | Wyświetlanie i przeszukiwanie faktur, dane do przelewu | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Dane wystawionej faktury, w tym nabywcy będącego osobą prywatną | Wystawienie faktury i wysłanie jej do KSeF | Obowiązek prawny (art. 6 ust. 1 lit. c RODO, art. 106e ustawy o VAT) |
 | Kopia wystawionej faktury w instancji | Podgląd faktury, pobieranie plików, wyjaśnienie numeracji | Prawnie uzasadniony interes sprzedawcy (art. 6 ust. 1 lit. f RODO) |
-| Token i identyfikator urządzenia, identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
+| Token i identyfikator urządzenia | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
+| Identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta (Android) | Działanie biblioteki Firebase, przez którą przychodzą powiadomienia push | Prawnie uzasadniony interes wydawcy aplikacji (art. 6 ust. 1 lit. f RODO) |
 | Adres e-mail do powiadomień (per firma) | Wysyłanie powiadomień e-mail o nowych fakturach | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Kopia e-maila, imienia i nazwiska, role i dostęp do firm | Pokazanie, kto ma dostęp do firmy i kto oznaczył fakturę jako opłaconą; kontrola uprawnień | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Historia zmian w firmie | Ustalenie, kto i kiedy zmienił status płatności, token KSeF lub dostęp do firmy, oraz bezpieczeństwo konta | Prawnie uzasadniony interes właściciela firmy i instancji (art. 6 ust. 1 lit. f RODO) |
@@ -106,7 +107,11 @@ Aplikacja mobilna OpenKSeF obsługuje powiadomienia push w modelu warstwowym:
 
 Relay `push.open-ksef.pl` prowadzą autorzy OpenKSeF. Administratorem danych w powiadomieniu jest właściciel instancji, z której ono pochodzi.
 
-Od wersji 1.0.6 aplikacji push wyłączysz na ekranie **Konto** przełącznikiem **Powiadomienia push**. Aplikacja usuwa wtedy to urządzenie z serwera i instancja przestaje wysyłać na nie push. Ustawienie dotyczy tego telefonu i zostaje po wylogowaniu. Szczegóły: [Wyłączanie powiadomień w aplikacji](powiadomienia-push#wyłączanie-powiadomień-w-aplikacji).
+Od wersji 1.0.9 aplikacja rejestruje telefon na serwerze dopiero wtedy, gdy po zalogowaniu odpowiesz **Tak** na pytanie o powiadomienia. Bez tej zgody instancja nie wysyła na telefon push. Wybór jest zapamiętany osobno dla każdego konta na tym telefonie. Szczegóły: [Zgoda na powiadomienia w aplikacji](powiadomienia-push#zgoda-na-powiadomienia-w-aplikacji).
+
+Od wersji 1.0.6 aplikacji push wyłączysz na ekranie **Konto** przełącznikiem **Powiadomienia push**. Aplikacja usuwa wtedy to urządzenie z serwera i instancja przestaje wysyłać na nie push. Od wersji 1.0.9 ustawienie dotyczy konta na tym telefonie. W wersjach 1.0.6–1.0.8 dotyczy telefonu: zostaje po wylogowaniu i obowiązuje każde konto zalogowane na tym telefonie. Szczegóły: [Wyłączanie powiadomień w aplikacji](powiadomienia-push#wyłączanie-powiadomień-w-aplikacji).
+
+Zgoda i przełącznik nie obejmują biblioteki Firebase w aplikacji na Androida. Przy uruchomieniu aplikacji biblioteka tworzy identyfikator instalacji Firebase i wysyła go do Google razem z wersją aplikacji i identyfikatorem klienta, także zanim odpowiesz na pytanie o powiadomienia i gdy są wyłączone.
 
 W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejestruje urządzenie po każdym zalogowaniu. Aby przestać je otrzymywać, zaktualizuj aplikację albo wybierz jeden ze sposobów:
 
@@ -154,7 +159,7 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 - **Usunięcie** — możesz zażądać usunięcia konta i danych, zobacz <a href="#usuwanie-konta">Usuwanie konta i danych</a>
 - **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. OpenKSeF nie ma eksportu zbiorczego ani pobierania plików faktur otrzymanych. O pozostałe dane poproś właściciela instancji
 - **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie
-- **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push: od wersji 1.0.6 aplikacji przełącznikiem **Powiadomienia push** na ekranie **Konto**, w starszych wersjach w sposób opisany w sekcji 4
+- **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push: od wersji 1.0.6 aplikacji przełącznikiem **Powiadomienia push** na ekranie **Konto**, w starszych wersjach w sposób opisany w sekcji 4. Od wersji 1.0.9 aplikacja pyta o tę zgodę po zalogowaniu i bez niej nie rejestruje telefonu
 - **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych
 
 Skargę wnosisz bezpośrednio do Prezesa UODO. W pozostałych sprawach skontaktuj się z właścicielem swojej instancji OpenKSeF.
