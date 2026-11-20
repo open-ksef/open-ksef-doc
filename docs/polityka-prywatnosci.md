@@ -74,7 +74,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 ### Dane techniczne
 
 - Token urządzenia (FCM/APNs) albo identyfikator urządzenia wygenerowany przez aplikację, gdy tokenu nie ma — do dostarczania powiadomień push
-- Identyfikator instalacji Firebase, wersja aplikacji i identyfikator klienta (user agent) — zbiera je biblioteka Firebase w aplikacji na Androida
+- Identyfikator instalacji Firebase, wersja aplikacji i identyfikator klienta (user agent) — zbiera je biblioteka Firebase w aplikacji na Androida. Od wersji 1.0.12 tylko po zgodzie na powiadomienia push
 - Identyfikator i adres instancji — do rejestracji w usłudze relay push
 
 ---
@@ -88,8 +88,8 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 | Dane faktur, status płatności | Wyświetlanie i przeszukiwanie faktur, dane do przelewu | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Dane wystawionej faktury, w tym nabywcy będącego osobą prywatną | Wystawienie faktury i wysłanie jej do KSeF | Obowiązek prawny (art. 6 ust. 1 lit. c RODO, art. 106e ustawy o VAT) |
 | Kopia wystawionej faktury w instancji | Podgląd faktury, pobieranie plików, wyjaśnienie numeracji | Prawnie uzasadniony interes sprzedawcy (art. 6 ust. 1 lit. f RODO) |
-| Token i identyfikator urządzenia | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
-| Identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta (Android) | Działanie biblioteki Firebase, przez którą przychodzą powiadomienia push | Prawnie uzasadniony interes wydawcy aplikacji (art. 6 ust. 1 lit. f RODO) |
+| Token i identyfikator urządzenia; od wersji 1.0.12 na Androidzie także identyfikator instalacji Firebase, wersja aplikacji i identyfikator klienta | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
+| Identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta (Android, tylko wersje 1.0.11 i starsze) | Działanie biblioteki Firebase, przez którą przychodzą powiadomienia push | Prawnie uzasadniony interes wydawcy aplikacji (art. 6 ust. 1 lit. f RODO) |
 | Adres e-mail do powiadomień (per firma) | Wysyłanie powiadomień e-mail o nowych fakturach | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Kopia e-maila, imienia i nazwiska, role i dostęp do firm | Pokazanie, kto ma dostęp do firmy i kto oznaczył fakturę jako opłaconą; kontrola uprawnień | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Historia zmian w firmie | Ustalenie, kto i kiedy zmienił status płatności, token KSeF lub dostęp do firmy, oraz bezpieczeństwo konta | Prawnie uzasadniony interes właściciela firmy i instancji (art. 6 ust. 1 lit. f RODO) |
@@ -111,7 +111,9 @@ Od wersji 1.0.9 aplikacja rejestruje telefon na serwerze dopiero wtedy, gdy po z
 
 Od wersji 1.0.6 aplikacji push wyłączysz na ekranie **Konto** przełącznikiem **Powiadomienia push**. Aplikacja usuwa wtedy to urządzenie z serwera i instancja przestaje wysyłać na nie push. Od wersji 1.0.9 ustawienie dotyczy konta na tym telefonie. W wersjach 1.0.6–1.0.8 dotyczy telefonu: zostaje po wylogowaniu i obowiązuje każde konto zalogowane na tym telefonie. Szczegóły: [Wyłączanie powiadomień w aplikacji](powiadomienia-push#wyłączanie-powiadomień-w-aplikacji).
 
-Zgoda i przełącznik nie obejmują biblioteki Firebase w aplikacji na Androida. Przy uruchomieniu aplikacji biblioteka tworzy identyfikator instalacji Firebase i wysyła go do Google razem z wersją aplikacji i identyfikatorem klienta, także zanim odpowiesz na pytanie o powiadomienia i gdy są wyłączone.
+Od wersji 1.0.12 zgoda i przełącznik obejmują też bibliotekę Firebase w aplikacji na Androida. Biblioteka tworzy identyfikator instalacji Firebase i wysyła go do Google razem z wersją aplikacji i identyfikatorem klienta dopiero po odpowiedzi **Tak** albo po włączeniu przełącznika, razem z tokenem urządzenia. Gdy odpowiesz **Nie teraz**, wyłączysz przełącznik albo się wylogujesz, aplikacja wyłącza bibliotekę, usuwa urządzenie z serwera, a potem usuwa w Google token urządzenia i identyfikator instalacji. Jeśli w starszej wersji odpowiedziałeś **Nie teraz**, wersja 1.0.12 przy pierwszym uruchomieniu z dostępem do sieci usuwa w Google identyfikator instalacji utworzony przez starszą wersję.
+
+W wersjach 1.0.11 i starszych zgoda i przełącznik nie obejmują biblioteki Firebase. Przy uruchomieniu aplikacji biblioteka tworzy identyfikator instalacji Firebase i wysyła go do Google razem z wersją aplikacji i identyfikatorem klienta, także zanim odpowiesz na pytanie o powiadomienia i gdy są wyłączone.
 
 W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejestruje urządzenie po każdym zalogowaniu. Aby przestać je otrzymywać, zaktualizuj aplikację albo wybierz jeden ze sposobów:
 
@@ -126,7 +128,7 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 - Dane mogą być przekazywane do:
   - **Ministerstwo Finansów, KSeF** — NIP i token lub certyfikat KSeF, w celu pobierania faktur, oraz wystawione faktury z danymi nabywcy, w celu wystawienia faktury w KSeF. Przy przejęciu firmy NIP i token KSeF podany przez przejmującego, w celu sprawdzenia prawa do przejęcia. Tego tokenu nie przechowujemy.
   - **Ministerstwo Finansów, wykaz podatników VAT (biała lista)** — NIP wpisany przy użyciu przycisku **Pobierz z NIP**.
-  - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory; przy nadaniu dostępu nazwa i identyfikator firmy; gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent).
+  - **Firebase Cloud Messaging (Google)** — token urządzenia i treść powiadomienia (nazwa sprzedawcy, kwota, identyfikatory firmy i faktury, a przy wystawionej fakturze czekającej na wyjaśnienie w KSeF jej numer i identyfikatory; przy nadaniu dostępu nazwa i identyfikator firmy; gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), w celu dostarczenia powiadomień push na Androida. Biblioteka Firebase w aplikacji przekazuje też Google identyfikator instalacji Firebase, wersję aplikacji i identyfikator klienta (user agent), od wersji 1.0.12 tylko po zgodzie na powiadomienia push.
   - **Apple Push Notification service (Apple)** — token urządzenia i treść powiadomienia, jak wyżej, w celu dostarczenia powiadomień push na iOS.
   - **Serwer SMTP wybrany przez właściciela instancji** — adres e-mail do powiadomień i treść powiadomienia o nowej fakturze (gdy nowych faktur jest więcej, podsumowanie zawiera nazwę firmy i liczbę nowych faktur), a przy zaproszeniu do firmy adres osoby zaproszonej, nazwę i NIP firmy, rolę, nazwę zapraszającego i link, a przy przejęciu firmy adres e-mail dotychczasowego Właściciela, nazwę i NIP firmy oraz imię i nazwisko lub adres e-mail nowego Właściciela, jeśli właściciel skonfigurował SMTP.
   - **Relay OpenKSeF** (`push.open-ksef.pl`) — jeśli włączona jest warstwa relay (domyślnie).
@@ -159,7 +161,7 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 - **Usunięcie** — możesz zażądać usunięcia konta i danych, zobacz <a href="#usuwanie-konta">Usuwanie konta i danych</a>
 - **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. OpenKSeF nie ma eksportu zbiorczego ani pobierania plików faktur otrzymanych. O pozostałe dane poproś właściciela instancji
 - **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie
-- **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push: od wersji 1.0.6 aplikacji przełącznikiem **Powiadomienia push** na ekranie **Konto**, w starszych wersjach w sposób opisany w sekcji 4. Od wersji 1.0.9 aplikacja pyta o tę zgodę po zalogowaniu i bez niej nie rejestruje telefonu
+- **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push: od wersji 1.0.6 aplikacji przełącznikiem **Powiadomienia push** na ekranie **Konto**, w starszych wersjach w sposób opisany w sekcji 4. Od wersji 1.0.9 aplikacja pyta o tę zgodę po zalogowaniu i bez niej nie rejestruje telefonu. Od wersji 1.0.12 cofnięcie zgody wyłącza też bibliotekę Firebase na Androidzie i usuwa w Google token urządzenia i identyfikator instalacji Firebase
 - **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych
 
 Skargę wnosisz bezpośrednio do Prezesa UODO. W pozostałych sprawach skontaktuj się z właścicielem swojej instancji OpenKSeF.
