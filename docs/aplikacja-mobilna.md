@@ -38,6 +38,11 @@ Kod QR zeskanujesz aparatem w aplikacji bankowej na innym telefonie. Jeśli bank
 
 1. Na stronie **Kod QR przelewu** naciśnij **Udostępnij / zapisz kod QR** i zapisz obraz, np. w galerii lub plikach.
 2. W aplikacji bankowej otwórz płatność kodem QR i wczytaj kod z galerii zamiast skanować aparatem.
+3. Po zapłacie usuń obraz z galerii.
+
+Od wersji 1.0.11 aplikacji zapisany obraz ma pod kodem numer faktury, kwotę i odbiorcę, a nazwa pliku to `QR <numer faktury>.png`. Dzięki temu w galerii odróżnisz kody różnych faktur. Kod QR na ekranie się nie zmienia. Strona pokazuje podpowiedź:
+
+> Zeskanuj kod w aplikacji banku, aby wypełnić przelew. Na tym telefonie: udostępnij i zapisz obraz, a w banku wczytaj kod z galerii. Obraz ma numer faktury i kwotę. Po zapłacie usuń go z galerii.
 
 OpenKSeF nie otwiera aplikacji bankowej bezpośrednio: banki nie udostępniają takiej możliwości.
 
