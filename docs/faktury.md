@@ -15,7 +15,7 @@ Faktury sprzedażowe, także [wystawione w innym programie](wystawianie-faktur#f
 
 - Kolumna **Sprzedawca i numer** pokazuje nazwę sprzedawcy, numer nadany przez sprzedawcę (np. `FV/2026/10/0042`) i datę wystawienia. Jeśli faktura nie ma numeru sprzedawcy, wyświetlany jest numer KSeF.
 - Kolumna **Termin płatności** pokazuje termin z faktury w KSeF. Jeśli termin minął, a faktura nie jest oznaczona jako opłacona, przy dacie pojawia się `po terminie`.
-- Kolumna **Płatność** pokazuje, czy faktura jest oznaczona jako opłacona.
+- Kolumna **Płatność** pokazuje, czy faktura jest oznaczona jako opłacona. **Opłacona wg sprzedawcy** oznacza, że status ustawił OpenKSeF na podstawie faktury: [Faktury opłacone wg sprzedawcy](#faktury-opłacone-wg-sprzedawcy).
 - Kolumny **Netto** i **Numer KSeF** są widoczne na szerszych ekranach.
 - Filtry: **Wszystkie** lub **Nieopłacone**, nazwa lub NIP sprzedawcy, zakres dat wystawienia. Firmę wybierasz w karcie **Firma** w menu bocznym.
 
@@ -74,8 +74,19 @@ Przycisk **Oznacz jako opłaconą** zmienia status faktury na **Opłacona** i za
 ![Status płatności](/img/screenshots/portal/invoice-paid.png)
 
 :::info[Status tylko w OpenKSeF]
-Status płatności to Twoja notatka w OpenKSeF. Nie jest wysyłany do KSeF ani do banku, a OpenKSeF nie sprawdza, czy przelew został wykonany. Synchronizacja (także pełna) nie zmienia statusu płatności.
+Status płatności to Twoja notatka w OpenKSeF. Nie jest wysyłany do KSeF ani do banku, a OpenKSeF nie sprawdza, czy przelew został wykonany. Synchronizacja (także pełna) nie zmienia statusu płatności. Wyjątek to pierwsze odczytanie nowej faktury: [Faktury opłacone wg sprzedawcy](#faktury-opłacone-wg-sprzedawcy).
 :::
+
+#### Faktury opłacone wg sprzedawcy
+
+Od v0.0.33 serwera OpenKSeF sam oznacza jako opłaconą nową fakturę, w której sprzedawca podał, że jest zapłacona (pole `Zaplacono` = 1 w pliku XML, np. przy płatności kartą lub gotówką). Na liście i w szczegółach faktura ma status **Opłacona wg sprzedawcy**, nie dostaje `po terminie` i nie ma jej na liście **Nieopłacone**.
+
+- Dzieje się to raz, przy pierwszym odczytaniu pliku XML faktury, jeśli OpenKSeF odczyta go w ciągu 24 godzin od pobrania faktury. Później odczytany plik XML nie zmienia statusu.
+- Tylko gdy nikt wcześniej nie zmieniał statusu tej faktury. Twoje oznaczenie zawsze wygrywa.
+- **Cofnij oznaczenie** przywraca status **Nieopłacona**. OpenKSeF nie oznaczy tej faktury ponownie.
+- Faktury odczytane przed v0.0.33 nie są zmieniane. Zapłacone oznacz ręcznie.
+
+OpenKSeF opiera się tylko na tym, co sprzedawca wpisał w fakturze. Sprawdź, czy rzeczywiście zapłaciłeś.
 
 Status płatności zmienisz w portalu. Aplikacja mobilna go nie pokazuje.
 
