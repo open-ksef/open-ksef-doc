@@ -32,6 +32,8 @@ Szczegóły otrzymanej faktury mają dwa przyciski:
 
 Oba przyciski pobierają dane z serwera OpenKSeF, więc wymagają połączenia z internetem. Kod QR i komunikaty są takie same jak w portalu.
 
+<img src="/img/screenshots/mobile/pay-details.png" alt="Szczegóły faktury: pozycje i przyciski Zapłać oraz Kopiuj dane przelewu" width="320" /> <img src="/img/screenshots/mobile/pay-qr.png" alt="Strona Kod QR przelewu: odbiorca i kwota nad kodem QR, przycisk Udostępnij / zapisz kod QR" width="320" />
+
 ### Płatność na tym samym telefonie
 
 Kod QR zeskanujesz aparatem w aplikacji bankowej na innym telefonie. Jeśli bank masz na tym samym telefonie:
@@ -56,6 +58,8 @@ Gdy kod QR byłby błędny, strona pokazuje komunikat z powodem, dane do przelew
 - faktura z mechanizmem podzielonej płatności (MPP): zapłać przelewem MPP w banku, komunikat podaje kwotę VAT, NIP sprzedawcy i numer faktury,
 - sprzedawca oznaczył fakturę jako zapłaconą (także w częściach) albo faktura wykazuje nadpłatę,
 - płatność na rachunek faktora, ale faktura nie podaje nazwy faktora.
+
+<img src="/img/screenshots/mobile/pay-no-qr.png" alt="Strona Kod QR przelewu bez kodu: komunikat Brak poprawnego numeru rachunku na fakturze, dane do przelewu i przycisk Kopiuj dane przelewu" width="320" />
 
 Gdy kod QR jest, komunikat nad nim może poprosić o wpisanie kwoty w banku (np. zaliczka, rozliczenie, faktura opłacona w części). Kod ma wtedy kwotę `000000` i kwotę wpisujesz sam. Po aktualizacji serwera starsze nieopłacone faktury mogą tak wyglądać z komunikatem `Nie odczytano jeszcze rozliczeń z tej faktury...`, dopóki serwer nie odczyta ponownie ich pliku XML. Komunikat może też przypomnieć: `Sprawdź, czy faktura nie wymaga podzielonej płatności (MPP).` przy kwocie brutto powyżej 15 000 zł, gdy OpenKSeF nie odczytał jeszcze oznaczenia MPP z faktury. Pełna lista sytuacji i komunikatów: [Otrzymane faktury, Zapłać tę fakturę](faktury#zapłać-tę-fakturę).
 

@@ -72,10 +72,10 @@ docs/
 
 ### Screenshoty
 
-`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (strona logowania, weryfikacja dwuetapowa: włączenie, kody zapasowe, kod; Ustawienia > Bezpieczeństwo, reset weryfikacji, dashboard, admin-setup kroki 1-3, 5, 6, administrator danych: kreator, ustawienia, baner, strona Prywatność, lista faktur, szczegóły, pozycje, opłacona, QR; wystawianie: dane do faktur, szkic B2B i B2C, Wysyłanie, Przyjęta, PDF z KOD I, Odrzucona, okres numeru, 440, lista; parowanie: Zalogować telefon?, Telefon zalogowany; kod zapasowy), tylko jasny motyw
+`static/img/screenshots/portal/` -- screeny portalu webowego do dokumentacji (strona logowania, weryfikacja dwuetapowa: włączenie, kody zapasowe, kod; Ustawienia > Bezpieczeństwo, reset weryfikacji, dashboard, admin-setup kroki 1-6, administrator danych: kreator, ustawienia, baner, strona Prywatność, lista faktur, szczegóły, pozycje, opłacona, QR, bez QR; wystawianie: dane do faktur, szkic B2B i B2C, Wysyłanie, Przyjęta, PDF z KOD I, Odrzucona, okres numeru, 440, lista; parowanie: Zalogować telefon?, Telefon zalogowany; kod zapasowy), tylko jasny motyw
 `static/img/screenshots/home/` -- screeny na stronę główną (start, start na telefonie, lista, płatność), jasny i ciemny motyw
 
-`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (ekran logowania 1.0.9). Portal: `mobile-setup.png` (strona Telefon, karta Zaloguj telefon kodem)
+`static/img/screenshots/mobile/` -- screeny aplikacji mobilnej (ekran logowania 1.0.9; Zapłać: szczegóły, kod QR, bez kodu QR 1.0.12). Portal: `mobile-setup.png` (strona Telefon, karta Zaloguj telefon kodem)
 
 Screeny zawierają wyłącznie dane fikcyjne (np. NIP 1111111111, nazwy "Przykład"). Żadnych prawdziwych NIP-ów, numerów KSeF, nazw firm ani adresów serwerów.
 
