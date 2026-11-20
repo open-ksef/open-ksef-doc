@@ -16,9 +16,20 @@ Portal `/login` przekierowuje na stronę logowania OpenKSeF. Wyświetla ją Keyc
 
 Wszystkie strony logowania (rejestracja, nowe hasło, potwierdzenie e-maila, weryfikacja dwuetapowa, komunikaty o błędach) są po polsku, w tym samym wyglądzie. Wylogowanie nie pyta o potwierdzenie i wraca na stronę logowania.
 
-Zmianę hasła, weryfikację dwuetapową i listę zalogowanych urządzeń znajdziesz w portalu: **Ustawienia** > **Bezpieczeństwo**. Adres `/auth/realms/openksef/account` też tam prowadzi. **Wyloguj wszystkie urządzenia** (na tej zakładce i na stronie **Telefon**) wylogowuje aplikację mobilną na każdym telefonie i portal we wszystkich przeglądarkach, także w tej. Telefony przestają dostawać powiadomienia. Użyj tego po utracie telefonu.
+Zmianę hasła, weryfikację dwuetapową i listę zalogowanych urządzeń znajdziesz w portalu: **Ustawienia** > **Bezpieczeństwo**. Adres `/auth/realms/openksef/account` też tam prowadzi. **Wyloguj wszystkie urządzenia** (na tej zakładce i na stronie **Telefon**) wylogowuje aplikację mobilną na każdym telefonie i portal we wszystkich przeglądarkach, także w tej. Telefony przestają dostawać powiadomienia. Po utracie telefonu zobacz [Zgubiony telefon i zmiana hasła](#zgubiony-telefon-i-zmiana-hasła).
 
 Bez obrazu `openksef-keycloak`, na oficjalnym obrazie Keycloak, logowanie działa tak samo, ale strony mają wbudowany wygląd Keycloak.
+
+## Zgubiony telefon i zmiana hasła
+
+Zmiana hasła (**Ustawienia** > **Bezpieczeństwo** > **Zmień hasło**) nie wylogowuje aplikacji mobilnej, nawet z zaznaczonym polem **Wyloguj mnie na innych urządzeniach**. Telefon zostaje zalogowany i dalej dostaje powiadomienia.
+
+Po utracie telefonu albo gdy podejrzewasz kradzież:
+
+1. W portalu naciśnij **Wyloguj wszystkie urządzenia** (**Ustawienia** > **Bezpieczeństwo** albo strona **Telefon**) i potwierdź przyciskiem **Wyloguj wszystkie**.
+2. Zaloguj się ponownie i zmień hasło.
+
+Faktury zapisane wcześniej w aplikacji zostają w pamięci zgubionego telefonu. Wylogowanie ich nie usuwa.
 
 ## Nie pamiętasz hasła
 
