@@ -10,7 +10,7 @@ Logowanie certyfikatem KSeF działa od następnego wydania po v0.0.12. W v0.0.12
 
 OpenKSeF może logować się do KSeF certyfikatem KSeF zamiast tokenem. Token zostaje domyślnym sposobem. Certyfikat to zapasowa droga, gdy nie masz tokenu albo token przestanie działać.
 
-Dlaczego teraz: według Ministerstwa Finansów Aplikacja Podatnika KSeF 2.0 obsługuje „generowanie i obsługę tokenów (do 31 grudnia 2026 r.)”. Obowiązujące rozporządzenie dopuszcza logowanie tokenem do 31 grudnia 2026 r. Certyfikat KSeF jest stałą metodą logowania i nie zależy od tej zmiany. Możesz go przygotować już teraz, póki token działa.
+Dlaczego teraz: według Ministerstwa Finansów Aplikacja Podatnika KSeF 2.0 obsługuje „generowanie i obsługę tokenów (do 31 grudnia 2026 r.)”. Obowiązujące rozporządzenie dopuszcza logowanie tokenem do 31 grudnia 2026 r. Ministerstwo zapowiedziało, że tokeny zostaną utrzymane bezterminowo, a rozporządzenie zostanie znowelizowane ([Certyfikaty KSeF](https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/), sekcja „Certyfikaty KSeF a tokeny”, zmodyfikowano 01.09.2026). Do czasu nowelizacji obowiązuje termin 31 grudnia 2026 r. Certyfikat KSeF jest stałą metodą logowania i nie zależy od tych zmian. Możesz go przygotować już teraz, póki token działa.
 
 ## Wygeneruj certyfikat
 
@@ -18,7 +18,7 @@ Dlaczego teraz: według Ministerstwa Finansów Aplikacja Podatnika KSeF 2.0 obs�
    - produkcja: [ap.ksef.mf.gov.pl](https://ap.ksef.mf.gov.pl),
    - demo: [ap-demo.ksef.mf.gov.pl](https://ap-demo.ksef.mf.gov.pl),
    - test: [ap-test.ksef.mf.gov.pl](https://ap-test.ksef.mf.gov.pl).
-2. Zaloguj się Węzłem krajowym (Profil Zaufany, e-dowód, mObywatel), podpisem kwalifikowanym albo pieczęcią kwalifikowaną firmy. Tokenem nie złożysz wniosku o certyfikat.
+2. Zaloguj się Węzłem krajowym (Profil Zaufany, e-dowód, mObywatel), podpisem kwalifikowanym albo pieczęcią kwalifikowaną firmy. Tokenem nie złożysz wniosku o certyfikat. Na środowisku test wystarczy logowanie testowe fikcyjnym NIP-em: [Wypróbuj na KSeF TEST](instalacja/wyprobuj-na-ksef-test#token-na-ksef-test-po-2026-roku).
 3. Złóż wniosek o certyfikat typu **Uwierzytelnianie** (w dokumentacji MF: typ 1, w API: `Authentication`). Nie wybieraj typu **Offline**: nie pozwala się zalogować.
 4. Podczas wniosku Aplikacja Podatnika wygeneruje klucz prywatny i zapisze go na Twoim komputerze. Zachowaj plik klucza i jego hasło: bez nich certyfikatu nie użyjesz.
 5. Po wydaniu certyfikatu pobierz go w Aplikacji Podatnika.

@@ -42,11 +42,10 @@ Pierwsze logowanie do portalu poprosi o [weryfikację dwuetapową](../weryfikacj
 ## Krok 3: Wygeneruj token dla firmy A
 
 1. Otwórz testową Aplikację Podatnika: [ap-test.ksef.mf.gov.pl](https://ap-test.ksef.mf.gov.pl).
-2. Wybierz **Uwierzytelnij się w Krajowym Systemie e-Faktur**, a potem **Zaloguj uwierzytelnieniem testowym**.
-3. W polu **Identyfikator** zostaw **NIP firmy** i wpisz NIP firmy A.
-4. W sekcji **Podpisz testowe żądanie autoryzacyjne** zostaw typ **Pieczęć NIP**, wpisz ten sam NIP firmy A i kliknij **Uwierzytelnij do aplikacji testowej**.
-5. Wygeneruj token z uprawnieniami **Przeglądanie faktur** i **Wystawianie faktur**.
-6. Skopiuj token od razu. Aplikacja Podatnika pokazuje go tylko raz.
+2. W karcie **Uwierzytelnienie testowe** kliknij **Zaloguj**. Zaznacz oświadczenie o środowisku testowym i kliknij **Przejdź dalej**.
+3. W polu **NIP firmy** wpisz NIP firmy A. W sekcji **Podpisz testowe żądanie autoryzacyjne** wpisz ten sam NIP w polu **Numer NIP** i kliknij **Uwierzytelnij do aplikacji testowej**.
+4. W menu wybierz **Tokeny** > **Generuj token**. Wpisz **Nazwę tokena**, zaznacz **wystawianie faktur** i **przeglądanie faktur**, kliknij **Generuj token**.
+5. Klikaj **Odśwież**, aż pojawi się token. Skopiuj go od razu: Aplikacja Podatnika pokazuje go tylko raz.
 
 ## Krok 4: Wklej token i pobierz faktury
 
@@ -69,15 +68,20 @@ Po chwili faktura ma status **Przyjęta w KSeF**, numer KSeF, a potem UPO. Pobie
 ## Krok 6: Zobacz fakturę u firmy B
 
 1. W Aplikacji Podatnika wyloguj się i zaloguj jak w kroku 3, tym razem NIP-em firmy B. Wygeneruj token z tymi samymi uprawnieniami.
-2. W portalu dodaj firmę B: przełącznik firm na górze menu bocznego > **Dodaj firmę**, NIP firmy B, token firmy B.
+2. W portalu dodaj firmę B: przełącznik firm na górze menu bocznego > **Dodaj firmę**, wpisz NIP firmy B i kliknij **Zapisz firmę**. Portal otworzy **Dostęp do KSeF i pobieranie** firmy B: wklej token firmy B.
 3. Przy wybranej firmie B kliknij **Pobierz z KSeF**.
 4. Otwórz **Otrzymane**. Na liście jest faktura od firmy A.
 
 ## Token na KSeF TEST po 2026 roku
 
-Testowa Aplikacja Podatnika generuje tokeny „do 31 grudnia 2026 r.” ([strona wersji testowej](https://ksef.podatki.gov.pl/aplikacja-podatnika-ksef-20/aplikacja-podatnika-ksef-20-wersja-testowa/)). Ministerstwo Finansów zapowiedziało, że tokeny zostaną utrzymane bezterminowo, a rozporządzenie zostanie znowelizowane ([Certyfikaty KSeF](https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/), sekcja „Certyfikaty KSeF a tokeny”). Do czasu zmiany strony testowej termin 31 grudnia 2026 r. obowiązuje.
+Testowa Aplikacja Podatnika generuje tokeny „do 31 grudnia 2026 r.” ([strona wersji testowej](https://ksef.podatki.gov.pl/aplikacja-podatnika-ksef-20/aplikacja-podatnika-ksef-20-wersja-testowa/)). Ministerstwo Finansów zapowiedziało, że tokeny zostaną utrzymane bezterminowo, a rozporządzenie zostanie znowelizowane ([Certyfikaty KSeF](https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/), sekcja „Certyfikaty KSeF a tokeny”, zmodyfikowano 01.09.2026). Do czasu nowelizacji obowiązuje termin 31 grudnia 2026 r.
 
-Ta strona opisuje tylko logowanie tokenem. Jeśli po 31 grudnia 2026 r. testowa Aplikacja Podatnika przestanie generować tokeny, ta ścieżka przestanie działać.
+Jeśli testowa Aplikacja Podatnika przestanie generować tokeny, użyj [certyfikatu KSeF](../certyfikat-ksef). Po logowaniu testowym możesz złożyć wniosek o certyfikat (sprawdzone 20.11.2026, wersja 2.5.6):
+
+1. Zaloguj się jak w kroku 3.
+2. W menu wybierz **Certyfikaty** > **Wnioskuj o certyfikat**. Wpisz nazwę i hasło, kliknij **Generuj**. Przeglądarka zapisze plik klucza `.key`.
+3. W polu **Przeznaczenie certyfikatu** wybierz **Uwierzytelnienie w systemie KSeF** i kliknij **Wyślij wniosek o wydanie certyfikatu**.
+4. Kliknij **Pobierz certyfikat** i wgraj parę `.crt` + `.key` w OpenKSeF: [Wgraj certyfikat](../certyfikat-ksef#wgraj-certyfikat-w-openksef).
 
 ## Przejście na prawdziwe faktury
 

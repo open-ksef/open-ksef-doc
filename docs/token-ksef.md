@@ -43,7 +43,7 @@ Certyfikat KSeF działa zamiast tokenu przy pobieraniu i wysyłce faktur. Certyf
 
 ## Ważność
 
-Token ma termin ważności w przepisach: [Ważność tokenu](wystawianie-faktur#token-ksef). Zapasowa droga, niezależna od tego terminu: [Certyfikat KSeF](certyfikat-ksef#ważność-i-odnowienie).
+Token ma termin ważności w przepisach: 31 grudnia 2026 r. Ministerstwo Finansów zapowiedziało, że tokeny zostaną utrzymane bezterminowo, a rozporządzenie zostanie znowelizowane ([Certyfikaty KSeF](https://ksef.podatki.gov.pl/informacje-ogolne-ksef-20/certyfikaty-ksef/), sekcja „Certyfikaty KSeF a tokeny”, zmodyfikowano 01.09.2026). Szczegóły: [Ważność tokenu](wystawianie-faktur#token-ksef). Zapasowa droga, niezależna od tego terminu: [Certyfikat KSeF](certyfikat-ksef#ważność-i-odnowienie).
 
 Token przestaje działać, gdy unieważnisz go w Aplikacji Podatnika. Wtedy wygeneruj nowy i podmień go w OpenKSeF.
 
