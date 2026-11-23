@@ -37,7 +37,7 @@ Nie zmienisz korektą sprzedawcy, rodzaju nabywcy, NIP-u ani numeru zagraniczneg
 
 Podsumowanie pokazuje różnice wobec stanu przed korektą, dla każdej stawki osobno. Kwota ze znakiem minus to zmniejszenie.
 
-- **Nabywca dopłaca**: korekta ma sekcję płatności z terminem i rachunkiem z faktury korygowanej.
+- **Nabywca dopłaca**: korekta ma sekcję płatności z formą płatności i rachunkiem z faktury korygowanej. Termin płatności ustawisz w formularzu, domyślnie 14 dni od daty wystawienia korekty.
 - **Do zwrotu nabywcy** albo **Kwota bez zmian**: korekta nie ma sekcji płatności.
 
 Na korekcie są tylko zmienione pozycje: każda w dwóch wierszach, przed i po korekcie. Nowa pozycja ma tylko wiersz po korekcie. VAT liczymy od sumy netto dla stawki, tak jak na fakturze, a różnicę VAT jako VAT po korekcie minus VAT przed nią.

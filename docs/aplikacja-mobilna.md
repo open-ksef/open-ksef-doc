@@ -77,7 +77,7 @@ Od wersji 1.0.13 aplikacja pokazuje je w zakładce **Wystawione** tylko do podgl
 - Szczegóły: rodzaj, kwota z podpisem **Kwota korekty**, **Kwota zaliczki** albo **Do zapłaty**, odnośnik do faktury korygowanej i przyczyna korekty, wiersze przed i po korekcie, rozliczone zaliczki oraz zamówienie albo lista korekt.
 - Nie ma przycisków **Wystaw i wyślij**, **Edytuj**, **Usuń szkic** ani kopiowania. **Koryguj w portalu** albo **Edytuj w portalu** otwiera dokument w portalu.
 
-Starsze wersje pokazują te dokumenty jak zwykłe faktury, bez rodzaju i znaku kwoty. Zaktualizuj aplikację. Szkicu takiego dokumentu nie zapiszesz ani nie wyślesz ze starszej wersji: serwer odrzuci zmianę.
+Starsze wersje pokazują te dokumenty jak zwykłe faktury VAT: bez rodzaju dokumentu, bez wierszy przed i po korekcie i bez rozliczonych zaliczek. Zaktualizuj aplikację. Szkicu takiego dokumentu nie zapiszesz ani nie wyślesz ze starszej wersji: serwer odrzuci zmianę.
 
 ## Podłączenie do serwera
 

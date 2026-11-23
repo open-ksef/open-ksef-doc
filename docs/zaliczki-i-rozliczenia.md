@@ -97,6 +97,7 @@ Korekty działają jak [korekty faktur VAT](korekty): przycisk **Koryguj** w kar
 
 - Zmienisz **Kwotę zaliczki**, pozycje zamówienia albo jedno i drugie. Formularz pokazuje **Zamówienie po korekcie**.
 - Różnice kwot liczymy tak jak podział zaliczki: podział kwoty po korekcie minus podział kwoty przed nią. Faktura podaje też kwotę zaliczki przed korektą.
+- Korekta faktury zaliczkowej nie ma sekcji płatności, także gdy kwota zaliczki rośnie. Zaliczka jest już zapłacona.
 - Zwrot zaliczki to **Koryguj do zera** (art. 106j ust. 1 pkt 4 ustawy o VAT).
 - Waluta i kurs zostają z faktury zaliczkowej (art. 31b ust. 1 ustawy o VAT).
 - Gdy zamówienie ma już fakturę rozliczającą, korekta zaliczki zostanie zablokowana, a komunikat wskaże korektę faktury rozliczającej.
