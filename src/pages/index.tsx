@@ -207,6 +207,7 @@ export default function Home(): ReactNode {
                 <Yes>Dane do przelewu i kod QR w portalu</Yes>
                 <Yes>Faktury VAT w PLN ze stawkami 23, 8, 5, 0 KR i zw <small>Także dla osoby prywatnej, z PDF i kodem KOD I.</small></Yes>
                 <Yes>Faktury za usługi dla firm zagranicznych <small>Stawki np I i np II, waluta obca, kurs NBP, PDF po angielsku i polsku. Tylko w portalu.</small></Yes>
+                <Yes>Faktury korygujące, zaliczkowe i rozliczające <small>Także korekta do zera i błędny NIP nabywcy. Tylko w portalu.</small></Yes>
                 <Yes>Środowiska KSeF: test i produkcja <small>Na produkcji przyjęta faktura jest dokumentem prawnym.</small></Yes>
                 <Yes>Powiadomienia push na Androidzie <small>Aplikacja: plik APK na GitHubie.</small></Yes>
               </ul>
@@ -214,7 +215,7 @@ export default function Home(): ReactNode {
             <div>
               <h3>Jeszcze nie ma</h3>
               <ul className={styles.no}>
-                <No>Faktura korygująca, zaliczkowa i rozliczeniowa</No>
+                <No>Korekta zbiorcza i korekta faktur z innych programów</No>
                 <No>Faktury zagraniczne za towary, VAT w walucie obcej</No>
                 <No>Aplikacja w Google Play i na iPhone'a</No>
                 <No>E-mail o nowej fakturze przy pobieraniu w tle</No>

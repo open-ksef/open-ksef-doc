@@ -19,7 +19,7 @@ Android: [plik APK na GitHubie](https://github.com/open-ksef/open-ksef-mobile/re
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie na stronie logowania OpenKSeF w przeglądarce telefonu albo [parowanie kodem z portalem](#sparuj-z-portalem) bez hasła na telefonie (od wersji 1.0.9)
 - Przycisk **Zapłać**: kod QR przelewu do zeskanowania w aplikacji bankowej, zobacz [Zapłać](#zapłać)
-- [Wystawianie faktur](wystawianie-faktur), od wersji 1.0.5
+- [Wystawianie faktur](wystawianie-faktur), od wersji 1.0.5. Korekty, zaliczki i rozliczenia tylko do podglądu, zobacz [niżej](#korekty-zaliczki-i-rozliczenia)
 - Skanowanie kodu QR z portalu, które ustawia adres serwera
 - Motyw jak w telefonie: jasny albo ciemny. Zmienisz go w **Konto** > **Motyw**: **System**, **Jasny** albo **Ciemny**
 
@@ -66,6 +66,18 @@ Gdy kod QR jest, komunikat nad nim może poprosić o wpisanie kwoty w banku (np.
 Tytuł przelewu w kodzie QR to numer faktury skrócony do 32 znaków. Gdy numer jest dłuższy, komunikat podaje pełny numer: sprawdź tytuł w banku przed wysłaniem.
 
 Z serwerem OpenKSeF starszym niż 0.0.8 aplikacja (od wersji 1.0.6) nie pokazuje kodu QR, tylko komunikat `Kod QR wymaga nowszej wersji serwera. Skopiuj dane przelewu.`
+
+## Korekty, zaliczki i rozliczenia
+
+Faktury korygujące, zaliczkowe, rozliczające i ich korekty wystawisz tylko w portalu: [Faktury korygujące](korekty), [Zaliczki i rozliczenia](zaliczki-i-rozliczenia).
+
+Od wersji 1.0.13 aplikacja pokazuje je w zakładce **Wystawione** tylko do podglądu:
+
+- Lista: rodzaj dokumentu przy numerze i kwota, przy korekcie ze znakiem.
+- Szczegóły: rodzaj, kwota z podpisem **Kwota korekty**, **Kwota zaliczki** albo **Do zapłaty**, odnośnik do faktury korygowanej i przyczyna korekty, wiersze przed i po korekcie, rozliczone zaliczki oraz zamówienie albo lista korekt.
+- Nie ma przycisków **Wystaw i wyślij**, **Edytuj**, **Usuń szkic** ani kopiowania. **Koryguj w portalu** albo **Edytuj w portalu** otwiera dokument w portalu.
+
+Starsze wersje pokazują te dokumenty jak zwykłe faktury, bez rodzaju i znaku kwoty. Zaktualizuj aplikację. Szkicu takiego dokumentu nie zapiszesz ani nie wyślesz ze starszej wersji: serwer odrzuci zmianę.
 
 ## Podłączenie do serwera
 

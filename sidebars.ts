@@ -21,6 +21,8 @@ const sidebars: SidebarsConfig = {
     'wspolne-firmy',
     'faktury',
     'wystawianie-faktur',
+    'korekty',
+    'zaliczki-i-rozliczenia',
     'powiadomienia-push',
     'aplikacja-mobilna',
     {

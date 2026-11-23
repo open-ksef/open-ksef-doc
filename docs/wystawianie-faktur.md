@@ -7,6 +7,8 @@ title: Wystawianie faktur
 
 OpenKSeF wystawia faktury VAT i wysyła je do KSeF. Działa to w portalu: faktury znajdziesz w menu **Wystawione**, a dane firmy w menu **Firma**, na karcie **Dane do faktur**. Wystawianie jest też w [aplikacji na Androida](aplikacja-mobilna), od wersji 1.0.5.
 
+Faktury korygujące opisuje strona [Faktury korygujące](korekty), a faktury zaliczkowe i rozliczające strona [Zaliczki i rozliczenia](zaliczki-i-rozliczenia).
+
 Faktury, które otrzymujesz od dostawców, opisuje strona [Otrzymane faktury](faktury). Sprzedaż wystawioną w innym programie opisuje sekcja [Faktury spoza OpenKSeF](#faktury-spoza-openksef).
 
 :::warning[Sprawdź środowisko]
@@ -72,6 +74,16 @@ Numer nadaje serwer w chwili wystawienia. Szkic nie ma numeru, więc usunięcie 
 - **Jeśli wystawiałeś już faktury w innym programie, ustaw wyższy następny numer.** KSeF nie przyjmie numeru, który ta firma już wykorzystała.
 
 Formularz pokazuje numer, który dostanie następna faktura.
+
+Firma ma trzy serie numerów, każdą z własnym licznikiem:
+
+| Seria | Domyślny wzorzec | Dokumenty |
+|-------|------------------|-----------|
+| Faktury | `FV/{nr}/{MM}/{RRRR}` | Faktury VAT i [faktury rozliczające](zaliczki-i-rozliczenia#faktura-rozliczająca) |
+| Korekty | `KOR/{nr}/{MM}/{RRRR}` | [Korekty](korekty#numeracja-korekt) faktur VAT, zaliczkowych i rozliczających |
+| Zaliczki | `ZAL/{nr}/{MM}/{RRRR}` | [Faktury zaliczkowe](zaliczki-i-rozliczenia#faktura-zaliczkowa) |
+
+Korekty i zaliczki nie przesuwają numeracji faktur. Znaczniki i zasady liczników są w każdej serii takie same. Jeśli wystawiałeś korekty lub zaliczki w innym programie, ustaw w ich serii wyższy następny numer.
 
 ## Wystawienie faktury
 
@@ -300,7 +312,7 @@ Usunięcie firmy usuwa te faktury tylko z OpenKSeF. W KSeF zostają.
 
 ## Aplikacja mobilna
 
-Wystawianie faktur jest też w [aplikacji na Androida](aplikacja-mobilna), od wersji 1.0.5. Faktury dla firm zagranicznych wystawisz tylko w portalu: [szczegóły](#aplikacja-mobilna-a-faktury-zagraniczne).
+Wystawianie faktur jest też w [aplikacji na Androida](aplikacja-mobilna), od wersji 1.0.5. Faktury dla firm zagranicznych wystawisz tylko w portalu: [szczegóły](#aplikacja-mobilna-a-faktury-zagraniczne). Korekty, faktury zaliczkowe i rozliczające aplikacja pokazuje tylko do podglądu: [szczegóły](aplikacja-mobilna#korekty-zaliczki-i-rozliczenia).
 
 Zakładka **Wystawione** pokazuje listę faktur z filtrami statusu. Szkic otwiera szczegóły z przyciskami **Wystaw i wyślij**, **Edytuj** i **Usuń szkic**. **Edytuj** otwiera formularz szkicu.
 
@@ -314,19 +326,21 @@ Tych rzeczy OpenKSeF jeszcze nie obsługuje:
 
 | Czego nie ma | Co zrobić |
 |--------------|-----------|
-| **Faktura korygująca (korekta)** | Wystaw ją w Aplikacji Podatnika KSeF Ministerstwa Finansów |
-| **Faktura zaliczkowa i rozliczeniowa** | Użyj Aplikacji Podatnika KSeF lub innego programu |
+| **Korekta zbiorcza**: jedna korekta do wielu faktur, na przykład rabat za okres | Wystaw osobną korektę do każdej faktury albo użyj Aplikacji Podatnika KSeF lub innego programu |
+| **Korekta faktury spoza OpenKSeF** | Użyj programu, w którym wystawiono fakturę, albo Aplikacji Podatnika KSeF |
+| **Kilka zaliczek na jednej fakturze zaliczkowej** | Wystaw osobną fakturę zaliczkową do każdej wpłaty |
+| **Rozliczenie zaliczek wystawionych poza OpenKSeF** | Użyj programu, w którym wystawiono zaliczki, albo Aplikacji Podatnika KSeF |
 | **Proforma** | Użyj innego programu. Proforma nie jest fakturą i nie trafia do KSeF |
 | **Towary za granicę**: WDT i eksport, stawki 0 WDT i 0 EX | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **VAT w walucie obcej**: stawka 23, 8 lub 5 w innej walucie niż PLN | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **Waluta obca dla nabywcy Firma lub Osoba prywatna** | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **Osoba prywatna za granicą i OSS** | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **Stawka oo** | Użyj Aplikacji Podatnika KSeF lub innego programu |
-| **Faktura dla firmy zagranicznej w aplikacji mobilnej** | Wystaw ją w portalu |
-| **Kilka serii numeracji i numery wpisywane ręcznie** | Jedna firma ma jeden wzorzec numeru |
+| **Faktura dla firmy zagranicznej, korekta, zaliczka i rozliczenie w aplikacji mobilnej** | Wystaw je w portalu |
+| **Kilka serii numeracji faktur i numery wpisywane ręcznie** | Jedna firma ma po jednym wzorcu dla faktur, korekt i zaliczek |
 
 Dodatkowo:
 
-- Przyjętej faktury nie można zmienić ani usunąć pojedynczo w OpenKSeF. Z KSeF nie można jej usunąć wcale.
+- Przyjętej faktury nie można zmienić ani usunąć pojedynczo w OpenKSeF. Z KSeF nie można jej usunąć wcale. Zmiany wprowadzasz [korektą](korekty).
 - Firmę usuniesz razem z jej wystawionymi fakturami, chyba że ma fakturę wystawioną w OpenKSeF w statusie **Wysyłanie** albo przyjętą na środowisku PRODUKCJA. [Faktury spoza OpenKSeF](#faktury-spoza-openksef) nie blokują usunięcia. Przy wysyłce poczekaj na jej koniec. Przy fakturze przyjętej na środowisku PRODUKCJA skontaktuj się z właścicielem instancji. Usuniętych faktur wystawionych w OpenKSeF i szkiców nie da się przywrócić.
 - OpenKSeF nie ocenia skutków podatkowych faktury. W razie wątpliwości zapytaj księgowego lub doradcę podatkowego.
