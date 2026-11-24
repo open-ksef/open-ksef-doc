@@ -104,6 +104,44 @@ Korekty i zaliczki nie przesuwają numeracji faktur. Znaczniki i zasady licznik�
 
 VAT jest liczony od sumy netto dla każdej stawki. VAT widoczny przy pozycji jest poglądowy.
 
+## Szybciej: nabywcy, pozycje, szablony
+
+Ostatni nabywcy, podpowiedzi pozycji i szablony są tylko w portalu. Korzystają z nich wszyscy użytkownicy firmy, w każdej roli.
+
+### Pobierz z NIP
+
+**Pobierz z NIP** uzupełnia nazwę i adres z białej listy Ministerstwa Finansów. Działa dla nabywcy **Firma**, w portalu i w aplikacji, oraz dla sprzedawcy w **Dane do faktur**. Dla nabywcy **Firma zagraniczna** i **Osoba prywatna** nie ma wyszukiwania: biała lista obejmuje tylko polskich podatników VAT. Wpisz dane ręcznie.
+
+Ministerstwo Finansów pozwala na 100 wyszukiwań dziennie. OpenKSeF pilnuje tego limitu dla całej instancji, czyli dla wszystkich firm i użytkowników razem. Ten sam NIP wyszukany drugi raz tego samego dnia nie zużywa limitu. Po wyczerpaniu limitu zobaczysz `Dzienny limit wyszukiwań w wykazie MF wyczerpany. Wpisz dane ręcznie.` Wyszukiwanie wraca następnego dnia, po północy czasu polskiego. Szkic zapiszesz także bez wyszukiwania.
+
+### Ostatni nabywcy
+
+Przycisk **Ostatni nabywcy** w sekcji **Nabywca** pokazuje nabywców z faktur tej firmy przyjętych w KSeF. Każdy nabywca jest na liście raz, z danymi z najnowszej faktury. Lista pokazuje najwyżej 20 pozycji, od ostatnio używanych. Szukaj po nazwie albo numerze podatkowym.
+
+Wybranie nabywcy wpisuje rodzaj nabywcy i wszystkie jego dane. Waluty, pozycji i dat nie zmienia.
+
+Na liście nie ma nabywców ze szkiców, faktur odrzuconych ani [faktur spoza OpenKSeF](#faktury-spoza-openksef).
+
+### Podpowiedzi pozycji
+
+Po wpisaniu co najmniej 2 znaków nazwy pozycji zobaczysz podpowiedzi z faktur tej firmy przyjętych w KSeF: nazwę, jednostkę, cenę netto i stawkę VAT z najnowszej faktury. Wybranie podpowiedzi wpisuje te dane. Ilość zostaje. Podpowiedzi pokazują tylko stawki dozwolone dla wybranego rodzaju nabywcy.
+
+### Szablony
+
+Szablon zapamiętuje fakturę, którą wystawiasz regularnie, na przykład co miesiąc temu samemu klientowi.
+
+1. Otwórz zapisany szkic albo szczegóły faktury VAT i kliknij **Zapisz jako szablon**.
+2. Podaj nazwę szablonu, od 1 do 100 znaków.
+3. Gdy chcesz wystawić fakturę, w menu **Wystawione** kliknij **Szablony**, a przy szablonie **Nowa z szablonu**.
+
+Szablon zapamiętuje nabywcę, pozycje, metodę płatności, termin płatności w dniach, mechanizm podzielonej płatności, podstawę zwolnienia i walutę. Nie zapamiętuje numeru, dat, kursu ani danych sprzedawcy.
+
+Nowy szkic z szablonu ma dzisiejszą datę wystawienia i sprzedaży oraz termin płatności liczony od dziś. Przy walucie obcej dostaje nową podpowiedź kursu NBP. Dane sprzedawcy i numer dostanie przy wystawieniu.
+
+Szablon się nie zmienia, gdy edytujesz albo usuniesz fakturę, z której powstał, ani gdy edytujesz szkic z szablonu. Szablonu nie można edytować. Możesz zmienić jego nazwę albo go usunąć. Żeby zmienić zawartość, zapisz nowy szablon. Usunięcie szablonu nie usuwa faktur utworzonych z niego.
+
+Szablon zapiszesz tylko z faktury VAT, także dla firmy zagranicznej. Korekty, faktury zaliczkowej ani rozliczającej nie zapiszesz jako szablonu. Szablony należą do firmy i są usuwane razem z nią.
+
 ## Statusy
 
 | Status | Co oznacza | Co możesz zrobić |
@@ -159,7 +197,16 @@ Numer zawiera okres, więc datę wystawienia możesz zmienić tylko w jego obrę
 
 ### Kopiuj jako nową
 
-**Kopiuj jako nową** tworzy szkic z tym samym nabywcą i pozycjami, z dzisiejszą datą wystawienia i sprzedaży, terminem płatności za 14 dni i bez numeru. Numer dostanie przy wystawieniu.
+**Kopiuj jako nową** tworzy szkic podobnej faktury. Znajdziesz go w szczegółach faktury i przy fakturze na liście **Wystawione**. Z listy od razu otwiera się formularz nowego szkicu.
+
+Szkic dostaje nabywcę, pozycje, metodę płatności, mechanizm podzielonej płatności, podstawę zwolnienia i walutę. Jeśli faktura ma przyjęte korekty, szkic dostaje dane po korektach. Data wystawienia i sprzedaży to dzisiejsza data. Termin płatności ma tyle dni od daty wystawienia, ile w kopiowanej fakturze. Przy walucie obcej szkic dostaje nową podpowiedź kursu NBP. Numer dostanie przy wystawieniu. Kopiowana faktura się nie zmienia.
+
+Kopiować można tylko faktury VAT wystawione w OpenKSeF, także dla firm zagranicznych:
+
+- w szczegółach: fakturę przyjętą w KSeF albo odrzuconą z [kodem 440](#kod-440-numer-jest-już-w-ksef);
+- na liście **Wystawione**: fakturę przyjętą w KSeF.
+
+Korekty, faktury zaliczkowej, rozliczającej ani [faktury spoza OpenKSeF](#faktury-spoza-openksef) nie skopiujesz. Nową zaliczkę zacznij przyciskiem **Nowa zaliczka**.
 
 Skopiowanie odrzuconej faktury nie usuwa jej ani nie zwalnia jej numeru. Odrzucona faktura zostaje na liście i pokazuje, dlaczego ten numer nie został wykorzystany. Nie można jej usunąć.
 

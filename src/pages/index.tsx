@@ -208,6 +208,7 @@ export default function Home(): ReactNode {
                 <Yes>Faktury VAT w PLN ze stawkami 23, 8, 5, 0 KR i zw <small>Także dla osoby prywatnej, z PDF i kodem KOD I.</small></Yes>
                 <Yes>Faktury za usługi dla firm zagranicznych <small>Stawki np I i np II, waluta obca, kurs NBP, PDF po angielsku i polsku. Tylko w portalu.</small></Yes>
                 <Yes>Faktury korygujące, zaliczkowe i rozliczające <small>Także korekta do zera i błędny NIP nabywcy. Tylko w portalu.</small></Yes>
+                <Yes>Szablony, ostatni nabywcy i Kopiuj jako nową <small>Termin płatności jak w kopiowanej fakturze. Tylko w portalu.</small></Yes>
                 <Yes>Środowiska KSeF: test i produkcja <small>Na produkcji przyjęta faktura jest dokumentem prawnym.</small></Yes>
                 <Yes>Powiadomienia push na Androidzie <small>Aplikacja: plik APK na GitHubie.</small></Yes>
               </ul>

@@ -52,7 +52,7 @@ docs/
   certyfikat-ksef.md          # Certyfikat KSeF (Uwierzytelnianie) zamiast tokenu, ważność, odnowienie
   wspolne-firmy.md            # Wspólne firmy: role, zaproszenia, dołączanie, opuszczanie, kto oznaczył opłaconą, powiadomienia per firma
   faktury.md                  # Lista, szczegóły, XML/PDF, pozycje, status płatności, przelew/QR, resynchronizacja
-  wystawianie-faktur.md       # Dane do faktur, numeracja (serie FV, KOR, ZAL), wystawianie, statusy, XML/UPO/PDF, odrzucona faktura, ograniczenia
+  wystawianie-faktur.md       # Dane do faktur, numeracja (serie FV, KOR, ZAL), wystawianie, Pobierz z NIP (limit MF), ostatni nabywcy, podpowiedzi pozycji, szablony, Kopiuj jako nową, statusy, XML/UPO/PDF, odrzucona faktura, ograniczenia
   korekty.md                  # Korekty: kiedy, jak, przyczyna, typ korekty, do zera, błędny NIP (Podręcznik 1.6.4), dane nabywcy, waluta, numeracja KOR
   zaliczki-i-rozliczenia.md   # Zamówienie, ZAL, kolejna i ostatnia zaliczka, ROZ, ROZ na 0,00, KOR_ZAL, KOR_ROZ, numeracja ZAL
   powiadomienia-push.md       # Push notifications (SignalR, relay, Firebase, email)

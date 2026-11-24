@@ -5,7 +5,7 @@ title: Polityka prywatności
 
 # Polityka prywatności
 
-*Ostatnia aktualizacja: 20 listopada 2026 r.*
+*Ostatnia aktualizacja: 24 listopada 2026 r.*
 
 OpenKSeF to oprogramowanie z publicznie dostępnym kodem źródłowym do synchronizacji i przeglądania faktur z Krajowego Systemu e-Faktur (KSeF) oraz do wystawiania faktur. Ta polityka opisuje, jakie dane są przetwarzane w instancji OpenKSeF i jak są chronione.
 
@@ -59,6 +59,11 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 - Numer faktury, daty, kwoty i pozycje faktury
 - Po wysłaniu: plik XML, numer KSeF, UPO lub powód odrzucenia
 
+### Szablony faktur
+
+- Szablon zapisany przez użytkownika firmy: nazwa szablonu, dane nabywcy (jak wyżej, także osoby prywatnej), pozycje, metoda i termin płatności, waluta
+- Lista **Ostatni nabywcy** i podpowiedzi pozycji nie są osobnym zbiorem danych. Powstają z faktur wystawionych i przyjętych w KSeF
+
 ### Historia zmian w firmie
 
 - Kto (identyfikator, adres e-mail oraz imię i nazwisko z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, ponowne wysłanie, odwołanie i przyjęcie zaproszenia, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, usunięcie adresu e-mail do powiadomień, przejęcie firmy tokenem KSeF (kody uprawnień tokenu i numer operacji uwierzytelnienia w KSeF, bez tokenu), wraz z osobą, której to dotyczy (identyfikator, adres e-mail albo oba)
@@ -88,6 +93,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 | Dane faktur, status płatności | Wyświetlanie i przeszukiwanie faktur, dane do przelewu | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Dane wystawionej faktury, w tym nabywcy będącego osobą prywatną | Wystawienie faktury i wysłanie jej do KSeF | Obowiązek prawny (art. 6 ust. 1 lit. c RODO, art. 106e ustawy o VAT) |
 | Kopia wystawionej faktury w instancji | Podgląd faktury, pobieranie plików, wyjaśnienie numeracji | Prawnie uzasadniony interes sprzedawcy (art. 6 ust. 1 lit. f RODO) |
+| Szablon faktury z danymi nabywcy | Szybsze wystawianie kolejnych faktur temu samemu nabywcy | Prawnie uzasadniony interes sprzedawcy (art. 6 ust. 1 lit. f RODO) |
 | Token i identyfikator urządzenia; od wersji 1.0.12 na Androidzie także identyfikator instalacji Firebase, wersja aplikacji i identyfikator klienta | Dostarczanie powiadomień push | Zgoda (art. 6 ust. 1 lit. a RODO) |
 | Identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta (Android, tylko wersje 1.0.11 i starsze) | Działanie biblioteki Firebase, przez którą przychodzą powiadomienia push | Prawnie uzasadniony interes wydawcy aplikacji (art. 6 ust. 1 lit. f RODO) |
 | Adres e-mail do powiadomień (per firma) | Wysyłanie powiadomień e-mail o nowych fakturach | Umowa (art. 6 ust. 1 lit. b RODO) |
@@ -146,6 +152,7 @@ W wersjach do 1.0.5 przełącznik nie wyłącza powiadomień, a aplikacja rejest
 - Aplikacja mobilna przechowuje lokalną kopię faktur w bazie SQLite w prywatnym katalogu aplikacji na urządzeniu, bez dodatkowego szyfrowania.
 - Tokeny i certyfikaty KSeF (z kluczem prywatnym) są szyfrowane w bazie danych (AES-256-GCM).
 - Kopia e-maila, imienia i nazwiska jest przechowywana, dopóki nie usuniemy konta (sekcja 8). Dostęp do firmy znika po jej opuszczeniu, usunięciu z firmy albo usunięciu firmy.
+- Szablony faktur są przechowywane, dopóki użytkownik firmy ich nie usunie albo dopóki istnieje firma. Usunięcie firmy usuwa jej szablony.
 - Zaproszenia, także wygasłe, odwołane i przyjęte, są przechowywane, dopóki istnieje firma. Usunięcie firmy usuwa jej zaproszenia.
 - Logi techniczne serwera w domyślnej konfiguracji OpenKSeF mają ograniczony rozmiar i nadpisują się same. Szczegóły w sekcji 8.
 - Historia zmian w firmie zostaje, dopóki istnieje firma. Nie ma ustalonego terminu jej usunięcia. Po usunięciu firmy jej historia zostaje już bez powiązania z nią, razem z identyfikatorami, imionami i nazwiskami oraz adresami e-mail osób, które w niej występują. Wpisy bez powiązania z firmą, czyli historia usuniętych firm i historia resetów weryfikacji dwuetapowej, są usuwane automatycznie po 12 miesiącach od zdarzenia, nie od usunięcia firmy. Wpisy starsze niż 12 miesięcy znikają więc wkrótce po usunięciu firmy. Wcześniej historię usuwa właściciel instancji na żądanie (sekcja 8) albo z własnej decyzji.
@@ -179,7 +186,7 @@ Aby usunąć konto w OpenKSeF i powiązane z nim dane, wyślij prośbę e-mailem
 
 Prośby realizujemy ręcznie. Odpowiadamy w ciągu miesiąca.
 
-**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator) i jego kopię w instancji, dostęp do firm innych osób, zarejestrowane urządzenia oraz firmy dodane z tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur, fakturami wystawionymi i zaproszeniami, z wyjątkami poniżej. Jeśli z takiej firmy korzystają też inne osoby albo jesteś jedynym właścicielem firmy, z której korzystają inni, przed usunięciem skontaktujemy się z Tobą: usunięcie firmy odebrałoby ją także im. Usuwamy też firmy dodane z innego konta, do których nikt poza Tobą nie ma dostępu, z tymi samymi danymi i wyjątkami. Przed usunięciem wymienimy je w osobnej wiadomości i usuniemy je dopiero po Twoim potwierdzeniu.
+**Co usuwamy:** konto (e-mail, imię i nazwisko, identyfikator) i jego kopię w instancji, dostęp do firm innych osób, zarejestrowane urządzenia oraz firmy dodane z tego konta z tokenem lub certyfikatem KSeF, fakturami otrzymanymi, danymi do faktur, fakturami wystawionymi, szablonami faktur i zaproszeniami, z wyjątkami poniżej. Jeśli z takiej firmy korzystają też inne osoby albo jesteś jedynym właścicielem firmy, z której korzystają inni, przed usunięciem skontaktujemy się z Tobą: usunięcie firmy odebrałoby ją także im. Usuwamy też firmy dodane z innego konta, do których nikt poza Tobą nie ma dostępu, z tymi samymi danymi i wyjątkami. Przed usunięciem wymienimy je w osobnej wiadomości i usuniemy je dopiero po Twoim potwierdzeniu.
 
 **Zaproszenie bez konta:** jeśli ktoś zaprosił Twój adres e-mail, a nie masz konta, możesz poprosić o usunięcie zaproszenia i Twojego adresu z historii zmian firmy, tak samo jak o usunięcie konta.
 
