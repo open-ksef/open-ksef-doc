@@ -85,6 +85,8 @@ Firma ma trzy serie numerów, każdą z własnym licznikiem:
 
 Korekty i zaliczki nie przesuwają numeracji faktur. Znaczniki i zasady liczników są w każdej serii takie same. Jeśli wystawiałeś korekty lub zaliczki w innym programie, ustaw w ich serii wyższy następny numer.
 
+Od wersji 0.0.41 jest czwarta seria: **Proformy**, domyślnie `PRO/{nr}/{MM}/{RRRR}`, pola **Wzorzec numeru proformy** i **Następny numer proformy**. Wzorzec każdej serii musi być inny. Zobacz [Proforma](#proforma).
+
 ## Wystawienie faktury
 
 1. Kliknij **Nowa faktura** w menu **Wystawione** albo na stronie **Start**.
@@ -167,7 +169,32 @@ Pliki są dostępne dla faktury wystawionej w OpenKSeF i **Przyjętej w KSeF**.
 - **UPO**: urzędowe poświadczenie odbioru. Może pojawić się chwilę po przyjęciu faktury. Do tego czasu widać „Oczekuje na UPO”.
 - **PDF**: wizualizacja faktury z kodem **KOD I**, po którego zeskanowaniu można sprawdzić fakturę w KSeF. Przekaż ten PDF nabywcy, który nie korzysta z KSeF, na przykład osobie prywatnej.
 
-Pliki pobierzesz w portalu przyciskami **Pobierz XML**, **Pobierz UPO** i **Pobierz PDF**. Faktura dla firmy zagranicznej ma [trzy przyciski PDF](#pdf-dla-nabywcy).
+Pliki pobierzesz w portalu przyciskami **Pobierz XML**, **Pobierz UPO** i **Pobierz PDF**. Faktura dla firmy zagranicznej ma [trzy przyciski PDF](#pdf-dla-nabywcy). XML i UPO wielu faktur naraz pobierzesz [eksportem faktur](faktury#eksport-faktur).
+
+## Proforma
+
+Od wersji 0.0.41.
+
+Proforma to oferta albo wezwanie do zapłaty przed sprzedażą. **Nie jest fakturą VAT** i nigdy nie trafia do KSeF: nie ma XML, UPO, numeru KSeF ani kodu KOD I. Nie ma też w ustawie o VAT ani formy, ani obowiązku numeracji.
+
+:::warning[Przedpłata wymaga faktury zaliczkowej]
+Jeśli nabywca zapłaci przed sprzedażą, proforma nie wystarczy. Wystaw [fakturę zaliczkową](zaliczki-i-rozliczenia#faktura-zaliczkowa) (art. 106b ust. 1 pkt 4 ustawy o VAT) najpóźniej 15. dnia miesiąca po miesiącu otrzymania zapłaty (art. 106i ust. 2). OpenKSeF nie tworzy zaliczki z proformy: kliknij **Nowa zaliczka** i wpisz dane.
+:::
+
+1. W menu **Wystawione** kliknij **Nowa proforma**. Formularz jest taki sam jak dla faktury VAT: nabywca, pozycje, stawki VAT, waluta, płatność, rachunek.
+2. Kliknij **Zapisz szkic** albo **Wystaw proformę**. Wystawić proformę może właściciel, administrator lub księgowy.
+3. Proforma dostaje numer z serii proform, np. `PRO/1/11/2026`. Numeracja faktur się nie zmienia.
+
+Proforma w walucie obcej nie wymaga kursu NBP. Kwoty są tylko w tej walucie.
+
+Proformy są na liście **Wystawione** w widoku **Proformy**. Widok **Faktury**, strona **Start**, aplikacja mobilna i [eksport faktur](faktury#eksport-faktur) ich nie pokazują.
+
+W szczegółach wystawionej proformy:
+
+- **Pobierz PDF**: dokument z tytułem „Faktura proforma” i numerem z danymi sprzedawcy i nabywcy, datą wystawienia, terminem płatności, pozycjami, podsumowaniem VAT, rachunkiem i tytułem przelewu (numer proformy). Stopka: „Dokument nie jest fakturą VAT w rozumieniu ustawy o VAT i nie stanowi podstawy do odliczenia podatku.” PDF nie ma daty sprzedaży ani adnotacji „mechanizm podzielonej płatności”.
+- **Utwórz fakturę**: tworzy szkic faktury VAT z nabywcą, pozycjami, walutą, płatnością, mechanizmem podzielonej płatności i podstawą zwolnienia z proformy. Data wystawienia i data sprzedaży to dzisiaj, termin płatności zachowuje liczbę dni z proformy. Szkic wystawiasz jak każdą fakturę, w serii faktur i z wysyłką do KSeF. Proforma dostaje oznaczenie **Przekształcona**, a przycisk zmienia się na **Otwórz fakturę**. Jeśli usuniesz ten szkic, możesz znów utworzyć fakturę.
+- **Kopiuj jako nową**: tworzy szkic nowej proformy.
+- **Usuń proformę**: dostępne, dopóki nie utworzysz z proformy faktury. Numer usuniętej proformy nie zostanie użyty ponownie. Szkic proformy usuniesz zawsze.
 
 ![Faktura Przyjęta w KSeF: numer KSeF, UPO pobrane, przyciski Pobierz PDF, XML, UPO, Kopiuj jako nową, karta KOD I](/img/screenshots/portal/issue-accepted.png)
 
@@ -377,14 +404,14 @@ Tych rzeczy OpenKSeF jeszcze nie obsługuje:
 | **Korekta faktury spoza OpenKSeF** | Użyj programu, w którym wystawiono fakturę, albo Aplikacji Podatnika KSeF |
 | **Kilka zaliczek na jednej fakturze zaliczkowej** | Wystaw osobną fakturę zaliczkową do każdej wpłaty |
 | **Rozliczenie zaliczek wystawionych poza OpenKSeF** | Użyj programu, w którym wystawiono zaliczki, albo Aplikacji Podatnika KSeF |
-| **Proforma** | Użyj innego programu. Proforma nie jest fakturą i nie trafia do KSeF |
 | **Towary za granicę**: WDT i eksport, stawki 0 WDT i 0 EX | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **VAT w walucie obcej**: stawka 23, 8 lub 5 w innej walucie niż PLN | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **Waluta obca dla nabywcy Firma lub Osoba prywatna** | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **Osoba prywatna za granicą i OSS** | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **Stawka oo** | Użyj Aplikacji Podatnika KSeF lub innego programu |
 | **Faktura dla firmy zagranicznej, korekta, zaliczka i rozliczenie w aplikacji mobilnej** | Wystaw je w portalu |
-| **Kilka serii numeracji faktur i numery wpisywane ręcznie** | Jedna firma ma po jednym wzorcu dla faktur, korekt i zaliczek |
+| **Kilka serii numeracji faktur i numery wpisywane ręcznie** | Jedna firma ma po jednym wzorcu dla faktur, korekt, zaliczek i proform |
+| **Proforma: wysyłka e-mailem, kod QR przelewu, proforma w aplikacji mobilnej, zaliczka z proformy** | Wyślij PDF samodzielnie. Przy przedpłacie wystaw [fakturę zaliczkową](zaliczki-i-rozliczenia#faktura-zaliczkowa) |
 
 Dodatkowo:
 

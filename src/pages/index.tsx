@@ -209,8 +209,11 @@ export default function Home(): ReactNode {
                 <Yes>Faktury za usługi dla firm zagranicznych <small>Stawki np I i np II, waluta obca, kurs NBP, PDF po angielsku i polsku. Tylko w portalu.</small></Yes>
                 <Yes>Faktury korygujące, zaliczkowe i rozliczające <small>Także korekta do zera i błędny NIP nabywcy. Tylko w portalu.</small></Yes>
                 <Yes>Szablony, ostatni nabywcy i Kopiuj jako nową <small>Termin płatności jak w kopiowanej fakturze. Tylko w portalu.</small></Yes>
+                <Yes>Faktury proforma <small>Poza KSeF, własna numeracja PRO, PDF, Utwórz fakturę. Tylko w portalu.</small></Yes>
+                <Yes>Eksport faktur <small>ZIP z XML, UPO i indeksem CSV za wybrany okres. Tylko w portalu.</small></Yes>
                 <Yes>Środowiska KSeF: test i produkcja <small>Na produkcji przyjęta faktura jest dokumentem prawnym.</small></Yes>
                 <Yes>Powiadomienia push na Androidzie <small>Aplikacja: plik APK na GitHubie.</small></Yes>
+                <Yes>Blokada aplikacji <small>PIN telefonu lub biometria. Opcjonalna, w aplikacji na Androida.</small></Yes>
               </ul>
             </div>
             <div>

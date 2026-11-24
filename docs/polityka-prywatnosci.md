@@ -58,6 +58,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 - Nabywca zagraniczny: kraj, numer VAT UE lub numer podatkowy. Waluta i kurs. Rachunek zagraniczny sprzedawcy: IBAN, SWIFT, nazwa banku
 - Numer faktury, daty, kwoty i pozycje faktury
 - Po wysłaniu: plik XML, numer KSeF, UPO lub powód odrzucenia
+- Od wersji 0.0.41 proformy: te same dane sprzedawcy, nabywcy, numer, daty, kwoty i pozycje. Proforma nie trafia do KSeF
 
 ### Szablony faktur
 
@@ -66,7 +67,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 
 ### Historia zmian w firmie
 
-- Kto (identyfikator, adres e-mail oraz imię i nazwisko z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, ponowne wysłanie, odwołanie i przyjęcie zaproszenia, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, usunięcie adresu e-mail do powiadomień, przejęcie firmy tokenem KSeF (kody uprawnień tokenu i numer operacji uwierzytelnienia w KSeF, bez tokenu), wraz z osobą, której to dotyczy (identyfikator, adres e-mail albo oba)
+- Kto (identyfikator, adres e-mail oraz imię i nazwisko z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, ponowne wysłanie, odwołanie i przyjęcie zaproszenia, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, usunięcie adresu e-mail do powiadomień, przejęcie firmy tokenem KSeF (kody uprawnień tokenu i numer operacji uwierzytelnienia w KSeF, bez tokenu), od wersji 0.0.41 pobranie eksportu faktur (okres, rodzaje i liczba faktur), wraz z osobą, której to dotyczy (identyfikator, adres e-mail albo oba)
 - Reset weryfikacji dwuetapowej przez administratora instancji: kto go wykonał i czyje konto dotyczył (identyfikatory i adresy e-mail)
 - Historia nie jest widoczna w portalu ani aplikacji. Może ją odczytać właściciel instancji z bazy danych
 
@@ -98,7 +99,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 | Identyfikator instalacji Firebase, wersja aplikacji, identyfikator klienta (Android, tylko wersje 1.0.11 i starsze) | Działanie biblioteki Firebase, przez którą przychodzą powiadomienia push | Prawnie uzasadniony interes wydawcy aplikacji (art. 6 ust. 1 lit. f RODO) |
 | Adres e-mail do powiadomień (per firma) | Wysyłanie powiadomień e-mail o nowych fakturach | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Kopia e-maila, imienia i nazwiska, role i dostęp do firm | Pokazanie, kto ma dostęp do firmy i kto oznaczył fakturę jako opłaconą; kontrola uprawnień | Umowa (art. 6 ust. 1 lit. b RODO) |
-| Historia zmian w firmie | Ustalenie, kto i kiedy zmienił status płatności, token KSeF lub dostęp do firmy, oraz bezpieczeństwo konta | Prawnie uzasadniony interes właściciela firmy i instancji (art. 6 ust. 1 lit. f RODO) |
+| Historia zmian w firmie | Ustalenie, kto i kiedy zmienił status płatności, token KSeF lub dostęp do firmy albo pobrał eksport faktur, oraz bezpieczeństwo konta | Prawnie uzasadniony interes właściciela firmy i instancji (art. 6 ust. 1 lit. f RODO) |
 | Zaproszenia do firmy | Nadanie dostępu do firmy osobie wskazanej przez zapraszającego; ochrona przed nadużyciem (limit zaproszeń) | Prawnie uzasadniony interes właściciela firmy (art. 6 ust. 1 lit. f RODO) |
 
 ---
@@ -166,7 +167,7 @@ Zgodnie z RODO przysługują Ci następujące prawa:
 - **Dostęp** — możesz sprawdzić, jakie dane są przechowywane
 - **Sprostowanie** — możesz poprawić nieprawidłowe dane
 - **Usunięcie** — możesz zażądać usunięcia konta i danych, zobacz <a href="#usuwanie-konta">Usuwanie konta i danych</a>
-- **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. OpenKSeF nie ma eksportu zbiorczego ani pobierania plików faktur otrzymanych. O pozostałe dane poproś właściciela instancji
+- **Przenoszenie** — przy każdej wystawionej fakturze przyjętej w KSeF możesz pobrać XML, UPO i PDF. Od wersji 0.0.41 właściciel, administrator i księgowy firmy pobiorą [eksport faktur](faktury#eksport-faktur): jeden plik ZIP z XML faktur sprzedaży i zakupu, UPO oraz indeksem CSV, za wybrany okres albo za cały czas. O pozostałe dane poproś właściciela instancji
 - **Sprzeciw** — możesz sprzeciwić się przetwarzaniu opartemu na prawnie uzasadnionym interesie
 - **Cofnięcie zgody** — możesz w dowolnym momencie przestać otrzymywać powiadomienia push: od wersji 1.0.6 aplikacji przełącznikiem **Powiadomienia push** na ekranie **Konto**, w starszych wersjach w sposób opisany w sekcji 4. Od wersji 1.0.9 aplikacja pyta o tę zgodę po zalogowaniu i bez niej nie rejestruje telefonu. Od wersji 1.0.12 cofnięcie zgody wyłącza też bibliotekę Firebase na Androidzie i usuwa w Google token urządzenia i identyfikator instalacji Firebase
 - **Skarga** — możesz wnieść skargę do Prezesa Urzędu Ochrony Danych Osobowych

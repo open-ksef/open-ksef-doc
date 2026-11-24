@@ -205,6 +205,54 @@ KSeF pozwala pobrać plik XML faktury najwyżej 8 razy na sekundę, 16 razy na m
 - Częste uruchamianie może wyczerpać także limit zapytań o listę faktur. Resynchronizacja kończy się wtedy błędem, a kolejną próbę warto odłożyć na około godzinę.
 :::
 
+## Eksport faktur
+
+Od wersji 0.0.41.
+
+Eksport zapisuje w jednym pliku ZIP faktury firmy z KSeF: sprzedaż, zakup albo oba rodzaje. Przydaje się na przykład do comiesięcznej paczki dla księgowego albo do własnej kopii faktur.
+
+Eksport może pobrać **Właściciel**, **Administrator** i **Księgowy**. **Pracownik** go nie widzi, zobacz [Role](wspolne-firmy).
+
+1. Otwórz **Firma** > **Dane firmy**. Na karcie **Eksport faktur** kliknij **Eksportuj faktury**.
+2. Podaj okres w polach **Od** i **Do**. Okres liczy się według daty wystawienia, oba dni włącznie. Zostaw oba pola puste, aby pobrać wszystkie faktury.
+3. Zaznacz **Sprzedaż**, **Zakup** albo oba (domyślnie oba).
+4. Kliknij **Pobierz ZIP**.
+
+Zawartość pliku ZIP:
+
+| Plik | Co zawiera |
+|------|------------|
+| `sprzedaz/{numer KSeF}.xml` | Faktury sprzedaży przyjęte w KSeF: wystawione w OpenKSeF (ten sam XML, który trafił do KSeF) i [wystawione w innym programie](wystawianie-faktur#faktury-spoza-openksef), pobrane z KSeF. Jeden plik na numer KSeF |
+| `sprzedaz/{numer KSeF}_UPO.xml` | UPO, jeśli jest zapisane w OpenKSeF |
+| `zakup/{numer KSeF}.xml` | Faktury otrzymane, których XML został już pobrany z KSeF |
+| `indeks.csv` | Lista faktur z okresu, także tych bez pobranego XML |
+| `README.txt` | Opis plików, NIP, okres, środowisko KSeF |
+
+- Eksport nie obejmuje szkiców, proform ani faktur w statusie **Wysyłanie** i **Odrzucona**.
+- Eksport nie zawiera PDF. Plik XML jest fakturą ([art. 106na ustawy o VAT](https://api.sejm.gov.pl/eli/acts/DU/2026/1263/text.pdf)). PDF utworzysz z niego w OpenKSeF albo w Aplikacji Podatnika KSeF.
+- Nazwa pliku: `OpenKSeF_{NIP}_{od}_{do}.zip`, a bez okresu `OpenKSeF_{NIP}_wszystko.zip`. Na środowisku TEST nazwa kończy się na `_TEST.zip`, na DEMO na `_DEMO.zip`.
+- Eksport niczego nie zmienia: nie oznacza faktur jako opłaconych, nie uruchamia synchronizacji i nie wysyła powiadomień.
+- Każdy eksport zapisuje się w [historii zmian w firmie](polityka-prywatnosci#historia-zmian-w-firmie): kto, kiedy, okres, rodzaje i liczba faktur.
+
+### indeks.csv
+
+Plik otworzysz w Excelu z polskimi ustawieniami bez kreatora importu: kodowanie UTF-8, separator średnik, przecinek dziesiętny, daty `RRRR-MM-DD`. Pierwszy wiersz to nagłówek.
+
+| Kolumna | Znaczenie |
+|---------|-----------|
+| `kierunek` | `sprzedaz` albo `zakup` |
+| `numer_ksef`, `numer_faktury` | Numer KSeF i numer nadany przez sprzedawcę |
+| `rodzaj` | Rodzaj faktury z KSeF, np. `VAT`, `KOR`, `ZAL`, `ROZ` |
+| `data_wystawienia`, `data_przyjecia_ksef` | Data wystawienia i data przyjęcia w KSeF |
+| `nip_sprzedawcy`, `nazwa_sprzedawcy` | Sprzedawca |
+| `id_nabywcy`, `nazwa_nabywcy` | NIP nabywcy albo kraj i numer zagraniczny. Puste dla osoby prywatnej |
+| `waluta`, `netto`, `vat`, `brutto` | Waluta i kwoty |
+| `termin_platnosci` | Termin płatności |
+| `oplacona` | Tylko zakup: `tak` albo `nie`, według oznaczenia w OpenKSeF |
+| `plik_xml`, `plik_upo` | Ścieżka pliku w ZIP. Pusta, gdy pliku nie ma |
+
+Komórka zaczynająca się od `=`, `+`, `-` lub `@` dostaje na początku apostrof `'`, aby Excel nie wykonał jej jako formuły.
+
 ## Aplikacja mobilna
 
 W aplikacji mobilnej (Android, od wersji 1.0.4):

@@ -22,6 +22,7 @@ Android: [plik APK na GitHubie](https://github.com/open-ksef/open-ksef-mobile/re
 - [Wystawianie faktur](wystawianie-faktur), od wersji 1.0.5. Korekty, zaliczki i rozliczenia tylko do podglądu, zobacz [niżej](#korekty-zaliczki-i-rozliczenia)
 - Skanowanie kodu QR z portalu, które ustawia adres serwera
 - Motyw jak w telefonie: jasny albo ciemny. Zmienisz go w **Konto** > **Motyw**: **System**, **Jasny** albo **Ciemny**
+- [Blokada aplikacji](#blokada-aplikacji) odciskiem palca, twarzą albo PIN-em telefonu (od wersji 1.0.14)
 
 ## Zapłać
 
@@ -164,6 +165,26 @@ Od wersji 1.0.9 aplikacja nie rejestruje telefonu do powiadomień, dopóki konto
 - Aktualizacja z 1.0.8 zachowuje dotychczasowe ustawienie: przypisuje je pierwszemu kontu zalogowanemu po aktualizacji. Telefon z wyłączonymi powiadomieniami zostaje bez nich, a zarejestrowany zostaje zarejestrowany.
 
 Więcej: [Powiadomienia push](powiadomienia-push#zgoda-na-powiadomienia-w-aplikacji).
+
+## Blokada aplikacji
+
+Od wersji aplikacji 1.0.14.
+
+Blokada chroni faktury, kwoty i rachunki, gdy ktoś inny weźmie odblokowany telefon. Jest opcjonalna i domyślnie wyłączona.
+
+1. Otwórz **Konto** > **Bezpieczeństwo** i włącz **Blokada aplikacji**.
+2. Potwierdź odciskiem palca, twarzą albo PIN-em, wzorem lub hasłem telefonu. Ustawienie zapisuje się dopiero po potwierdzeniu.
+3. Wybierz, po jakim czasie w tle aplikacja się blokuje: **Od razu**, **Po 1 minucie** albo **Po 5 minutach** (domyślnie).
+
+- Aplikacja używa blokady ekranu telefonu. Nie ma własnego PIN-u. Odcisk palca i twarz nie opuszczają telefonu.
+- Telefon bez blokady ekranu: przełącznik zostaje wyłączony z komunikatem „Ustaw blokadę ekranu w telefonie, aby włączyć blokadę aplikacji.”
+- Aplikacja pyta przy każdym uruchomieniu i po powrocie z tła, gdy minął wybrany czas. Tylko po zalogowaniu.
+- Ekran **Aplikacja zablokowana** zasłania wszystkie dane. **Odblokuj** ponawia pytanie, **Wyloguj się** wylogowuje.
+- Po stuknięciu w powiadomienie najpierw odblokujesz aplikację, potem zobaczysz fakturę.
+- Na Androidzie 13 i nowszym podgląd w ostatnich aplikacjach nie pokazuje danych. Zrzuty ekranu są dozwolone, np. kodu QR przelewu.
+- Wyłączenie blokady też wymaga potwierdzenia.
+- Gdy usuniesz blokadę ekranu telefonu, aplikacja otworzy się, wyłączy blokadę i pokaże „Blokada aplikacji wyłączona: telefon nie ma blokady ekranu.”
+- Powiadomienia działają także, gdy aplikacja jest zablokowana.
 
 ## Wymagania dla Android
 
