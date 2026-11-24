@@ -21,6 +21,7 @@ Każda osoba ma w firmie jedną rolę. Osoba, która dodała firmę, jest jej **
 | Własne powiadomienia o nowych fakturach tej firmy | tak | tak | tak | tak |
 | Szkic faktury wystawianej | tak | tak | tak | tak |
 | Wystawienie faktury i wysłanie jej do KSeF | tak | tak | tak | nie |
+| [Eksport faktur](faktury#eksport-faktur) (od wersji 0.0.41) | tak | tak | tak | nie |
 | **Pełna resynchronizacja** | tak | tak | nie | nie |
 | Zapisanie, zmiana i usunięcie tokenu lub certyfikatu KSeF | tak | tak | nie | nie |
 | Edycja **Dane firmy** (nazwa, e-mail do powiadomień) i **Dane do faktur** | tak | tak | nie | nie |

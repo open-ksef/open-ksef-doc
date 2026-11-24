@@ -51,12 +51,12 @@ docs/
   token-ksef.md               # Jak uzyskać token KSeF i gdzie go wkleić
   certyfikat-ksef.md          # Certyfikat KSeF (Uwierzytelnianie) zamiast tokenu, ważność, odnowienie
   wspolne-firmy.md            # Wspólne firmy: role, zaproszenia, dołączanie, opuszczanie, kto oznaczył opłaconą, powiadomienia per firma
-  faktury.md                  # Lista, szczegóły, XML/PDF, pozycje, status płatności, przelew/QR, resynchronizacja
-  wystawianie-faktur.md       # Dane do faktur, numeracja (serie FV, KOR, ZAL), wystawianie, Pobierz z NIP (limit MF), ostatni nabywcy, podpowiedzi pozycji, szablony, Kopiuj jako nową, statusy, XML/UPO/PDF, odrzucona faktura, ograniczenia
+  faktury.md                  # Lista, szczegóły, XML/PDF, pozycje, status płatności, przelew/QR, resynchronizacja, eksport faktur (ZIP, indeks.csv)
+  wystawianie-faktur.md       # Dane do faktur, numeracja (serie FV, KOR, ZAL, PRO), wystawianie, Pobierz z NIP (limit MF), ostatni nabywcy, podpowiedzi pozycji, szablony, Kopiuj jako nową, statusy, XML/UPO/PDF, proforma, odrzucona faktura, ograniczenia
   korekty.md                  # Korekty: kiedy, jak, przyczyna, typ korekty, do zera, błędny NIP (Podręcznik 1.6.4), dane nabywcy, waluta, numeracja KOR
   zaliczki-i-rozliczenia.md   # Zamówienie, ZAL, kolejna i ostatnia zaliczka, ROZ, ROZ na 0,00, KOR_ZAL, KOR_ROZ, numeracja ZAL
   powiadomienia-push.md       # Push notifications (SignalR, relay, Firebase, email)
-  aplikacja-mobilna.md        # Logowanie, parowanie kodem, zgoda na powiadomienia, motyw, Zapłać, build
+  aplikacja-mobilna.md        # Logowanie, parowanie kodem, zgoda na powiadomienia, motyw, Zapłać, blokada aplikacji, build
   o-projekcie.md              # AI disclaimer, self-hosting, odpowiedzialność
   licencja.md                 # Elastic License 2.0 + formalny disclaimer bezpieczeństwa
   polityka-prywatnosci.md     # Polityka prywatności (wymóg Google Play)
