@@ -18,7 +18,7 @@ Android: [plik APK na GitHubie](https://github.com/open-ksef/open-ksef-mobile/re
 - Zarządzanie firmami (tenantami)
 - Powiadomienia push (SignalR + relay/Firebase)
 - Logowanie na stronie logowania OpenKSeF w przeglądarce telefonu albo [parowanie kodem z portalem](#sparuj-z-portalem) bez hasła na telefonie (od wersji 1.0.9)
-- Przycisk **Zapłać**: kod QR przelewu do zeskanowania w aplikacji bankowej, zobacz [Zapłać](#zapłać)
+- Przycisk **Zapłać**: kod QR przelewu do zeskanowania w aplikacji bankowej i kopiowanie pojedynczych pól przelewu, zobacz [Zapłać](#zapłać)
 - [Wystawianie faktur](wystawianie-faktur), od wersji 1.0.5. Korekty, zaliczki i rozliczenia tylko do podglądu, zobacz [niżej](#korekty-zaliczki-i-rozliczenia)
 - Skanowanie kodu QR z portalu, które ustawia adres serwera
 - Motyw jak w telefonie: jasny albo ciemny. Zmienisz go w **Konto** > **Motyw**: **System**, **Jasny** albo **Ciemny**
@@ -32,6 +32,23 @@ Szczegóły otrzymanej faktury mają dwa przyciski:
 - **Kopiuj dane przelewu** kopiuje do schowka odbiorcę, NIP, numer rachunku, kwotę i tytuł.
 
 Oba przyciski pobierają dane z serwera OpenKSeF, więc wymagają połączenia z internetem. Kod QR i komunikaty są takie same jak w portalu.
+
+### Kopiowanie pojedynczych pól
+
+Od wersji 1.0.15 szczegóły faktury i strona **Kod QR przelewu** mają kartę **Dane do przelewu**: odbiorca, numer rachunku, kwota, tytuł i NIP odbiorcy. Wartości pochodzą z serwera, tak jak w kodzie QR, np. kwota do zapłaty i rachunek faktora. W szczegółach karta pokazuje też termin płatności, którego się nie kopiuje.
+
+Dotknij wiersza albo przytrzymaj go, aby skopiować jedno pole i wkleić je w odpowiednie pole przelewu w banku. Do schowka trafia:
+
+| Pole | Format w schowku | Przykład |
+|------|------------------|----------|
+| Nr rachunku | polski rachunek: 26 cyfr bez spacji i bez `PL`; rachunek zagraniczny: bez spacji, z kodem kraju | `61109010140000071219812874` |
+| Kwota | przecinek, dwa miejsca po przecinku, bez spacji i bez waluty | `1234,56` |
+| NIP odbiorcy | same cyfry | `5261040828` |
+| Odbiorca, Tytuł | tak jak na ekranie, pełny tytuł (nie skrócony do 32 znaków jak w kodzie QR) | |
+
+Po skopiowaniu przy wierszu na chwilę pojawia się znaczek. Android 13 i nowszy pokazuje własny komunikat o skopiowaniu, starszy komunikat aplikacji, np. `Skopiowano kwotę`.
+
+**Kopiuj dane przelewu** w szczegółach i **Kopiuj wszystko** na stronie **Kod QR przelewu** kopiują wszystkie dane naraz, jako jeden tekst.
 
 <img src="/img/screenshots/mobile/pay-details.png" alt="Szczegóły faktury: pozycje i przyciski Zapłać oraz Kopiuj dane przelewu" width="320" /> <img src="/img/screenshots/mobile/pay-qr.png" alt="Strona Kod QR przelewu: odbiorca i kwota nad kodem QR, przycisk Udostępnij / zapisz kod QR" width="320" />
 
@@ -51,7 +68,7 @@ OpenKSeF nie otwiera aplikacji bankowej bezpośrednio: banki nie udostępniają 
 
 ### Kiedy nie ma kodu QR
 
-Gdy kod QR byłby błędny, strona pokazuje komunikat z powodem, dane do przelewu i przycisk **Kopiuj dane przelewu**. Najczęstsze powody:
+Gdy kod QR byłby błędny, strona pokazuje komunikat z powodem, kartę **Dane do przelewu** i przycisk **Kopiuj wszystko**. Najczęstsze powody:
 
 - faktura w innej walucie niż PLN,
 - faktura korygująca (korekta), bo jej kwota to różnica,

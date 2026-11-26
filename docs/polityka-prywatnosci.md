@@ -69,7 +69,7 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 
 - Kto (identyfikator, adres e-mail oraz imię i nazwisko z chwili zdarzenia), kiedy i co zrobił: oznaczenie faktury jako opłaconej lub nieopłaconej, zapisanie lub usunięcie tokenu albo certyfikatu KSeF, zaproszenie, ponowne wysłanie, odwołanie i przyjęcie zaproszenia, nadanie dostępu, zmiana roli, usunięcie z firmy lub jej opuszczenie, usunięcie adresu e-mail do powiadomień, przejęcie firmy tokenem KSeF (kody uprawnień tokenu i numer operacji uwierzytelnienia w KSeF, bez tokenu), od wersji 0.0.41 pobranie eksportu faktur (okres, rodzaje i liczba faktur), wraz z osobą, której to dotyczy (identyfikator, adres e-mail albo oba)
 - Reset weryfikacji dwuetapowej przez administratora instancji: kto go wykonał i czyje konto dotyczył (identyfikatory i adresy e-mail)
-- Historia nie jest widoczna w portalu ani aplikacji. Może ją odczytać właściciel instancji z bazy danych
+- Właściciel i Administrator firmy widzą historię w portalu (data, osoba, zdarzenie, szczegóły). Właściciel instancji może ją odczytać także z bazy danych
 
 ### Zaproszenia do firmy
 
