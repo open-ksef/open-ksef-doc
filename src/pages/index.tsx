@@ -165,7 +165,7 @@ export default function Home(): ReactNode {
             <div className={styles.card}>
               <Icon name="qr" size={24} />
               <h3>Pomaga zapłacić</h3>
-              <p>Dane do przelewu i kod QR w portalu, gdy faktura w PLN ma numer rachunku. Skanujesz w aplikacji banku, a fakturę oznaczasz jako opłaconą.</p>
+              <p>Dane do przelewu i kod QR w portalu i w aplikacji, gdy faktura w PLN ma numer rachunku. Skanujesz w aplikacji banku, a fakturę oznaczasz jako opłaconą.</p>
             </div>
             <div className={styles.card}>
               <Icon name="send" size={24} />
