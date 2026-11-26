@@ -204,17 +204,18 @@ export default function Home(): ReactNode {
               <h3>Działa w wydanej wersji</h3>
               <ul className={styles.yes}>
                 <Yes>Faktury otrzymane: pobieranie, lista, szczegóły, termin płatności, status opłacenia</Yes>
-                <Yes>Dane do przelewu i kod QR w portalu</Yes>
+                <Yes>Dane do przelewu i kod QR w portalu i w aplikacji</Yes>
                 <Yes>Faktury VAT w PLN ze stawkami 23, 8, 5, 0 KR i zw <small>Także dla osoby prywatnej, z PDF i kodem KOD I.</small></Yes>
                 <Yes>Faktury za usługi dla firm zagranicznych <small>Stawki np I i np II, waluta obca, kurs NBP, PDF po angielsku i polsku. Tylko w portalu.</small></Yes>
                 <Yes>Faktury korygujące, zaliczkowe i rozliczające <small>Także korekta do zera i błędny NIP nabywcy. Tylko w portalu.</small></Yes>
-                <Yes>Szablony, ostatni nabywcy i Kopiuj jako nową <small>Termin płatności jak w kopiowanej fakturze. Tylko w portalu.</small></Yes>
+                <Yes>Szablony, ostatni nabywcy i Kopiuj jako nową <small>Termin płatności jak w kopiowanej fakturze. Szablony i ostatni nabywcy tylko w portalu.</small></Yes>
                 <Yes>Faktury proforma <small>Poza KSeF, własna numeracja PRO, PDF, Utwórz fakturę. Tylko w portalu.</small></Yes>
                 <Yes>Eksport faktur <small>ZIP z XML, UPO i indeksem CSV za wybrany okres. Tylko w portalu.</small></Yes>
                 <Yes>Historia zmian w firmie <small>Kto i kiedy zmienił status płatności, token KSeF, dostęp lub pobrał eksport. Widzi Właściciel i Administrator. Tylko w portalu.</small></Yes>
                 <Yes>Środowiska KSeF: test i produkcja <small>Na produkcji przyjęta faktura jest dokumentem prawnym.</small></Yes>
                 <Yes>Powiadomienia push na Androidzie <small>Aplikacja: plik APK na GitHubie.</small></Yes>
                 <Yes>Blokada aplikacji <small>PIN telefonu lub biometria. Opcjonalna, w aplikacji na Androida.</small></Yes>
+                <Yes>E-mail o nowej fakturze otrzymanej <small>Domyślnie wyłączony. Włączasz zmiennymi <code>EMAIL_*</code> i adresem do powiadomień w firmie.</small></Yes>
               </ul>
             </div>
             <div>
@@ -223,7 +224,6 @@ export default function Home(): ReactNode {
                 <No>Korekta zbiorcza i korekta faktur z innych programów</No>
                 <No>Faktury zagraniczne za towary, VAT w walucie obcej</No>
                 <No>Aplikacja w Google Play i na iPhone'a</No>
-                <No>E-mail o nowej fakturze przy pobieraniu w tle</No>
                 <No>Wersja hostowana dla firm</No>
               </ul>
             </div>
