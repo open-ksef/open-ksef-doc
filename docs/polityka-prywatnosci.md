@@ -101,6 +101,8 @@ Jeśli jesteś nabywcą i Twoje dane znalazły się na fakturze wystawionej w Op
 | Kopia e-maila, imienia i nazwiska, role i dostęp do firm | Pokazanie, kto ma dostęp do firmy i kto oznaczył fakturę jako opłaconą; kontrola uprawnień | Umowa (art. 6 ust. 1 lit. b RODO) |
 | Historia zmian w firmie | Ustalenie, kto i kiedy zmienił status płatności, token KSeF lub dostęp do firmy albo pobrał eksport faktur, oraz bezpieczeństwo konta | Prawnie uzasadniony interes właściciela firmy i instancji (art. 6 ust. 1 lit. f RODO) |
 | Zaproszenia do firmy | Nadanie dostępu do firmy osobie wskazanej przez zapraszającego; ochrona przed nadużyciem (limit zaproszeń) | Prawnie uzasadniony interes właściciela firmy (art. 6 ust. 1 lit. f RODO) |
+| Logi techniczne serwera (identyfikator, e-mail, NIP, adres IP, adresy stron) | Działanie i bezpieczeństwo instancji, wykrywanie błędów i nadużyć | Prawnie uzasadniony interes właściciela instancji (art. 6 ust. 1 lit. f RODO) |
+| Korespondencja w sprawie usunięcia konta | Realizacja prośby i wykazanie, że została zrealizowana | Obowiązek prawny (art. 6 ust. 1 lit. c w zw. z art. 12, art. 17 i art. 5 ust. 2 RODO) |
 
 ---
 
