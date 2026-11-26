@@ -211,6 +211,7 @@ export default function Home(): ReactNode {
                 <Yes>Szablony, ostatni nabywcy i Kopiuj jako nową <small>Termin płatności jak w kopiowanej fakturze. Tylko w portalu.</small></Yes>
                 <Yes>Faktury proforma <small>Poza KSeF, własna numeracja PRO, PDF, Utwórz fakturę. Tylko w portalu.</small></Yes>
                 <Yes>Eksport faktur <small>ZIP z XML, UPO i indeksem CSV za wybrany okres. Tylko w portalu.</small></Yes>
+                <Yes>Historia zmian w firmie <small>Kto i kiedy zmienił status płatności, token KSeF, dostęp lub pobrał eksport. Widzi Właściciel i Administrator. Tylko w portalu.</small></Yes>
                 <Yes>Środowiska KSeF: test i produkcja <small>Na produkcji przyjęta faktura jest dokumentem prawnym.</small></Yes>
                 <Yes>Powiadomienia push na Androidzie <small>Aplikacja: plik APK na GitHubie.</small></Yes>
                 <Yes>Blokada aplikacji <small>PIN telefonu lub biometria. Opcjonalna, w aplikacji na Androida.</small></Yes>

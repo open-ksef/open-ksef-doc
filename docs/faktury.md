@@ -214,7 +214,7 @@ Eksport zapisuje w jednym pliku ZIP faktury firmy z KSeF: sprzedaż, zakup albo 
 Eksport może pobrać **Właściciel**, **Administrator** i **Księgowy**. **Pracownik** go nie widzi, zobacz [Role](wspolne-firmy).
 
 1. Otwórz **Firma** > **Dane firmy**. Na karcie **Eksport faktur** kliknij **Eksportuj faktury**.
-2. Podaj okres w polach **Od** i **Do**. Okres liczy się według daty wystawienia, oba dni włącznie. Zostaw oba pola puste, aby pobrać wszystkie faktury.
+2. Podaj okres w polach **Od** i **Do**. Od wersji 0.0.42 okno otwiera się z poprzednim miesiącem. Okres liczy się według daty wystawienia, oba dni włącznie. Wyczyść oba pola, aby pobrać wszystkie faktury.
 3. Zaznacz **Sprzedaż**, **Zakup** albo oba (domyślnie oba).
 4. Kliknij **Pobierz ZIP**.
 
